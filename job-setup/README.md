@@ -65,3 +65,28 @@ All 11 noncombat classes use one page with twelve job controls and four shared u
 ## Global automation controls (0.2.8)
 
 There is one persistent set of Auto burst, Auto mitigation and Auto job mechanics switches. Changing job or scope does not change these selections. The current/all setting controls the jobs included in preview and application; each preset interprets the same selections using its own reviewed behavior. Switching a checkbox does not immediately change game settings. Legacy per-job selections are no longer used; the new global selection starts with all three off. Existing hotbars and Wrath settings stay as applied until the user previews and applies a selection.
+
+## Macro commands and server-info icons (0.2.9)
+
+Place one command in a game macro:
+
+| Command | Result |
+| --- | --- |
+| `/jobsetup current MBJ` | Enable all three and apply to the current class/job. |
+| `/jobsetup all MBJ` | Enable all three and apply to all supported classes/jobs. |
+| `/jobsetup current BJ` | Enable burst and job mechanics, disable automatic mitigation, then apply to current. |
+| `/jobsetup current none` | Turn all three off and apply the baseline to current. |
+| `/jobsetup all none` | Turn all three off and apply the baseline to all. |
+| `/jobsetup current toggle M` | Toggle mitigation, preserve the other selections, apply to current. |
+| `/jobsetup all on BJ` | Enable burst/mechanics, preserve mitigation, apply to all. |
+| `/jobsetup current off B` | Disable burst, preserve the other selections, apply to current. |
+| `/jobsetup current` / `/jobsetup all` | Apply the existing global selections to that scope. |
+| `/jobsetup help` | Print command syntax. |
+
+M means mitigation, B means burst, J means job mechanics. Letters are case-insensitive and may be combined. An exact letter set replaces all three selections; `on`, `off` and `toggle` only change the named selections. These commands explicitly authorize immediate combined application, using the normal internal preview, backup, validation and rollback path. They do not require pressing Apply in the window. They preserve shared targeting options and the window's scope checkbox. Successful commands save the new global selections; rejected operations restore the preceding selections.
+
+Run outside combat and loading. A command is rejected while another operation is queued or running; use a single combined command rather than several toggle lines in the same macro. If a reload is needed, the existing opt-in automatic Wrath reload setting is honored; otherwise the command reports that manual unloading is required. Changing character or job during the operation cancels it before application. Commands do not activate hands-free rotation.
+
+The server-info entry reads **Job Settings:** followed by native icons, in mitigation/burst/job-mechanics order: tank/shield, drawn sword, class/job. Disabled icons disappear; when all three are off, the whole entry hides. It also hides while logged out. Hover for the legend; click to open Job Setup. This represents the saved/global selections, not a live audit of every job's Wrath configuration. UI checkbox edits update it immediately; a pending macro retains the preceding display until application succeeds. Dalamud's server-info settings can independently hide or reorder the entry.
+
+Build and logic checks cannot verify the appearance and placement of native icons in your game UI; test those in game.

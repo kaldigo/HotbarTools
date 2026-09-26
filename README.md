@@ -75,3 +75,5 @@ This project was developed with AI assistance. It is an independent custom-repos
 Version 0.2.7 adds a Noncombat sync profile. Existing custom mappings are preserved; only non-overlapping default pairs are added once. An intentionally empty map stays empty. If a custom All-profile pair blocks a job position, adjust the map in Bridge before applying that layout. Bard burst, Dancer burst and Black Mage mitigation change detailed settings and still require unload/reload; the remaining reviewed preset-only transitions support live updates.
 
 Job Setup 0.2.8 uses the same global automation selections for current-job and all-job application. Omission notes remain in documentation. On upgrade the new global switches start off; existing game settings are unchanged until application. Hotbar Bridge remains at 0.2.7.
+
+Job Setup 0.2.9 adds `/jobsetup current MBJ`, `/jobsetup all MBJ` and per-switch `on|off|toggle` macro commands. The server-info entry uses native mitigation/burst/job icons and hides when all switches are off. See [macro syntax and behavior](job-setup/README.md#macro-commands-and-server-info-icons-029).

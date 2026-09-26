@@ -225,4 +225,29 @@ Test("global automation selection persists without per-job selections",()=>{
     var legacy=Newtonsoft.Json.JsonConvert.DeserializeObject<JobSetup.Config>("""{"Variants":{"GNB":{"AutoBurst":true}},"CompactKeyboard":false}""")!;
     Equal(legacy.Automation.AutoBurst,false);Equal(legacy.CompactKeyboard,false);
 });
+Test("macro exact presets, scope and status cover all eight combinations",()=>{
+    for(var bits=0;bits<8;bits++){
+        var expected=new VariantSelection{AutoMitigation=(bits&1)!=0,AutoBurst=(bits&2)!=0,AutoMechanics=(bits&4)!=0};
+        var flags=AutomationCommands.Letters(expected);
+        foreach(var scope in new[]{"current","all"}){
+            var command=AutomationCommands.Parse(scope+" "+(flags.Length==0?"none":flags),new(){AutoBurst=true,AutoMitigation=true,AutoMechanics=true});
+            Equal(command.All,scope=="all");Equal(AutomationCommands.Letters(command.Selection),flags);
+            Equal(AutomationCommands.Status(command.Selection),flags.Length==0?"":"Job Settings: "+flags);
+        }
+    }
+});
+Test("macro toggles preserve unrelated selections and input",()=>{
+    var current=new VariantSelection{AutoMitigation=true,AutoBurst=false,AutoMechanics=true};
+    Equal(AutomationCommands.Letters(AutomationCommands.Parse("current toggle mb",current).Selection),"BJ");
+    Equal(AutomationCommands.Letters(AutomationCommands.Parse("all on b",current).Selection),"MBJ");
+    Equal(AutomationCommands.Letters(AutomationCommands.Parse("all off mj",current).Selection),"");
+    Equal(AutomationCommands.Letters(AutomationCommands.Parse(" CURRENT ",current).Selection),"MJ");
+    Equal(AutomationCommands.Letters(current),"MJ");
+});
+Test("invalid macro arguments fail without changing selection",()=>{
+    var selection=new VariantSelection{AutoBurst=true};
+    foreach(var input in new[]{"", "mbj", "alll mbj", "all toggle", "current off none", "all mm", "all mx", "current set mbj", "all mbj extra", "all on b extra"})
+        Throws(()=>AutomationCommands.Parse(input,selection));
+    Equal(AutomationCommands.Letters(selection),"B");
+});
 Console.WriteLine($"{count} tests passed.");

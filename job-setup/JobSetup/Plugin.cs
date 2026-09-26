@@ -4,6 +4,8 @@ using System.Text.Json.Nodes;
 using Dalamud.Game;
 using Dalamud.Configuration;
 using Dalamud.Game.Command;
+using Dalamud.Game.Gui.Dtr;
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
@@ -25,6 +27,11 @@ public sealed class Plugin : IDalamudPlugin
     private readonly IDataManager data;
     private readonly IPluginLog log;
     private readonly PresetPack pack;
+    private readonly IChatGui chat;
+    private readonly IDtrBarEntry status;
+    private string statusText="";
+    private MacroOperation? macro;
+    private sealed record MacroOperation(VariantSelection Previous,bool All,bool Shared,uint Job,ulong Character);
     private Config config;
     private ActionCatalog? actions;
     private bool visible,all,shared;
@@ -44,14 +51,58 @@ public sealed class Plugin : IDalamudPlugin
     private string wrathOriginal="",backupInput="",previewIdentity="";
     private uint previewJob;
     private string previewScope="";
-    public Plugin(IDalamudPluginInterface pi,ICommandManager commands,IFramework framework,IObjectTable objects,IPlayerState player,ICondition condition,IDataManager data,IPluginLog log)
+    public Plugin(IDalamudPluginInterface pi,ICommandManager commands,IFramework framework,IObjectTable objects,IPlayerState player,ICondition condition,IDataManager data,IPluginLog log,IDtrBar dtr,IChatGui chat)
     {
         this.pi=pi;this.commands=commands;this.framework=framework;this.objects=objects;this.player=player;this.condition=condition;this.data=data;this.log=log;
         config=pi.GetPluginConfig() as Config??new();
+        this.chat=chat;
+        status=dtr.Get("Job Settings");status.Shown=false;
+        status.Tooltip=new SeStringBuilder().AddIcon(BitmapFontIcon.Tank).AddText(" Mitigation (M)  ")
+            .AddIcon(BitmapFontIcon.SwordUnsheathed).AddText(" Burst (B)  ")
+            .AddIcon(BitmapFontIcon.AnyClass).AddText(" Job mechanics (J)\nGlobal selections, applied using current/all scope. Click to open Job Setup.").Build();
+        status.OnClick=_=>Open();
         using var stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("JobSetup.presets.json")!;
         pack=JsonSerializer.Deserialize<PresetPack>(stream)??throw new InvalidDataException("Missing presets");
-        commands.AddHandler("/jobsetup",new CommandInfo((_,_)=>visible=true){HelpMessage="Preview/apply curated hotbar layouts or Wrath settings."});
+        commands.AddHandler("/jobsetup",new CommandInfo((_,args)=>Command(args)){HelpMessage=AutomationCommands.Help});
         pi.UiBuilder.Draw+=Draw;pi.UiBuilder.OpenMainUi+=Open;framework.Update+=Update;
+    }
+    private void Command(string args)
+    {
+        if(string.IsNullOrWhiteSpace(args)){Open();return;}
+        if(args.Trim().Equals("help",StringComparison.OrdinalIgnoreCase)){chat.Print(AutomationCommands.Help,"Job Setup");return;}
+        try
+        {
+            if(macro!=null || lifecycleTask!=null || request!=0)throw new InvalidOperationException("Job Setup is busy. Wait for the current operation to finish.");
+            var parsed=AutomationCommands.Parse(args,config.Automation);
+            var job=objects.LocalPlayer?.ClassJob.RowId??0;
+            if(job==0 || player.ContentId==0)throw new InvalidOperationException("Log in before applying job settings.");
+            macro=new(config.Automation,all,shared,job,player.ContentId);
+            config.Automation=parsed.Selection;all=parsed.All;shared=false;
+            ClearPreview();request=7;
+        }
+        catch(Exception e){chat.PrintError(e.Message,"Job Setup");}
+    }
+    private void FinishMacro(bool success)
+    {
+        if(macro is not { } pending)return;
+        if(!success)config.Automation=pending.Previous;
+        all=pending.All;shared=pending.Shared;macro=null;
+        if(success){pi.SavePluginConfig(config);chat.Print(wrathCycle==null?message:message.Replace("Re-enable Wrath Combo.","Restoring Wrath automatically."),"Job Setup");}
+        else chat.PrintError(message,"Job Setup");
+    }
+    private void UpdateStatus()
+    {
+        var text=AutomationCommands.Status(macro?.Previous??config.Automation);
+        if(text!=statusText)
+        {
+            var value=macro?.Previous??config.Automation;
+            var builder=new SeStringBuilder().AddText("Job Settings: ");
+            if(value.AutoMitigation)builder.AddIcon(BitmapFontIcon.Tank);
+            if(value.AutoBurst)builder.AddIcon(BitmapFontIcon.SwordUnsheathed);
+            if(value.AutoMechanics)builder.AddIcon(BitmapFontIcon.AnyClass);
+            status.Text=builder.Build();statusText=text;
+        }
+        status.Shown=text.Length>0 && objects.LocalPlayer!=null;
     }
     private void Open()=>visible=true;
     private bool WrathLoaded=>pi.InstalledPlugins.Any(p=>p.InternalName=="WrathCombo" && p.IsLoaded);
@@ -88,7 +139,7 @@ public sealed class Plugin : IDalamudPlugin
         WindowLayout.Prepare(ref firstOpen);
         if(ImGui.Begin("Job Setup",ref visible))
         {
-            ImGui.BeginDisabled(lifecycleTask!=null);
+            ImGui.BeginDisabled(lifecycleTask!=null || macro!=null);
             ImGui.TextWrapped("21 combat jobs, eight crafters, Miner, Botanist, Fisher and nine base-class aliases. Applying is deliberate, not continuous.");
             if(ImGui.Checkbox("All supported classes/jobs (otherwise current)",ref all))ClearPreview();
             ImGui.TextWrapped(message);
@@ -158,6 +209,7 @@ public sealed class Plugin : IDalamudPlugin
     }
     private unsafe void Update(IFramework _)
     {
+        UpdateStatus();
         if(lifecycleTask!=null)
         {
             if(!lifecycleTask.IsCompleted)return;
@@ -171,6 +223,7 @@ public sealed class Plugin : IDalamudPlugin
             catch(Exception e)
             {
                 ClearPreview();request=0;message="Wrath lifecycle failed: "+e.GetBaseException().Message;log.Error(e,"Automatic Wrath reload failed");
+                if(macro!=null)FinishMacro(false);else chat.PrintError(message,"Job Setup");
                 if(!restoringWrath && wrathCycle!=null)StartWrathRestore();else {wrathCycle=null;restoringWrath=false;}
                 return;
             }
@@ -181,8 +234,9 @@ public sealed class Plugin : IDalamudPlugin
         {
             var job=objects.LocalPlayer?.ClassJob.RowId??0;
             NativeHotbars.Ready(job);
+            if(macro is { } pending && (job!=pending.Job || player.ContentId!=pending.Character))throw new InvalidOperationException("Character/job changed during macro application. Run the command again.");
             if(condition[ConditionFlag.InCombat] || condition[ConditionFlag.BetweenAreas] || condition[ConditionFlag.BetweenAreas51])throw new InvalidOperationException("Leave combat and wait for loading to finish.");
-            if(config.AutoManageWrath && WrathLoaded && !CanLiveOperation(action,job) && (action is 2 or 5 or 6 || action==3 && wrathPreview!=null))
+            if(config.AutoManageWrath && WrathLoaded && !CanLiveOperation(action,job) && (action is 2 or 5 or 6 or 7 || action==3 && wrathPreview!=null))
             {
                 wrathCycle=WrathLifecycle.Resolve();actionAfterUnload=action;restoringWrath=false;
                 lifecycleTask=wrathCycle.UnloadAsync();message="Waiting for Wrath to unload...";return;
@@ -191,11 +245,12 @@ public sealed class Plugin : IDalamudPlugin
             switch(action)
             {
                 case 1: PreviewHotbars(job);break;
+                case 7:
                 case 6:
                 case 2:
                     if(WrathLoaded && !CanLiveOperation(action,job))throw new InvalidOperationException("This change includes settings that cannot be updated live. Enable automatic unload/reload or disable Wrath manually.");
                     if(!WrathLoaded)RequireWrathDisabled();
-                    if(action==6)PreviewHotbars(job);
+                    if(action is 6 or 7)PreviewHotbars(job);
                     wrathOriginal=File.ReadAllText(WrathPath);
                     wrathPreview=WrathMerge.Merge(JsonNode.Parse(wrathOriginal)!.AsObject(),Selected(job),shared?pack.SharedSettings:null);
                     previewScope+=(shared?" + global targeting/role settings":all?"; global targeting preserved":"; other jobs/global targeting preserved");
@@ -204,7 +259,9 @@ public sealed class Plugin : IDalamudPlugin
                         return $"; {p.Job} burst {(v.AutoBurst?"auto":"baseline")}, mitigation {(v.AutoMitigation?"auto":"baseline")}, mechanics {(v.AutoMechanics?"auto":"baseline")}{(p.MechanicsAlreadyAutomatic?" (already covered)":"")}";
                     }));
                     previewScope+=WrathLoaded?"; live Wrath commands (no unload)":"; unloaded configuration write";
-                    message=action==6?"Combined preview ready: matching hotbars and Wrath settings. Re-enable Wrath after applying.":"Wrath preview ready. Re-enable Wrath after applying; hotbars are separate in this mode.";break;
+                    message=action is 6 or 7?"Combined preview ready: matching hotbars and Wrath settings. Re-enable Wrath after applying.":"Wrath preview ready. Re-enable Wrath after applying; hotbars are separate in this mode.";
+                    if(action==7){Apply(job);FinishMacro(true);}
+                    break;
                 case 3: Apply(job);break;
                 case 4:
                     PreviewRestore(job);break;
@@ -214,7 +271,7 @@ public sealed class Plugin : IDalamudPlugin
                     previewScope="Full Wrath backup restore (all settings)";break;
             }
         }
-        catch(Exception e){ClearPreview();message=e.Message;log.Error(e,"Job Setup operation failed");}
+        catch(Exception e){ClearPreview();message=e.Message;log.Error(e,"Job Setup operation failed");FinishMacro(false);}
         if(wrathCycle!=null && lifecycleTask==null)StartWrathRestore();
     }
     private void StartWrathRestore()
@@ -346,7 +403,7 @@ public sealed class Plugin : IDalamudPlugin
     {
         if(!config.PreferLiveWrath)return false;
         if(action==3 && wrathPreview!=null)return LivePresetPlan.Create(JsonNode.Parse(wrathOriginal)!.AsObject(),wrathPreview)!=null;
-        if(action is not (2 or 6))return false;
+        if(action is not (2 or 6 or 7))return false;
         var before=JsonNode.Parse(File.ReadAllText(WrathPath))!.AsObject();
         return LivePresetPlan.Create(before,WrathMerge.Merge(before,Selected(job),shared?pack.SharedSettings:null))!=null;
     }
@@ -404,10 +461,11 @@ public sealed class Plugin : IDalamudPlugin
         File.Replace(temporary,WrathPath,null);
     }
     public void Dispose(){
+        if(macro!=null){message="Macro application cancelled because Job Setup was unloaded.";FinishMacro(false);}
         if(wrathCycle is { } cycle)
         {
             var pending=lifecycleTask;
             _=Task.Run(async()=>{try {if(pending!=null)try {await pending;}catch { } await cycle.RestoreAsync();}catch(Exception e){log.Error(e,"Restore Wrath manually after Job Setup unload");}});
         }
-        framework.Update-=Update;pi.UiBuilder.Draw-=Draw;pi.UiBuilder.OpenMainUi-=Open;commands.RemoveHandler("/jobsetup");}
+        status.Remove();framework.Update-=Update;pi.UiBuilder.Draw-=Draw;pi.UiBuilder.OpenMainUi-=Open;commands.RemoveHandler("/jobsetup");}
 }
