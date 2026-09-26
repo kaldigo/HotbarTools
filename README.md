@@ -2,7 +2,7 @@
 
 Two independent Dalamud API 15 plugins for keyboard/controller hotbar layouts.
 
-**Initial test release:** 31 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
+**Initial test release:** 35 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
 
 ## Install
 
@@ -18,7 +18,7 @@ Then find **Hotbar Bridge** and **Job Setup** in `/xlplugins`. Install either or
 
 Configurable two-way syncing between regular and cross hotbars, with individual shared slots and backups. Default job controls use regular bars 1/2 and cross set 1. Utilities use regular bar 10 plus bar 9 slots 1–4, mapped to cross set 2. Every pair is editable in game.
 
-Start with **Preview regular -> cross**, review, then **Apply preview and enable sync**. The initial regular layout wins. Later edits propagate in either direction, including emptying a slot; simultaneous conflicting edits wait for a source choice. Sync pauses during combat and loading. First visits to another job initialize its mapped cross slots from regular slots; individual shared controls use the remembered shared assignments.
+Turn on **Enable live two-way sync**. On first activation, review the initial alignment and click **Apply alignment and start LIVE sync**. After that the switch pauses/resumes continuous sync without another alignment, and the window can stay closed. Live status identifies OFF, watching, conflicts, combat and loading. The initial regular layout wins. Later edits propagate in either direction, including emptying a slot; simultaneous conflicting edits wait for a source choice. Sync pauses during combat and loading. First visits to another job initialize its mapped cross slots from regular slots; individual shared controls use the remembered shared assignments.
 
 Your default regular bar 1 slots 9–12 become individually shared on both sides without making the entire bar shared. All ordinary job pairs require job-specific bars. Healers have a separate default mapping. Craft/gather classes only use utility/shared pairs until you configure other mappings.
 

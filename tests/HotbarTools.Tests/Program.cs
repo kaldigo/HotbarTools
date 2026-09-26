@@ -40,4 +40,8 @@ Test("slot value backup serialization roundtrip",()=>{var json=JsonSerializer.Se
 Test("empty slot state serialization roundtrip",()=>{var json=JsonSerializer.Serialize(new Dictionary<string,SlotValue>{{"shared",default}});Equal(JsonSerializer.Deserialize<Dictionary<string,SlotValue>>(json)!["shared"],default);});
 Test("zero-based macro/gearset IDs are preserved",()=>Equal(new SlotValue(7,0).Normalized,new SlotValue(7,0)));
 Test("hotbar backup roundtrip",()=>{var edits=new[]{new SlotEdit(37,new Position(0,0),old,a)};var restored=JsonSerializer.Deserialize<SlotEdit[]>(JsonSerializer.Serialize(edits))!;Equal(restored[0],edits[0]);});
+Test("first live activation requires alignment",()=>Equal(LiveSyncStart.Decide(false,[],0),LiveStartChoice.Initialize));
+Test("live resume preserves existing baselines",()=>Equal(LiveSyncStart.Decide(false,["0:37:Combat-0"],0),LiveStartChoice.Resume));
+Test("new mapping revision requires new alignment",()=>Equal(LiveSyncStart.Decide(false,["0:37:Combat-0"],1),LiveStartChoice.Initialize));
+Test("unsaved mapping cannot resume",()=>Equal(LiveSyncStart.Decide(true,["0:37:Combat-0"],0),LiveStartChoice.SaveMapping));
 Console.WriteLine($"{count} tests passed.");

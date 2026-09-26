@@ -1,6 +1,6 @@
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <PropertyGroup>
-    <Version>0.2.1</Version>
+    <Version>0.2.2</Version>
     <Author>kaldigo</Author>
     <Name>Hotbar Bridge</Name>
     <Punchline>Inspect regular and cross hotbars for slot-based synchronization.</Punchline>

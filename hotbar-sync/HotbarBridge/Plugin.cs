@@ -22,6 +22,7 @@ public sealed class Plugin : IDalamudPlugin
     private readonly IPluginLog log;
     private readonly SyncController sync;
     private bool visible;
+    private bool firstOpen=true;
     private bool requested;
     private string status = "Switch to Gunbreaker, leave duty/PvP, and show your regular utility bars before exporting.";
     private string? lastExport;
@@ -47,7 +48,8 @@ public sealed class Plugin : IDalamudPlugin
     private void Draw()
     {
         if (!visible) return;
-        if (ImGui.Begin("Hotbar Bridge â€” Read-only Inspector", ref visible))
+        HotbarTools.WindowLayout.Prepare(ref firstOpen);
+        if (ImGui.Begin("Hotbar Bridge", ref visible))
         {
             sync.Draw();
             ImGui.Separator();
@@ -158,7 +160,7 @@ public sealed class Plugin : IDalamudPlugin
         var snapshot = new {
             SchemaVersion = 2, CapturedUtc = timestamp, JobId = job,
             Job = player.ClassJob.Value.Abbreviation.ToString(), Level = player.Level,
-            PluginVersion = "0.2.1", ClientStructsVersion = typeof(RaptureHotbarModule).Assembly.GetName().Version?.ToString(),
+            PluginVersion = "0.2.2", ClientStructsVersion = typeof(RaptureHotbarModule).Assembly.GetName().Version?.ToString(),
             Notes = new[] { "Read-only live PvE capture. No character name or content ID is exported.",
                 "One-based Bar/Slot labels; Native indices are zero-based. Cross slots are raw indices, not inferred controller labels.",
                 "Cached hints can be stale on hidden bars; Keybinds are the input configuration. HOTBAR_1 follows the main cycling bar.",

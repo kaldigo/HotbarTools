@@ -149,3 +149,14 @@ public static class WrathWritePolicy
         if(!installed)throw new InvalidOperationException("Install Wrath Combo first.");
     }
 }
+
+public enum LiveStartChoice { SaveMapping, Initialize, Resume }
+public static class LiveSyncStart
+{
+    public static LiveStartChoice Decide(bool mappingDirty,IEnumerable<string> baselineKeys,int revision)
+    {
+        if(mappingDirty)return LiveStartChoice.SaveMapping;
+        return baselineKeys.Any(k=>k.StartsWith($"{revision}:",StringComparison.Ordinal))
+            ? LiveStartChoice.Resume : LiveStartChoice.Initialize;
+    }
+}

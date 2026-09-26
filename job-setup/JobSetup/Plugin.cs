@@ -36,6 +36,7 @@ public sealed class Plugin : IDalamudPlugin
     private Config config;
     private ActionCatalog? actions;
     private bool visible,all,shared;
+    private bool firstOpen=true;
     private int request;
     private string message="Choose hotbars or Wrath settings, then preview. Neither is applied automatically.";
     private List<SlotEdit>? hotbarPreview;
@@ -70,6 +71,7 @@ public sealed class Plugin : IDalamudPlugin
     private void Draw()
     {
         if(!visible)return;
+        WindowLayout.Prepare(ref firstOpen);
         if(ImGui.Begin("Job Setup",ref visible))
         {
             ImGui.TextWrapped("21 reviewed combat jobs and nine base-class aliases. No crafting/gathering presets yet. Applying is deliberate, not continuous.");
@@ -101,7 +103,11 @@ public sealed class Plugin : IDalamudPlugin
                         foreach(var e in hotbarPreview)ImGui.TextWrapped($"Job {e.Job} {e.Position}: {e.Before} -> {e.After}");
                     ImGui.EndChild();
                 }
-                else if(ImGui.CollapsingHeader("Full merged Wrath configuration preview"))ImGui.TextUnformatted(wrathPreview!.ToJsonString(JsonStore.Options));
+                else if(ImGui.CollapsingHeader("Full merged Wrath configuration preview"))
+                {
+                    if(ImGui.BeginChild("wrath-preview",new System.Numerics.Vector2(0,240)))ImGui.TextUnformatted(wrathPreview!.ToJsonString(JsonStore.Options));
+                    ImGui.EndChild();
+                }
                 ImGui.BeginDisabled(wrathPreview!=null && WrathLoaded);
                 if(ImGui.Button("Apply preview"))request=3;
                 ImGui.EndDisabled();ImGui.SameLine();if(ImGui.Button("Cancel preview"))ClearPreview();
