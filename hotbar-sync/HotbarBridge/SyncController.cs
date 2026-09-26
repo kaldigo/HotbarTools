@@ -37,6 +37,8 @@ public sealed class SyncController : IDisposable
     private readonly Dalamud.Plugin.Ipc.ICallGateProvider<string> mapping;
     private readonly Dalamud.Plugin.Ipc.ICallGateProvider<bool> begin;
     private readonly Dalamud.Plugin.Ipc.ICallGateProvider<bool> end;
+    private readonly Dalamud.Plugin.Ipc.ICallGateProvider<string> getRoutes;
+    private readonly Dalamud.Plugin.Ipc.ICallGateProvider<string,bool> setRoutes;
 
     public SyncController(IDalamudPluginInterface pi,IObjectTable objects,IPlayerState player,ICondition condition,IPluginLog log)
     {
@@ -47,9 +49,30 @@ public sealed class SyncController : IDisposable
         mapping.RegisterFunc(()=>JsonSerializer.Serialize(config.Maps));
         begin=pi.GetIpcProvider<bool>("HotbarBridge.BeginExternalEdit");
         end=pi.GetIpcProvider<bool>("HotbarBridge.EndExternalEdit");
-        begin.RegisterFunc(()=>{if(external)return false;external=true;preview=null;return true;});
+        begin.RegisterFunc(()=>{if(external || mappingDirty)return false;external=true;preview=null;return true;});
         end.RegisterFunc(()=>{external=false;context="";return true;});
+        getRoutes=pi.GetIpcProvider<string>("HotbarBridge.GetJobRoutes");
+        getRoutes.RegisterFunc(()=>JsonSerializer.Serialize(config.JobRoutes));
+        setRoutes=pi.GetIpcProvider<string,bool>("HotbarBridge.SetJobRoutes");
+        setRoutes.RegisterFunc(json=>{
+            if(!external || mappingDirty)throw new InvalidOperationException("Begin external edit before updating job routes.");
+            var updates=JsonSerializer.Deserialize<Dictionary<uint,Dictionary<string,Position>>>(json)??throw new InvalidDataException("Missing routes.");
+            foreach(var (job,routes) in updates)
+            {
+                if(job is 0 or >42)throw new InvalidDataException("Invalid route job.");
+                var active=config.Maps.Where(m=>m.Applies(job)).ToList();
+                if(routes.Keys.Any(id=>!active.Any(m=>m.Id==id && !m.SharedAcrossJobs)))throw new InvalidDataException("Unknown or shared route.");
+                LayoutRoutes.Effective(active,routes);
+            }
+            var old=JsonSerializer.Serialize(config.JobRoutes);
+            try {foreach(var (job,routes) in updates)config.JobRoutes[job]=routes;Save();}
+            catch {config.JobRoutes=JsonSerializer.Deserialize<Dictionary<uint,Dictionary<string,Position>>>(old)!;throw;}
+            foreach(var job in updates.Keys)
+                foreach(var key in state.Baselines.Keys.Where(k=>k.StartsWith($"{config.Revision}:{job}:") && !config.Maps.Any(m=>m.SharedAcrossJobs && k==Key(m,job))).ToArray())state.Baselines.Remove(key);
+            context="";return true;
+        });
     }
+    private List<SlotMap> ActiveMaps(uint job)=>LayoutRoutes.Effective(config.Maps.Where(m=>m.Applies(job)),config.JobRoutes.GetValueOrDefault(job));
     private string StatePath=>Path.Combine(pi.GetPluginConfigDirectory(),"state",character+".json");
     private string BackupPath=>Path.Combine(pi.GetPluginConfigDirectory(),"backups",character);
     private string Key(SlotMap map,uint job)=>$"{config.Revision}:{job}:{map.Id}";
@@ -101,11 +124,11 @@ public sealed class SyncController : IDisposable
             if(action==1 || action==4 || action==5)
             {
                 var edits=new List<SlotEdit>();
-                foreach(var map in config.Maps.Where(x=>x.Applies(job)))
+                foreach(var map in ActiveMaps(job))
                 {
                     ValidateSharing(map,job);
                     var r=NativeHotbars.Read(job,map.Regular);var c=NativeHotbars.Read(job,map.Cross);
-                    if(action!=1 && !conflicts.Contains(map))continue;
+                    if(action!=1 && !conflicts.Any(c=>c.Id==map.Id))continue;
                     var desired=action==5?c:r;
                     if(r!=desired)edits.Add(new(job,map.Regular,r,desired));
                     if(c!=desired)edits.Add(new(job,map.Cross,c,desired));
@@ -116,7 +139,7 @@ public sealed class SyncController : IDisposable
             {
                 if(preview==null || previewJob!=job || previewCharacter!=character)throw new InvalidOperationException("Preview the current character/job first.");
                 NativeHotbars.Apply(job,preview,BackupPath);preview=null;
-                foreach(var map in config.Maps.Where(x=>x.Applies(job)))
+                foreach(var map in ActiveMaps(job))
                 {
                     var r=NativeHotbars.Read(job,map.Regular);var c=NativeHotbars.Read(job,map.Cross);
                     if(r!=c)continue;
@@ -135,7 +158,7 @@ public sealed class SyncController : IDisposable
         }
         if(!config.Enabled || preview!=null || DateTime.UtcNow<nextTick)return;
         nextTick=DateTime.UtcNow.AddMilliseconds(200);
-        var active=config.Maps.Where(x=>x.Applies(job)).ToList();
+        var active=ActiveMaps(job).ToList();
         var fingerprint=string.Join(";",active.Select(x=>$"{x.Id}:{NativeHotbars.Read(job,x.Regular)}:{NativeHotbars.Read(job,x.Cross)}"));
         if(fingerprint!=observed) { observed=fingerprint;observedAt=DateTime.UtcNow;return; }
         if(DateTime.UtcNow-observedAt<TimeSpan.FromMilliseconds(400))return;
@@ -214,6 +237,7 @@ public sealed class SyncController : IDisposable
         }
         if(ImGui.CollapsingHeader("Slot mapping editor"))
         {
+            ImGui.TextWrapped($"{config.JobRoutes.Count} per-job keyboard layouts supplied by Job Setup. Apply a layout with compaction off to restore its spacing. The editor below configures the base map.");
             ImGui.TextWrapped("Numbers are 1-based. Cross slots: 1 LT Down, 2 LT Left, 3 LT Right, 4 LT Up, 5 LT X, 6 LT Y, 7 LT B, 8 LT A; 9-16 repeat for RT. Mapping edits pause sync until saved and previewed.");
             var changed=false;int remove=-1;
             if(ImGui.BeginChild("mapping-list",new System.Numerics.Vector2(0,300)))
@@ -240,10 +264,10 @@ public sealed class SyncController : IDisposable
             if(remove>=0){config.Maps.RemoveAt(remove);changed=true;}
             if(ImGui.Button("Add pair")){config.Maps.Add(new SlotMap{Enabled=false});changed=true;}
             if(changed){config.Enabled=false;preview=null;mappingDirty=true;message="Mapping edited: save it before restarting live sync.";}
-            if(ImGui.Button("Validate and save mapping")) Try(()=>{Defaults.Validate(config.Maps);config.Revision++;config.Enabled=false;mappingDirty=false;Save();context="";preview=null;message="Mapping saved. Turn on live sync to review the new alignment.";});
-            if(ImGui.Button("Reset map to shipped defaults (sync stays off)")){config.Maps=Defaults.Maps();config.Revision++;config.Enabled=false;mappingDirty=false;Save();context="";preview=null;}
+            if(ImGui.Button("Validate and save mapping")) Try(()=>{Defaults.Validate(config.Maps);foreach(var job in config.JobRoutes.Keys)ActiveMaps(job);config.Revision++;config.Enabled=false;mappingDirty=false;Save();context="";preview=null;message="Mapping saved. Turn on live sync to review the new alignment.";});
+            if(ImGui.Button("Reset map to shipped defaults (sync stays off)")){config.Maps=Defaults.Maps();config.JobRoutes.Clear();config.Revision++;config.Enabled=false;mappingDirty=false;Save();context="";preview=null;}
             if(ImGui.Button("Copy mapping JSON"))ImGui.SetClipboardText(JsonSerializer.Serialize(config.Maps,JsonStore.Options));
-            if(ImGui.Button("Import mapping JSON from clipboard"))Try(()=>{var maps=JsonSerializer.Deserialize<List<SlotMap>>(ImGui.GetClipboardText())??throw new InvalidDataException("Invalid JSON");Defaults.Validate(maps);config.Maps=maps;config.Enabled=false;config.Revision++;mappingDirty=false;Save();context="";preview=null;});
+            if(ImGui.Button("Import mapping JSON from clipboard"))Try(()=>{var maps=JsonSerializer.Deserialize<List<SlotMap>>(ImGui.GetClipboardText())??throw new InvalidDataException("Invalid JSON");Defaults.Validate(maps);foreach(var (job,routes) in config.JobRoutes)LayoutRoutes.Effective(maps.Where(m=>m.Applies(job)),routes);config.Maps=maps;config.Enabled=false;config.Revision++;mappingDirty=false;Save();context="";preview=null;});
         }
         if(ImGui.CollapsingHeader("Restore a hotbar backup"))
         {
@@ -253,5 +277,5 @@ public sealed class SyncController : IDisposable
         }
     }
     private void Try(Action action){try{action();}catch(Exception e){message=e.Message;}}
-    public void Dispose(){mapping.UnregisterFunc();begin.UnregisterFunc();end.UnregisterFunc();}
+    public void Dispose(){mapping.UnregisterFunc();begin.UnregisterFunc();end.UnregisterFunc();getRoutes.UnregisterFunc();setRoutes.UnregisterFunc();}
 }

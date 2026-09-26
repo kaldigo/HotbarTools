@@ -229,3 +229,77 @@ public static class PairedApply
         }
     }
 }
+
+public static class KeyboardLayout
+{
+    public static readonly Position[] Positions=[new(0,0),new(0,1),new(0,2),new(0,3),new(1,0),new(1,1),new(1,2),new(1,3),new(1,4),new(1,5),new(1,11),new(1,10)];
+    // Maps a function's original regular position to its compiled destination.
+    public static Dictionary<Position,Position> Compile(JobPreset preset,bool compact)
+    {
+        var result=Positions.ToDictionary(p=>p,p=>p);
+        if(!compact)return result;
+        var healer=Defaults.IsHealer(preset.JobId);
+        var tank=preset.JobId is 19 or 21 or 32 or 37;
+        var locked=preset.Slots.Where(s=>s.LogicalSlot is 1 or 2 ||
+            ((tank||healer)&&s.LogicalSlot is 9 or 10) ||
+            (!healer && s.LogicalSlot==4 && s.Action!="Empty"))
+            .Select(s=>new Position(s.RegularBar-1,s.RegularSlot-1)).ToHashSet();
+        var actions=preset.Slots.Where(s=>s.Action!="Empty").Select(s=>new Position(s.RegularBar-1,s.RegularSlot-1)).ToHashSet();
+        var available=Positions.Where(p=>!locked.Contains(p)).ToArray();
+        var ordered=available.Where(actions.Contains).Concat(available.Where(p=>!actions.Contains(p))).ToArray();
+        for(var i=0;i<available.Length;i++)result[ordered[i]]=available[i];
+        return result;
+    }
+}
+public static class LayoutRoutes
+{
+    public static List<SlotMap> Effective(IEnumerable<SlotMap> maps,Dictionary<string,Position>? routes)
+    {
+        var result=JsonSerializer.Deserialize<List<SlotMap>>(JsonSerializer.Serialize(maps))!;
+        if(routes!=null)foreach(var map in result)
+            if(routes.TryGetValue(map.Id,out var p))
+            {
+                if(map.SharedAcrossJobs)throw new InvalidDataException("Shared controls cannot be moved by a job layout.");
+                map.RegularBar=p.Bar+1;map.RegularSlot=p.Slot+1;
+            }
+        Defaults.Validate(result);return result;
+    }
+}
+
+public sealed class LayoutBackup
+{
+    public List<SlotEdit> Edits { get; set; }=[];
+    public Dictionary<uint,Dictionary<string,Position>>? Routes { get; set; }
+}
+
+public static class LivePresetPlan
+{
+    // Reviewed GNB options, including removal/restoration of the conflicting manual No Mercy feature.
+    public static readonly Dictionary<int,string> Supported=new()
+    {
+        [7008]="GNB_ST_NoMercy",[7011]="GNB_ST_Bloodfest",[7201]="GNB_AoE_NoMercy",[7204]="GNB_AoE_Bloodfest",
+        [7702]="GNB_Mit_Advanced_NonBoss_Rampart",[7703]="GNB_Mit_Advanced_NonBoss_Nebula",[7708]="GNB_Mit_Advanced_NonBoss_Reprisal",
+        [7718]="GNB_Mit_Advanced_Boss_Nebula",[7719]="GNB_Mit_Advanced_Boss_Rampart",
+        [7500]="GNB_NM_Features",[7501]="GNB_NM_Bloodfest"
+    };
+    public static Dictionary<int,bool>? Create(JsonObject before,JsonObject after)
+    {
+        if(before["Version"]?.GetValue<int>()!=6||after["Version"]?.GetValue<int>()!=6)return null;
+        var a=(JsonObject)before.DeepClone();var b=(JsonObject)after.DeepClone();
+        if(a["EnabledActionsV6"] is not JsonArray aa || b["EnabledActionsV6"] is not JsonArray bb)return null;
+        var old=aa.Select(n=>n!.GetValue<int>()).ToHashSet();var next=bb.Select(n=>n!.GetValue<int>()).ToHashSet();
+        a.Remove("EnabledActionsV6");b.Remove("EnabledActionsV6");
+        if(!JsonNode.DeepEquals(a,b))return null;
+        var changes=old.Except(next).ToDictionary(id=>id,_=>false);
+        foreach(var id in next.Except(old))changes[id]=true;
+        if(changes.Keys.Any(id=>!Supported.ContainsKey(id)))return null;
+        // Enabling a child must not cause Wrath's command to enable a previously-disabled parent.
+        foreach(var id in changes.Where(p=>p.Value).Select(p=>p.Key))
+        {
+            var parents=id==7500?Array.Empty<int>():id==7501?new[]{7500}:id is 7008 or 7011?new[]{7003}:id is 7201 or 7204?new[]{7200}:id is 7702 or 7703 or 7708?new[]{7700,7701}:new[]{7700,7711};
+            if(parents.Any(p=>!next.Contains(p)))return null;
+        }
+        if(next.Contains(7500) && (next.Contains(7008)||next.Contains(7201)))return null;
+        return changes.OrderBy(p=>p.Value).ThenBy(p=>p.Key==7500?0:p.Key).ToDictionary(p=>p.Key,p=>p.Value);
+    }
+}

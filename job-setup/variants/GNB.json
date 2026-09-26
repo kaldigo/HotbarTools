@@ -9,6 +9,10 @@
     ],
     "EmptySlots": [
       3
+    ],
+    "Disable": [
+      7500,
+      7501
     ]
   },
   "AutoMitigation": {

@@ -10,5 +10,7 @@ public sealed class BridgeConfig : IPluginConfiguration
     public bool Enabled { get; set; }
     // Dalamud uses Newtonsoft: replace defaults instead of appending saved pairs.
     [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
+    public Dictionary<uint,Dictionary<string,Position>> JobRoutes { get; set; }=new();
+    [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
     public List<SlotMap> Maps { get; set; }=Defaults.Maps();
 }

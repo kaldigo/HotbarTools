@@ -68,6 +68,7 @@ Test($"GNB independent variants burst={burst} mitigation={mit} mechanics={mechan
     var resolved=Variants.Resolve(gnb,new(){AutoBurst=burst,AutoMitigation=mit,AutoMechanics=mechanics});
     var enabled=resolved.Settings["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
     foreach(var id in new[]{7008,7011,7201,7204})Equal(enabled.Contains(id),burst);
+    foreach(var id in new[]{7500,7501})Equal(enabled.Contains(id),!burst);
     foreach(var id in new[]{7702,7703,7708,7718,7719})Equal(enabled.Contains(id),mit);
     foreach(var id in new[]{7006,7706,7721,7710,7716,7717,7713,7714,7707})Equal(enabled.Contains(id),false);
     Equal(resolved.Slots.Single(s=>s.LogicalSlot==3).Action,burst?"Empty":"No Mercy");
@@ -93,5 +94,74 @@ Test("hotbar failure never writes settings",()=>{
 Test("rollback failure reports both errors",()=>{
     try { PairedApply.Run(()=>{},()=>throw new InvalidDataException("settings"),()=>throw new InvalidOperationException("rollback")); }
     catch(AggregateException e) { Equal(e.InnerExceptions.Count,2);return; }throw new Exception("Failures swallowed");
+});
+Test("compaction matrix preserves every remaining function for all jobs",()=>{
+    foreach(var baseline in pack.Jobs)
+    for(var mask=0;mask<64;mask++)
+    {
+        var p=JsonSerializer.Deserialize<JobPreset>(JsonSerializer.Serialize(baseline))!;
+        // Exercise arbitrary automation removals without inventing actual job settings.
+        var optional=p.Slots.Where(x=>x.LogicalSlot is >=3 and <=8).ToArray();
+        for(var i=0;i<optional.Length;i++)if((mask&(1<<i))!=0)optional[i].Action="Empty";
+        var layout=KeyboardLayout.Compile(p,true);
+        Equal(layout.Count,12);Equal(layout.Values.Distinct().Count(),12);
+        Equal(layout[new(0,0)],new Position(0,0));Equal(layout[new(0,1)],new Position(0,1));
+        var healer=Defaults.IsHealer(p.JobId);var tank=p.JobId is 19 or 21 or 32 or 37;
+        if(tank||healer){Equal(layout[new(1,11)],new Position(1,11));Equal(layout[new(1,10)],new Position(1,10));}
+        if(!healer && p.Slots.Single(x=>x.LogicalSlot==4).Action!="Empty")Equal(layout[new(1,0)],new Position(1,0));
+        var active=p.Slots.Where(x=>x.Action!="Empty").ToArray();
+        Equal(active.Select(x=>layout[new(x.RegularBar-1,x.RegularSlot-1)]).Distinct().Count(),active.Length);
+        foreach(var job in new[]{p.JobId}.Concat(p.BaseClasses))
+        {
+            var maps=Defaults.Maps().Where(m=>m.Applies(job)).ToList();
+            var routes=maps.Where(m=>!m.SharedAcrossJobs).ToDictionary(m=>m.Id,m=>layout[m.Regular]);
+            var effective=LayoutRoutes.Effective(maps,routes);
+            foreach(var m in maps){var actual=effective.Single(x=>x.Id==m.Id);Equal(actual.Cross,m.Cross);if(m.SharedAcrossJobs)Equal(actual.Regular,m.Regular);}
+        }
+    }
+});
+Test("GNB burst compaction keeps mobility and reserves fixed",()=>{
+    var p=Variants.Resolve(gnb,new(){AutoBurst=true});var layout=KeyboardLayout.Compile(p,true);
+    Equal(layout[new(1,1)],new Position(0,3));Equal(layout[new(1,2)],new Position(1,1));Equal(layout[new(1,3)],new Position(1,2));
+    Equal(layout[new(1,0)],new Position(1,0));
+});
+Test("compaction off preserves all original positions",()=>{
+    foreach(var p in pack.Jobs)foreach(var pair in KeyboardLayout.Compile(p,false))Equal(pair.Key,pair.Value);
+});
+Test("empty mobility slot is available when job has no gap closer",()=>{
+    var p=pack.Jobs.Single(j=>j.Job=="MCH");Equal(KeyboardLayout.Compile(p,true)[new(1,1)],new Position(1,0));
+});
+Test("only general tank healer reserves are pinned",()=>{
+    var p=pack.Jobs.Single(j=>j.Job=="SAM");Equal(KeyboardLayout.Compile(p,true)[new(1,11)],new Position(1,4));
+});
+Test("shared routes and colliding routes are rejected",()=>{
+    Throws(()=>LayoutRoutes.Effective(Defaults.Maps(),new(){{"shared-0",new(0,2)}}));
+    Throws(()=>LayoutRoutes.Effective(Defaults.Maps(),new(){{"Combat-0",new(0,1)}}));
+});
+Test("saved compaction routes reload without changing positions",()=>{
+    var c=new HotbarBridge.BridgeConfig();c.JobRoutes[37]=new(){{"Combat-0",new(0,0)}};
+    var result=Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>(Newtonsoft.Json.JsonConvert.SerializeObject(c))!;
+    Equal(result.JobRoutes[37]["Combat-0"],new Position(0,0));Equal(result.Maps.Count,44);
+});
+Test("complete layout backup retains routing and assignments",()=>{
+    var backup=new LayoutBackup {Edits=[new(37,new(0,3),a,b)],Routes=new(){{37,new(){{"Combat-3",new(1,0)}}}}};
+    var copy=JsonSerializer.Deserialize<LayoutBackup>(JsonSerializer.Serialize(backup))!;
+    Equal(copy.Edits[0],backup.Edits[0]);Equal(copy.Routes![37]["Combat-3"],new Position(1,0));
+});
+Test("live plans handle all GNB variant transitions",()=>{
+    JsonObject Config(bool burst,bool mit)=>WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},[Variants.Resolve(gnb,new(){AutoBurst=burst,AutoMitigation=mit})],null);
+    foreach(var b1 in new[]{false,true})foreach(var m1 in new[]{false,true})foreach(var b2 in new[]{false,true})foreach(var m2 in new[]{false,true})
+    {
+        var before=Config(b1,m1);var after=Config(b2,m2);var plan=LivePresetPlan.Create(before,after)??throw new Exception("Expected live plan");
+        var ids=before["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+        foreach(var (id,on) in plan){if(on)ids.Add(id);else ids.Remove(id);if(ids.Contains(7500)&&(ids.Contains(7008)||ids.Contains(7201)))throw new Exception("Conflicting manual burst enabled");}
+        Equal(ids.SetEquals(after["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>())),true);
+    }
+});
+Test("live plan refuses custom values and unknown preset changes",()=>{
+    var before=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},[gnb],null);
+    var after=(JsonObject)before.DeepClone();after["CustomIntValuesV6"]!["GNB_ST_NoMercyStop"]=123;
+    Equal(LivePresetPlan.Create(before,after)==null,true);
+    after=(JsonObject)before.DeepClone();after["EnabledActionsV6"]!.AsArray().Add(999999);Equal(LivePresetPlan.Create(before,after)==null,true);
 });
 Console.WriteLine($"{count} tests passed.");

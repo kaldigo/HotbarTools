@@ -2,7 +2,7 @@
 
 Two independent Dalamud API 15 plugins for keyboard/controller hotbar layouts.
 
-**Initial test release:** 52 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
+**Initial test release:** 62 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
 
 ## Install
 
@@ -24,13 +24,15 @@ Your default regular bar 1 slots 9–12 become individually shared on both sides
 
 ### Job Setup — `/jobsetup`
 
+**Compact keyboard layout** works for all supported jobs: fills bound keyboard positions while keeping ST, AoE, mobility and tank/healer reserves fixed. Controller positions stay fixed. Turn it off and apply to restore gaps. Update both plugins to 0.2.6 so Bridge follows the generated per-job routes.
+
 Three independent automation selections are available for reviewed variants: **Auto burst**, **Auto mitigation** and **Auto job mechanics**. Gunbreaker is the first reviewed variant; mechanics are already covered there. Use the combined preview to apply its matching hotbars and Wrath settings. Unautomated manual controls remain available. Other jobs keep their current presets pending individual review.
 
 Separate **hotbar layouts** and **Wrath settings** previews, each with **current class/job** or **all supported classes/jobs** scope. Includes 21 combat-job presets and nine base-class aliases. Crafting, gathering and Blue Mage presets are not included yet.
 
 - Only planned job positions are overwritten; the four shared utility controls and side utility bars are preserved.
 - All-class hotbar application includes saved layouts for locked classes/jobs. Those actions remain unusable until unlocked. Base-class assignments inherit their job layout, with native upgrade roots where appropriate.
-- **Disable Wrath Combo before applying or restoring its settings.** Re-enable it afterward. The plugin checks loaded state before preview and immediately before replacement.
+- Initial full setup needs Wrath unloaded. Subsequent reviewed preset-only variant changes use live Wrath commands by default, without unloading. External config-file replacement always requires unloaded Wrath. Disable/re-enable it manually, or opt into **Automatically unload/reload Wrath (experimental)**. The internal adapter checks compatibility and awaits unload completion; loaded-state checks remain immediately before replacement. In-game testing is still required.
 - Current-job Wrath application preserves other jobs and PvP presets. Global targeting/role settings require the separate, clearly labeled checkbox.
 - Presets were reviewed against Wrath 1.0.4.26 (configuration schema 6). Later feature changes require reassessment; do not assume schema compatibility guarantees every option still exists.
 - If Bridge is installed, Job Setup uses its applicable cross mappings and pauses synchronization around bulk changes. Otherwise cross destinations are configurable directly.
