@@ -303,4 +303,51 @@ Test("managed registry migrates only recorded applications and persists timestam
     Equal(copy.ManagedJobs["PLD"].FirstAppliedUtc,first);Equal(copy.ManagedJobs.Count,2);
     copy.ManagedJobs.Clear();copy.AppliedAutomation.Clear();Equal(copy.MigrateManagedHistory(pack.Jobs),false);Equal(copy.ManagedJobs.Count,0);
 });
+Test("variant switches preserve targeting sliders arrays and unrelated feature choices",()=>{
+    foreach(var preset in pack.Jobs){
+        var original=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray(999999)},[preset],null);
+        original["CustomIntValuesV6"]=new JsonObject{["CustomUserSlider"]=47};
+        original["UseFocusTargetOverrideInDefaultHealStack"]=false;
+        original["CustomHealStack"]=new JsonArray(4,3,2,1);
+        for(var mask=0;mask<8;mask++){
+            var result=VariantSwitch.Merge(original,[preset],new(){AutoBurst=(mask&1)!=0,AutoMitigation=(mask&2)!=0,AutoMechanics=(mask&4)!=0});
+            var before=(JsonObject)original.DeepClone();var after=(JsonObject)result.DeepClone();before.Remove("EnabledActionsV6");after.Remove("EnabledActionsV6");
+            Equal(JsonNode.DeepEquals(before,after),true);
+            Equal(result["EnabledActionsV6"]!.AsArray().Any(n=>n!.GetValue<int>()==999999),true);
+            Equal(LivePresetPlan.Create(original,result)!=null,true);
+        }
+    }
+});
+Test("all eight prepared variants switch live without custom-value changes",()=>{
+    foreach(var preset in pack.Jobs){
+        var prepared=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},[preset],null);
+        var states=Enumerable.Range(0,8).Select(mask=>VariantSwitch.Merge(prepared,[preset],new(){AutoBurst=(mask&1)!=0,AutoMitigation=(mask&2)!=0,AutoMechanics=(mask&4)!=0})).ToArray();
+        foreach(var before in states)foreach(var after in states)Equal(LivePresetPlan.Create(before,after)!=null,true);
+    }
+});
+Test("static burst setup preserves a complete manual Dancer button",()=>{
+    var dancer=pack.Jobs.Single(p=>p.Job=="DNC");var ids=dancer.Settings["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+    Equal(ids.Contains(4018)||ids.Contains(4045),false);Equal(ids.Contains(4111)&&ids.Contains(4112),true);
+    Equal(dancer.Settings["CustomIntValuesV6"]!["DNC_ST_ADV_TS_IncludeTS"]!.GetValue<int>(),1);
+    Equal(dancer.Settings["CustomIntValuesV6"]!["DNC_AoE_Adv_TS_IncludeTS"]!.GetValue<int>(),1);
+    foreach(var p in pack.Jobs)foreach(var variant in new[]{p.AutoBurst,p.AutoMitigation,p.AutoMechanics}.OfType<PresetVariant>())Equal(variant.Settings.Count,0);
+});
+Test("queued saves wait without premature rollback and require persisted confirmation",()=>{
+    var start=DateTime.UtcNow;var deadline=start.AddSeconds(10);
+    Equal(LiveSaveConfirmation.Check(true,false,start,deadline),SaveConfirmation.Waiting);
+    Equal(LiveSaveConfirmation.Check(true,false,start.AddMilliseconds(100),deadline),SaveConfirmation.Waiting);
+    Equal(LiveSaveConfirmation.Check(true,true,start.AddSeconds(1),deadline),SaveConfirmation.Confirmed);
+    Equal(LiveSaveConfirmation.Check(false,true,start.AddSeconds(1),deadline),SaveConfirmation.Waiting);
+    Equal(LiveSaveConfirmation.Check(true,false,deadline,deadline),SaveConfirmation.TimedOut);
+    Equal(LiveSaveConfirmation.Matches(new[]{1,9,88},new Dictionary<int,bool>{{1,true},{2,false}}),true);
+    Equal(LiveSaveConfirmation.Matches(new[]{1,2},new Dictionary<int,bool>{{1,true},{2,false}}),false);
+});
+Test("old Bard Dancer Black Mage setup revisions require one explicit refresh",()=>{
+    foreach(var name in new[]{"BRD","DNC","BLM"}){
+        var job=pack.Jobs.Single(p=>p.Job==name);var config=new JobSetup.Config();config.RecordSetup(name,pack.WrathVersion,DateTimeOffset.UtcNow);
+        try{config.SelectPresets(pack.Jobs,job.JobId,false,true);throw new Exception("Old setup accepted");}catch(InvalidOperationException){}
+        config.RecordSetup(name,pack.WrathVersion,DateTimeOffset.UtcNow,job.SetupRevision);
+        Equal(config.SelectPresets(pack.Jobs,job.JobId,false,true).Single().Job,name);
+    }
+});
 Console.WriteLine($"{count} tests passed.");

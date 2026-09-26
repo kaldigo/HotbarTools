@@ -72,10 +72,12 @@ Tagging `v*` runs the release workflow, builds/tests both projects, creates ZIP 
 
 This project was developed with AI assistance. It is an independent custom-repository project, not affiliated with Dalamud or Wrath Combo.
 
-Version 0.2.7 adds a Noncombat sync profile. Existing custom mappings are preserved; only non-overlapping default pairs are added once. An intentionally empty map stays empty. If a custom All-profile pair blocks a job position, adjust the map in Bridge before applying that layout. Bard burst, Dancer burst and Black Mage mitigation change detailed settings and still require unload/reload; the remaining reviewed preset-only transitions support live updates.
+Version 0.2.7 adds a Noncombat sync profile. Existing custom mappings are preserved; only non-overlapping default pairs are added once. An intentionally empty map stays empty. If a custom All-profile pair blocks a job position, adjust the map in Bridge before applying that layout. Version 0.2.12 moves those detailed options into one-time base setup; every prepared variant transition is preset-only and stays live.
 
 Job Setup 0.2.8 uses the same global automation selections for current-job and all-job application. Omission notes remain in documentation. On upgrade the new global switches start off; existing game settings are unchanged until application. Hotbar Bridge remains at 0.2.7.
 
 Job Setup 0.2.9 adds `/jobsetup current MBJ`, `/jobsetup all MBJ` and per-switch `on|off|toggle` macro commands. The server-info entry uses native mitigation/burst/job icons and hides when all switches are off. Version 0.2.10 re-checks the active job on class changes; unapplied global selections do not alter its display. See [macro syntax and behavior](job-setup/README.md#macro-commands-and-server-info-icons-029).
 
 Job Setup 0.2.11 records successful base-setup applications internally. Variant macros, variant previews and status checks skip unregistered jobs. Use **Preview base setup: hotbars + Wrath** to register additional jobs; existing recorded applications carry over.
+
+Job Setup 0.2.12 preserves targeting/sliders during variant changes and waits for Wrath’s queued saves before committing hotbars. BRD/DNC/BLM need one updated base setup; subsequent switching never unloads Wrath.

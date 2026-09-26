@@ -2,7 +2,7 @@
 
 All three switches are independent on all 32 presets. Off preserves the curated baseline, which may already automate routine actions. Openers and hands-free rotation remain off. Manual and automatic access share cooldowns. Only functions covered on both relevant rotation paths are removed; retained buttons may still be needed for prepull, targeting, movement or manual timing.
 
-Bard burst, Dancer burst and Black Mage mitigation change custom option values, so changing those selections requires Wrath unload/reload. Other reviewed preset-only transitions can use live commands after initial setup. Detection-based defense is conditional; keep the manual controls.
+All variants are now preset-only after preparation. BRD, DNC and BLM require one updated base setup to install their static options; subsequent switching never changes sliders, targeting or arrays and never unloads Wrath. Detection-based defense is conditional; keep the manual controls.
 
 [Reviewed Wrath preset definitions](https://github.com/PunishXIV/WrathCombo/blob/55d55a3ebc48c1b6018b445b58a89ccfd84c3cbf/WrathCombo/Combos/CustomComboPreset.cs). The pinned metadata in `preset-rules.json` records parents and conflicts; regenerate its C# allowlist using `tools/generate_live_rules.py` after changing reviewed variant IDs.
 
@@ -31,6 +31,8 @@ Bard burst, Dancer burst and Black Mage mitigation change custom option values, 
 **Auto job mechanics:** All three songs cycle through ST/AoE; DoTs and procs already run automatically. Manual slots remain available.
 
 ## DNC
+
+**Manual baseline:** Press Technical Step repeatedly for the four steps and finish, then resume ST/AoE.
 
 **Auto burst:** Enables Technical Step initiation. Continue pressing ST/AoE; scripted openers stay off. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged. Cleared logical slots: 3.
 
@@ -177,3 +179,9 @@ Bard burst, Dancer burst and Black Mage mitigation change custom option values, 
 ## Crafting and gathering
 
 All three switches are deliberate no-ops. See [twelve-slot layouts](noncombat-hotbars.md) and [omitted actions](noncombat-omissions.md).
+
+## Retained controls audit
+
+Of the 17 non-healer combat jobs, automatic burst clears the dedicated burst button on 13. The four retained controls have other duties: DRK retains manual interrupt access on Carve and Spit, NIN retains Hide for prepull mudra reset, BLM retains Retrace on Ley Lines, and MCH retains the manual AoE burst route because Wildfire automation is ST-only. Healers already have automatic offense; their healing buttons are not burst buttons.
+
+Every mitigation control remains intentionally available. Tank selectors still cover party/knockback tools and deliberate timing outside Wrath's content/target gates; invulnerabilities and targeted support remain manual. Healer raidwide automation depends on detection and healing/resource conditions. Melee Feint, physical-ranged support and caster defenses have ST-only or other conditional coverage; they do not replace manual AoE, party shielding or encounter timing. MCH, DNC, RDM and SMN mitigation switches add no new feature because their reviewed baseline automation is already enabled. MCH Dismantle specifically remains manual due to the pinned implementation's duration check. These choices preserve uncovered functions, rather than promising complete automatic defense.

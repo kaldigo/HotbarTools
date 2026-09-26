@@ -26,17 +26,18 @@
       2052,
       2071
     ],
-    "EmptySlots": [],
-    "Settings": {
-      "CustomIntValuesV6": {
-        "BLM_ST_ManawardTrigger": 2
-      }
-    }
+    "EmptySlots": []
   },
   "AutoMechanics": {
     "Description": "Fire/ice and resource flow are already handled. Transpose stays for downtime.",
     "Enable": [],
     "Disable": [],
     "EmptySlots": []
-  }
+  },
+  "SetupSettings": {
+    "CustomIntValuesV6": {
+      "BLM_ST_ManawardTrigger": 2
+    }
+  },
+  "SetupRevision": 2
 }

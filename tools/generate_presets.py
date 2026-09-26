@@ -23,6 +23,9 @@ for job,jid in ids.items():
 for job in jobs:
  variant=root/'job-setup/variants'/f"{job['Job']}.json"
  if variant.exists():job.update(json.loads(variant.read_text(encoding='utf-8-sig')))
+ for section,values in job.pop('SetupSettings',{}).items():job['Settings'].setdefault(section,{}).update(values)
+ enabled=set(job['Settings']['EnabledActionsV6']);enabled.update(job.pop('SetupEnable',[]));enabled.difference_update(job.pop('SetupDisable',[]))
+ job['Settings']['EnabledActionsV6']=sorted(enabled)
 jobs.extend(json.loads(p.read_text(encoding='utf-8-sig')) for p in sorted((root/'job-setup/noncombat').glob('*.json')))
 s=json.loads((wrath/'shared.json').read_text())
 shared={k:s[k] for k in ('EnabledActionsV6','CustomHealStack','RaiseStack')}

@@ -8,6 +8,7 @@ public sealed class ManagedSetupRecord
     public DateTimeOffset? FirstAppliedUtc { get; set; }
     public DateTimeOffset? LastAppliedUtc { get; set; }
     public string WrathVersion { get; set; }="";
+    public int SetupRevision { get; set; }=1;
     public bool ImportedFromHistory { get; set; }
 }
 
@@ -36,10 +37,10 @@ public sealed class Config : IPluginConfiguration
             ManagedJobs.TryAdd(preset.Job,new(){ImportedFromHistory=true});
         ManagedHistoryMigrated=true;return true;
     }
-    public void RecordSetup(string job,string version,DateTimeOffset now)
+    public void RecordSetup(string job,string version,DateTimeOffset now,int revision=1)
     {
         if(!ManagedJobs.TryGetValue(job,out var record))ManagedJobs[job]=record=new(){FirstAppliedUtc=now};
-        record.LastAppliedUtc=now;record.WrathVersion=version;
+        record.LastAppliedUtc=now;record.WrathVersion=version;record.SetupRevision=revision;
     }
     public List<JobPreset> SelectPresets(IEnumerable<JobPreset> presets,uint current,bool all,bool managedOnly)
     {
@@ -48,6 +49,11 @@ public sealed class Config : IPluginConfiguration
         if(result.Count==0)throw new InvalidOperationException(managedOnly
             ?"No registered base setup in this scope. Apply base setup in /jobsetup first."
             :"No reviewed preset for this class/job. Blue Mage is not included.");
+        if(managedOnly)
+        {
+            var stale=result.Where(p=>ManagedJobs[p.Job].SetupRevision<p.SetupRevision).Select(p=>p.Job).ToArray();
+            if(stale.Length>0)throw new InvalidOperationException("Apply updated base setup once for "+string.Join(", ",stale)+" before switching variants. Targeting and sliders are never changed by a variant switch.");
+        }
         return result;
     }
 }

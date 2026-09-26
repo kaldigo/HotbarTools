@@ -13,23 +13,7 @@
     ],
     "EmptySlots": [
       3
-    ],
-    "Settings": {
-      "CustomBoolArrayValuesV6": {
-        "BRD_Adv_Buffs_Options": [
-          true,
-          true,
-          true,
-          true
-        ],
-        "BRD_AoE_Adv_Buffs_Options": [
-          true,
-          true,
-          true,
-          true
-        ]
-      }
-    }
+    ]
   },
   "AutoMitigation": {
     "Description": "Enables Nature’s Minne through ST, alongside the existing conditional Troubadour automation. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
@@ -47,5 +31,22 @@
     "Enable": [],
     "Disable": [],
     "EmptySlots": []
-  }
+  },
+  "SetupSettings": {
+    "CustomBoolArrayValuesV6": {
+      "BRD_Adv_Buffs_Options": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "BRD_AoE_Adv_Buffs_Options": [
+        true,
+        true,
+        true,
+        true
+      ]
+    }
+  },
+  "SetupRevision": 2
 }

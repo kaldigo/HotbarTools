@@ -1,6 +1,6 @@
 {
   "AutoBurst": {
-    "Description": "Enables Technical Step initiation. Continue pressing ST/AoE; scripted openers stay off. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged.",
+    "Description": "Enables Technical Step initiation. Continue pressing ST/AoE; scripted openers stay off. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged. With burst off, repeatedly press Technical Step to perform its four steps and finish, then return to ST/AoE. With burst on, ST/AoE handles initiation and completion.",
     "Enable": [
       4010,
       4018,
@@ -21,13 +21,7 @@
     ],
     "EmptySlots": [
       3
-    ],
-    "Settings": {
-      "CustomIntValuesV6": {
-        "DNC_ST_ADV_TS_IncludeTS": 1,
-        "DNC_AoE_Adv_TS_IncludeTS": 1
-      }
-    }
+    ]
   },
   "AutoMitigation": {
     "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
@@ -40,5 +34,20 @@
     "Enable": [],
     "Disable": [],
     "EmptySlots": []
-  }
+  },
+  "SetupSettings": {
+    "CustomIntValuesV6": {
+      "DNC_ST_ADV_TS_IncludeTS": 1,
+      "DNC_AoE_Adv_TS_IncludeTS": 1
+    }
+  },
+  "SetupRevision": 2,
+  "SetupEnable": [
+    4111,
+    4112
+  ],
+  "SetupDisable": [
+    4018,
+    4045
+  ]
 }

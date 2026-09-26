@@ -86,6 +86,7 @@ public sealed class PresetSlot
 public sealed class JobPreset
 {
     public uint JobId { get; set; }
+    public int SetupRevision { get; set; }=1;
     public string Job { get; set; } = "";
     public string Usage { get; set; } = "";
     public string[] OmittedActions { get; set; } = [];

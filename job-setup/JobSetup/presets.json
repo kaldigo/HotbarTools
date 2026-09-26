@@ -4853,16 +4853,16 @@
         },
         "CustomBoolArrayValuesV6": {
           "BRD_AoE_Adv_Buffs_Options": [
-            false,
-            false,
-            false,
-            false
+            true,
+            true,
+            true,
+            true
           ],
           "BRD_Adv_Buffs_Options": [
-            false,
-            false,
-            false,
-            false
+            true,
+            true,
+            true,
+            true
           ],
           "BRD_Adv_DoT_Options": [
             true,
@@ -4892,23 +4892,7 @@
         ],
         "EmptySlots": [
           3
-        ],
-        "Settings": {
-          "CustomBoolArrayValuesV6": {
-            "BRD_Adv_Buffs_Options": [
-              true,
-              true,
-              true,
-              true
-            ],
-            "BRD_AoE_Adv_Buffs_Options": [
-              true,
-              true,
-              true,
-              true
-            ]
-          }
-        }
+        ]
       },
       "AutoMitigation": {
         "Description": "Enables Nature\u2019s Minne through ST, alongside the existing conditional Troubadour automation. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
@@ -4926,7 +4910,8 @@
         "Enable": [],
         "Disable": [],
         "EmptySlots": []
-      }
+      },
+      "SetupRevision": 2
     },
     {
       "JobId": 31,
@@ -5305,7 +5290,6 @@
           4015,
           4016,
           4017,
-          4018,
           4019,
           4020,
           4021,
@@ -5325,7 +5309,6 @@
           4042,
           4043,
           4044,
-          4045,
           4046,
           4047,
           4048,
@@ -5337,6 +5320,8 @@
           4055,
           4056,
           4057,
+          4111,
+          4112,
           4175
         ],
         "BurstPresets": {
@@ -5380,7 +5365,7 @@
           "DNC_ST_Adv_SSBurstPercent": 0,
           "DNC_ST_ADV_SS_IncludeSS": 1,
           "DNC_ST_ADV_AntiDrift": 1,
-          "DNC_ST_ADV_TS_IncludeTS": 0,
+          "DNC_ST_ADV_TS_IncludeTS": 1,
           "DNC_ST_Adv_TSBurstPercent": 0,
           "DNC_ST_Adv_FeatherBurstPercent": 0,
           "DNC_ST_ADV_TillanaUse": 0,
@@ -5390,7 +5375,7 @@
           "DNC_AoE_Adv_SSBurstPercent": 0,
           "DNC_AoE_Adv_SS_IncludeSS": 1,
           "DNC_AoE_Adv_TSBurstPercent": 40,
-          "DNC_AoE_Adv_TS_IncludeTS": 0,
+          "DNC_AoE_Adv_TS_IncludeTS": 1,
           "DNC_AoE_Adv_SaberThreshold": 80,
           "DNC_AoE_Adv_PanicHealWaltzPercent": 0,
           "DNC_AoE_Adv_PanicHealWindPercent": 50,
@@ -5416,7 +5401,7 @@
         ]
       },
       "AutoBurst": {
-        "Description": "Enables Technical Step initiation. Continue pressing ST/AoE; scripted openers stay off. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged.",
+        "Description": "Enables Technical Step initiation. Continue pressing ST/AoE; scripted openers stay off. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged. With burst off, repeatedly press Technical Step to perform its four steps and finish, then return to ST/AoE. With burst on, ST/AoE handles initiation and completion.",
         "Enable": [
           4010,
           4018,
@@ -5437,13 +5422,7 @@
         ],
         "EmptySlots": [
           3
-        ],
-        "Settings": {
-          "CustomIntValuesV6": {
-            "DNC_ST_ADV_TS_IncludeTS": 1,
-            "DNC_AoE_Adv_TS_IncludeTS": 1
-          }
-        }
+        ]
       },
       "AutoMitigation": {
         "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
@@ -5456,7 +5435,8 @@
         "Enable": [],
         "Disable": [],
         "EmptySlots": []
-      }
+      },
+      "SetupRevision": 2
     },
     {
       "JobId": 25,
@@ -5625,7 +5605,7 @@
           "BLM_ST_PolyglotMovement": 1,
           "BLM_ST_PolyglotSaveUsage": 0,
           "BLM_ST_ManawardHPThreshold": 25,
-          "BLM_ST_ManawardTrigger": 0,
+          "BLM_ST_ManawardTrigger": 2,
           "BLM_AoE_TriplecastHoldCharges": 0,
           "BLM_AoE_LeyLinesCharges": 0,
           "BLM_AoE_LeyLinesMovement": 0,
@@ -5701,19 +5681,15 @@
           2052,
           2071
         ],
-        "EmptySlots": [],
-        "Settings": {
-          "CustomIntValuesV6": {
-            "BLM_ST_ManawardTrigger": 2
-          }
-        }
+        "EmptySlots": []
       },
       "AutoMechanics": {
         "Description": "Fire/ice and resource flow are already handled. Transpose stays for downtime.",
         "Enable": [],
         "Disable": [],
         "EmptySlots": []
-      }
+      },
+      "SetupRevision": 2
     },
     {
       "JobId": 27,
