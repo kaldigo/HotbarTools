@@ -34,6 +34,7 @@ public sealed class Plugin : IDalamudPlugin
     private readonly IPluginLog log;
     private readonly PresetPack pack;
     private Config config;
+    private ActionCatalog? actions;
     private bool visible,all,shared;
     private int request;
     private string message="Choose hotbars or Wrath settings, then preview. Neither is applied automatically.";
@@ -160,20 +161,14 @@ public sealed class Plugin : IDalamudPlugin
             Defaults.Validate(bridge);
         }
         var edits=new Dictionary<(uint,Position),SlotEdit>();
-        var sheet=data.GetExcelSheet<Sheets.Action>(ClientLanguage.English);
+        actions ??= new ActionCatalog(data.GetExcelSheet<Sheets.Action>(ClientLanguage.English));
         foreach(var preset in Selected(current))
         {
             var jobs=all?new[]{preset.JobId}.Concat(preset.BaseClasses):new[]{current};
             foreach(var job in jobs)
             foreach(var slot in preset.Slots)
             {
-                uint id=0;
-                if(slot.Action!="Empty")
-                {
-                    var matches=sheet.Where(a=>a.Name.ToString().Equals(slot.Action,StringComparison.OrdinalIgnoreCase) && !a.IsPvP).OrderBy(a=>a.RowId).ToList();
-                    if(matches.Count==0)throw new InvalidOperationException($"Action not found: {preset.Job} / {slot.Action}");
-                    id=matches[0].RowId;
-                }
+                var id=actions.Resolve(preset.Job,slot.Action);
                 var value=id==0?default:new SlotValue(1,id);
                 var regular=new Position((slot.RegularBar==1?config.RegularBar1:config.RegularBar2)-1,slot.RegularSlot-1);
                 Add(regular);

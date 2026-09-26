@@ -2,7 +2,7 @@
 
 Two independent Dalamud API 15 plugins for keyboard/controller hotbar layouts.
 
-**Initial test release:** logic tests and local builds pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
+**Initial test release:** 27 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
 
 ## Install
 
@@ -49,6 +49,14 @@ dotnet build job-setup/JobSetup/JobSetup.csproj -c Release
 dotnet run --project tests/HotbarTools.Tests -c Release
 python tools/package_release.py --repository kaldigo/HotbarTools --tag v0.2.0
 ```
+
+Optional installed-game action validation:
+
+```
+dotnet run --project tests/ActionCatalogCheck -c Release -- "<game>/sqpack"
+```
+
+This rejects obsolete/NPC/PvP action-name collisions and checks job eligibility. It requires installed game data and is not run on GitHub runners.
 
 `common/` is linked source, not a third plugin. The packaged curated presets are in `job-setup/JobSetup/presets.json`. `tools/generate_presets.py` is an authoring tool for the private planning workspace; building this repository uses the checked-in preset pack and does not require that workspace.
 

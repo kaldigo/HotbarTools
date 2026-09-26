@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+<ItemGroup>
+<Reference Include="Lumina"><HintPath>$(APPDATA)/XIVLauncher/addon/Hooks/dev/Lumina.dll</HintPath></Reference>
+<Reference Include="Lumina.Excel"><HintPath>$(APPDATA)/XIVLauncher/addon/Hooks/dev/Lumina.Excel.dll</HintPath></Reference>
+<Compile Include="../../common/ActionCatalog.cs" Link="ActionCatalog.cs" />
+<None Include="../../job-setup/JobSetup/presets.json" Link="presets.json" CopyToOutputDirectory="PreserveNewest" />
+</ItemGroup>
+</Project>
