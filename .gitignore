@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+**/bin/
+**/obj/
+.vs/
+artifacts/
+wrath/
+hotbar-sync/captures/
+hotbar-sync/reference/
+**/exports/
+*.user

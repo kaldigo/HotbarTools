@@ -1,0 +1,14 @@
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+  <PropertyGroup>
+    <Version>0.2.0</Version>
+    <Author>kaldigo</Author>
+    <Name>Job Setup</Name>
+    <Punchline>Apply curated job hotbars and Wrath settings.</Punchline>
+    <Description>Preview and apply current-class or all-class hotbar layouts and Wrath presets, with backups. Wrath must be disabled for configuration writes.</Description>
+    <Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../common/*.cs" Link="Common/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="presets.json" />
+  </ItemGroup>
+</Project>

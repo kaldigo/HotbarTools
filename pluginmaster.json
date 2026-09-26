@@ -1,0 +1,42 @@
+[
+  {
+    "Author": "kaldigo",
+    "Name": "Hotbar Bridge",
+    "InternalName": "HotbarBridge",
+    "AssemblyVersion": "0.2.0.0",
+    "Description": "Configurable two-way regular/cross hotbar synchronization with shared slots, backups and capture.",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 15,
+    "LoadRequiredState": 0,
+    "LoadSync": false,
+    "CanUnloadAsync": false,
+    "LoadPriority": 0,
+    "Punchline": "Inspect regular and cross hotbars for slot-based synchronization.",
+    "AcceptsFeedback": true,
+    "RepoUrl": "https://github.com/kaldigo/HotbarTools",
+    "DownloadLinkInstall": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.0/HotbarBridge.zip",
+    "DownloadLinkUpdate": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.0/HotbarBridge.zip",
+    "DownloadLinkTesting": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.0/HotbarBridge.zip",
+    "Changelog": "Initial test release. Review previews before applying; disable Wrath before settings writes."
+  },
+  {
+    "Author": "kaldigo",
+    "Name": "Job Setup",
+    "InternalName": "JobSetup",
+    "AssemblyVersion": "0.2.0.0",
+    "Description": "Preview and apply current-class or all-class hotbar layouts and Wrath presets, with backups. Wrath must be disabled for configuration writes.",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 15,
+    "LoadRequiredState": 0,
+    "LoadSync": false,
+    "CanUnloadAsync": false,
+    "LoadPriority": 0,
+    "Punchline": "Apply curated job hotbars and Wrath settings.",
+    "AcceptsFeedback": true,
+    "RepoUrl": "https://github.com/kaldigo/HotbarTools",
+    "DownloadLinkInstall": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.0/JobSetup.zip",
+    "DownloadLinkUpdate": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.0/JobSetup.zip",
+    "DownloadLinkTesting": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.0/JobSetup.zip",
+    "Changelog": "Initial test release. Review previews before applying; disable Wrath before settings writes."
+  }
+]
