@@ -91,6 +91,11 @@ public sealed class JobPreset
     public PresetSlot[] Slots { get; set; } = [];
     public int[] OwnedPresetIds { get; set; } = [];
     public JsonObject Settings { get; set; } = new();
+    public PresetVariant? AutoBurst { get; set; }
+    public PresetVariant? AutoMitigation { get; set; }
+    public PresetVariant? AutoMechanics { get; set; }
+    public bool MechanicsAlreadyAutomatic { get; set; }
+    public string MechanicsDescription { get; set; } = "";
 }
 public sealed class PresetPack
 {
@@ -158,5 +163,69 @@ public static class LiveSyncStart
         if(mappingDirty)return LiveStartChoice.SaveMapping;
         return baselineKeys.Any(k=>k.StartsWith($"{revision}:",StringComparison.Ordinal))
             ? LiveStartChoice.Resume : LiveStartChoice.Initialize;
+    }
+}
+
+public sealed class VariantSelection
+{
+    public bool AutoBurst { get; set; }
+    public bool AutoMitigation { get; set; }
+    public bool AutoMechanics { get; set; }
+}
+public sealed class PresetVariant
+{
+    public string Description { get; set; } = "";
+    public int[] Enable { get; set; } = [];
+    public int[] Disable { get; set; } = [];
+    public JsonObject Settings { get; set; } = new();
+    public int[] EmptySlots { get; set; } = [];
+}
+public static class Variants
+{
+    public static JobPreset Resolve(JobPreset baseline,VariantSelection selection)
+    {
+        var result=JsonSerializer.Deserialize<JobPreset>(JsonSerializer.Serialize(baseline))!;
+        if(selection.AutoBurst)Apply(baseline.AutoBurst);
+        if(selection.AutoMitigation)Apply(baseline.AutoMitigation);
+        if(selection.AutoMechanics && !baseline.MechanicsAlreadyAutomatic)Apply(baseline.AutoMechanics);
+        return result;
+        void Apply(PresetVariant? variant)
+        {
+            if(variant==null)throw new InvalidDataException($"This variant has not been reviewed for {baseline.Job}.");
+            if(variant.Enable.Concat(variant.Disable).Any(id=>!baseline.OwnedPresetIds.Contains(id)))
+                throw new InvalidDataException("Variant references another job's presets.");
+            var enabled=result.Settings["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+            enabled.ExceptWith(variant.Disable);enabled.UnionWith(variant.Enable);
+            result.Settings["EnabledActionsV6"]=new JsonArray(enabled.Order().Select(n=>(JsonNode?)JsonValue.Create(n)).ToArray());
+            foreach(var (key,value) in variant.Settings)
+            {
+                if(key=="EnabledActionsV6")throw new InvalidDataException("Use variant Enable/Disable for preset membership.");
+                if(value is JsonObject obj)
+                {
+                    if(result.Settings[key] is not JsonObject)result.Settings[key]=new JsonObject();
+                    foreach(var (k,v) in obj)result.Settings[key]![k]=v?.DeepClone();
+                }
+                else result.Settings[key]=value?.DeepClone();
+            }
+            foreach(var id in variant.EmptySlots)
+            {
+                var slot=result.Slots.Single(s=>s.LogicalSlot==id);
+                slot.Action="Empty";slot.Function="Unused with selected automation variant";
+            }
+        }
+    }
+}
+public static class PairedApply
+{
+    public static void Run(Action hotbars,Action settings,Action rollbackHotbars)
+    {
+        hotbars();
+        try { settings(); }
+        catch(Exception original)
+        {
+            try { rollbackHotbars(); }
+            catch(Exception rollback) { throw new AggregateException("Settings failed and hotbar rollback failed; use the saved backup.",original,rollback); }
+            throw;
+        }
     }
 }

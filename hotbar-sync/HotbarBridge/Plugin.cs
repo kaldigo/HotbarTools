@@ -160,7 +160,7 @@ public sealed class Plugin : IDalamudPlugin
         var snapshot = new {
             SchemaVersion = 2, CapturedUtc = timestamp, JobId = job,
             Job = player.ClassJob.Value.Abbreviation.ToString(), Level = player.Level,
-            PluginVersion = "0.2.4", ClientStructsVersion = typeof(RaptureHotbarModule).Assembly.GetName().Version?.ToString(),
+            PluginVersion = "0.2.5", ClientStructsVersion = typeof(RaptureHotbarModule).Assembly.GetName().Version?.ToString(),
             Notes = new[] { "Read-only live PvE capture. No character name or content ID is exported.",
                 "One-based Bar/Slot labels; Native indices are zero-based. Cross slots are raw indices, not inferred controller labels.",
                 "Cached hints can be stale on hidden bars; Keybinds are the input configuration. HOTBAR_1 follows the main cycling bar.",

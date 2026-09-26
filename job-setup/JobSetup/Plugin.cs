@@ -21,6 +21,8 @@ public sealed class Config : IPluginConfiguration
     public int RegularBar2 { get; set; }=2;
     public int CrossSet { get; set; }=1;
     public bool ApplyCross { get; set; }=true;
+    [Newtonsoft.Json.JsonProperty(ObjectCreationHandling=Newtonsoft.Json.ObjectCreationHandling.Replace)]
+    public Dictionary<string,VariantSelection> Variants { get; set; }=new();
 }
 public sealed class Plugin : IDalamudPlugin
 {
@@ -66,7 +68,39 @@ public sealed class Plugin : IDalamudPlugin
         WrathWritePolicy.Validate(pi.InstalledPlugins.Any(p=>p.InternalName=="WrathCombo"),WrathLoaded);
     }
     private JobPreset Current(uint id)=>pack.Jobs.FirstOrDefault(j=>j.JobId==id || j.BaseClasses.Contains(id))??throw new InvalidOperationException("No reviewed preset for this class/job. Crafting, gathering and Blue Mage are not included yet.");
-    private IEnumerable<JobPreset> Selected(uint job)=>all?pack.Jobs:[Current(job)];
+    private IEnumerable<JobPreset> Baselines(uint job)=>all?pack.Jobs:[Current(job)];
+    private IEnumerable<JobPreset> Selected(uint job)=>Baselines(job).Select(p=>HotbarTools.Variants.Resolve(p,config.Variants.GetValueOrDefault(p.Job)??new()));
+    private void DrawVariants()
+    {
+        ImGui.Separator();ImGui.TextWrapped("Job variants — independent switches, reviewed per job");
+        var job=objects.LocalPlayer?.ClassJob.RowId??0;
+        var presets=all?pack.Jobs:pack.Jobs.Where(p=>p.JobId==job||p.BaseClasses.Contains(job));
+        foreach(var preset in presets)
+        {
+            if(preset.AutoBurst==null && preset.AutoMitigation==null && preset.AutoMechanics==null && !preset.MechanicsAlreadyAutomatic)
+            { if(!all)ImGui.TextWrapped(preset.Job+": variants not reviewed yet; current curated setup is preserved.");continue; }
+            if(!config.Variants.TryGetValue(preset.Job,out var selection))config.Variants[preset.Job]=selection=new();
+            ImGui.PushID(preset.Job);ImGui.TextUnformatted(preset.Job);
+            Toggle("Auto burst",preset.AutoBurst,selection.AutoBurst,v=>selection.AutoBurst=v);
+            Toggle("Auto mitigation",preset.AutoMitigation,selection.AutoMitigation,v=>selection.AutoMitigation=v);
+            if(preset.MechanicsAlreadyAutomatic)
+            {
+                var mechanics=selection.AutoMechanics;
+                if(ImGui.Checkbox("Auto job mechanics",ref mechanics)){selection.AutoMechanics=mechanics;ClearPreview();pi.SavePluginConfig(config);}
+                ImGui.TextWrapped("No additional change for this job: "+preset.MechanicsDescription);
+            }
+            else Toggle("Auto job mechanics",preset.AutoMechanics,selection.AutoMechanics,v=>selection.AutoMechanics=v);
+            ImGui.PopID();
+        }
+        ImGui.TextWrapped("Off restores the existing curated behavior. Only reviewed variants change; other jobs keep their baseline. These options select actions on your button presses, not hands-free rotation.");
+        void Toggle(string label,PresetVariant? variant,bool value,Action<bool> set)
+        {
+            ImGui.BeginDisabled(variant==null);
+            if(ImGui.Checkbox(label,ref value)){set(value);ClearPreview();pi.SavePluginConfig(config);}
+            ImGui.EndDisabled();
+            if(variant!=null)ImGui.TextWrapped(variant.Description);
+        }
+    }
     private void ClearPreview(){hotbarPreview=null;wrathPreview=null;}
     private void Draw()
     {
@@ -86,9 +120,15 @@ public sealed class Plugin : IDalamudPlugin
                 if(ImGui.Button("Save destinations"))pi.SavePluginConfig(config);
                 ImGui.TextWrapped("Only planned job slots are touched. Utility keys 9/0/-/= and side bars are preserved. With Bridge loaded, its applicable map supplies cross destinations. All-class hotbars also prepare saved slots for locked classes; abilities remain unusable until unlocked.");
             }
+            DrawVariants();
+            ImGui.BeginDisabled(WrathLoaded);
+            if(ImGui.Button("Preview variant: hotbars + Wrath together"))request=6;
+            ImGui.EndDisabled();
             if(ImGui.Button("Preview hotbar layouts"))request=1;
             ImGui.Separator();
             ImGui.TextWrapped($"Wrath: {(WrathLoaded?"ENABLED — writes blocked":"disabled or not installed")}. Presets reviewed against {pack.WrathVersion}.");
+            if(ImGui.Button("Open Wrath in plugin installer"))pi.OpenPluginInstallerTo(Dalamud.Interface.PluginInstallerOpenKind.InstalledPlugins,"Wrath");
+            ImGui.TextWrapped("Use the installer button to disable Wrath before preview/apply, then re-enable it afterward.");
             if(ImGui.Checkbox("Also apply shared targeting/role options (global, affects every job)",ref shared))ClearPreview();
             ImGui.BeginDisabled(WrathLoaded);
             if(ImGui.Button("Preview Wrath settings"))request=2;
@@ -103,7 +143,7 @@ public sealed class Plugin : IDalamudPlugin
                         foreach(var e in hotbarPreview)ImGui.TextWrapped($"Job {e.Job} {e.Position}: {e.Before} -> {e.After}");
                     ImGui.EndChild();
                 }
-                else if(ImGui.CollapsingHeader("Full merged Wrath configuration preview"))
+                if(wrathPreview!=null && ImGui.CollapsingHeader("Full merged Wrath configuration preview"))
                 {
                     if(ImGui.BeginChild("wrath-preview",new System.Numerics.Vector2(0,240)))ImGui.TextUnformatted(wrathPreview!.ToJsonString(JsonStore.Options));
                     ImGui.EndChild();
@@ -137,11 +177,18 @@ public sealed class Plugin : IDalamudPlugin
             switch(action)
             {
                 case 1: PreviewHotbars(job);break;
+                case 6:
                 case 2:
-                    RequireWrathDisabled();wrathOriginal=File.ReadAllText(WrathPath);
+                    RequireWrathDisabled();
+                    if(action==6)PreviewHotbars(job);
+                    wrathOriginal=File.ReadAllText(WrathPath);
                     wrathPreview=WrathMerge.Merge(JsonNode.Parse(wrathOriginal)!.AsObject(),Selected(job),shared?pack.SharedSettings:null);
-                    previewScope+=(shared?" + global targeting/role settings":"; other jobs/global targeting preserved");
-                    message="Wrath preview ready. Disable Wrath until application finishes, then re-enable it to load the changes.";break;
+                    previewScope+=(shared?" + global targeting/role settings":all?"; global targeting preserved":"; other jobs/global targeting preserved");
+                    previewScope+=string.Join("",Baselines(job).Where(p=>p.AutoBurst!=null||p.AutoMitigation!=null).Select(p=>{
+                        var v=config.Variants.GetValueOrDefault(p.Job)??new();
+                        return $"; {p.Job} burst {(v.AutoBurst?"auto":"baseline")}, mitigation {(v.AutoMitigation?"auto":"baseline")}, mechanics {(v.AutoMechanics?"auto":"baseline")}{(p.MechanicsAlreadyAutomatic?" (already covered)":"")}";
+                    }));
+                    message=action==6?"Combined preview ready: matching hotbars and Wrath settings. Re-enable Wrath after applying.":"Wrath preview ready. Re-enable Wrath after applying; hotbars are separate in this mode.";break;
                 case 3: Apply(job);break;
                 case 4:
                     RequireBackup(backupInput,HotbarBackups);hotbarPreview=NativeHotbars.RestorePlan(job,backupInput);previewScope="Hotbar backup restore";break;
@@ -207,29 +254,36 @@ public sealed class Plugin : IDalamudPlugin
     private void Apply(uint job)
     {
         if(job!=previewJob || Character!=previewIdentity)throw new InvalidOperationException("Character/job changed. Preview again.");
-        if(wrathPreview!=null)
+        if(wrathPreview==null && hotbarPreview==null)throw new InvalidOperationException("Preview first.");
+        if(wrathPreview!=null)CheckWrath();
+        var bridge=hotbarPreview!=null && BridgeLoaded;
+        if(bridge && !pi.GetIpcSubscriber<bool>("HotbarBridge.BeginExternalEdit").InvokeFunc())throw new InvalidOperationException("Bridge is busy. Try again.");
+        try
         {
-            RequireWrathDisabled();
-            if(File.ReadAllText(WrathPath)!=wrathOriginal)throw new InvalidOperationException("Wrath configuration changed since preview. Preview again.");
-            Directory.CreateDirectory(WrathBackups);
-            File.Copy(WrathPath,Path.Combine(WrathBackups,$"{DateTime.UtcNow:yyyyMMdd-HHmmss-ffff}-{Guid.NewGuid():N}.json"));
-            var temporary=WrathPath+".jobsetup.tmp";
-            File.WriteAllText(temporary,wrathPreview.ToJsonString(JsonStore.Options));
-            RequireWrathDisabled();
-            if(File.ReadAllText(WrathPath)!=wrathOriginal)throw new InvalidOperationException("Wrath configuration changed during apply; no replacement performed.");
-            File.Replace(temporary,WrathPath,null);
-            message="Wrath settings applied. Re-enable Wrath Combo to load them. Backup saved.";
+            if(hotbarPreview!=null && wrathPreview!=null)
+                PairedApply.Run(()=>NativeHotbars.Apply(job,hotbarPreview,HotbarBackups),WriteWrath,
+                    ()=>NativeHotbars.Apply(job,hotbarPreview.Select(e=>new SlotEdit(e.Job,e.Position,e.After,e.Before)).ToList(),HotbarBackups));
+            else if(wrathPreview!=null)WriteWrath();
+            else NativeHotbars.Apply(job,hotbarPreview!,HotbarBackups);
+            message=wrathPreview!=null?"Selected settings applied"+(hotbarPreview!=null?" with matching hotbars":"")+". Re-enable Wrath Combo. Backups saved.":"Hotbar layouts applied and verified in memory. Backup saved; test the actions in game.";
         }
-        else if(hotbarPreview!=null)
-        {
-            var bridge=BridgeLoaded;
-            if(bridge && !pi.GetIpcSubscriber<bool>("HotbarBridge.BeginExternalEdit").InvokeFunc())throw new InvalidOperationException("Bridge is busy. Try again.");
-            try { NativeHotbars.Apply(job,hotbarPreview,HotbarBackups); }
-            finally { if(bridge)pi.GetIpcSubscriber<bool>("HotbarBridge.EndExternalEdit").InvokeFunc(); }
-            message="Hotbar layouts applied and verified in memory. Backup saved; test the actions in game.";
-        }
-        else throw new InvalidOperationException("Preview first.");
+        finally { if(bridge)pi.GetIpcSubscriber<bool>("HotbarBridge.EndExternalEdit").InvokeFunc(); }
         ClearPreview();
+    }
+    private void CheckWrath()
+    {
+        RequireWrathDisabled();
+        if(File.ReadAllText(WrathPath)!=wrathOriginal)throw new InvalidOperationException("Wrath configuration changed since preview. Preview again.");
+    }
+    private void WriteWrath()
+    {
+        CheckWrath();
+        Directory.CreateDirectory(WrathBackups);
+        File.Copy(WrathPath,Path.Combine(WrathBackups,$"{DateTime.UtcNow:yyyyMMdd-HHmmss-ffff}-{Guid.NewGuid():N}.json"));
+        var temporary=WrathPath+".jobsetup.tmp";
+        File.WriteAllText(temporary,wrathPreview!.ToJsonString(JsonStore.Options));
+        CheckWrath();
+        File.Replace(temporary,WrathPath,null);
     }
     public void Dispose(){framework.Update-=Update;pi.UiBuilder.Draw-=Draw;pi.UiBuilder.OpenMainUi-=Open;commands.RemoveHandler("/jobsetup");}
 }

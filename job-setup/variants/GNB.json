@@ -1,0 +1,26 @@
+{
+  "AutoBurst": {
+    "Description": "No Mercy and Bloodfest are woven through ST/AoE. Burst slot 3 is empty. Scripted openers remain off.",
+    "Enable": [
+      7008,
+      7011,
+      7201,
+      7204
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Adds pack Rampart, Great Nebula and Reprisal, plus detected boss tankbuster Rampart/Great Nebula in casual content. Keeps current Aurora/Camouflage automation and all manual defense buttons. Corundum, Superbolide, boss party mitigation and Arms Length stay manual; automated actions share cooldowns with their manual buttons.",
+    "Enable": [
+      7702,
+      7703,
+      7708,
+      7718,
+      7719
+    ]
+  },
+  "MechanicsAlreadyAutomatic": true,
+  "MechanicsDescription": "Cartridge spending, Gnashing Fang and damage follow-ups already run through ST/AoE in every Gunbreaker variant. Manual mobility, targeted support, invulnerability and tank utility remain deliberate."
+}

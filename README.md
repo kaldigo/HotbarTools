@@ -2,7 +2,7 @@
 
 Two independent Dalamud API 15 plugins for keyboard/controller hotbar layouts.
 
-**Initial test release:** 35 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
+**Initial test release:** 52 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
 
 ## Install
 
@@ -23,6 +23,8 @@ Turn on **Enable live two-way sync**. On first activation, review the initial al
 Your default regular bar 1 slots 9–12 become individually shared on both sides without making the entire bar shared. All ordinary job pairs require job-specific bars. Healers have a separate default mapping. Craft/gather classes only use utility/shared pairs until you configure other mappings.
 
 ### Job Setup — `/jobsetup`
+
+Three independent automation selections are available for reviewed variants: **Auto burst**, **Auto mitigation** and **Auto job mechanics**. Gunbreaker is the first reviewed variant; mechanics are already covered there. Use the combined preview to apply its matching hotbars and Wrath settings. Unautomated manual controls remain available. Other jobs keep their current presets pending individual review.
 
 Separate **hotbar layouts** and **Wrath settings** previews, each with **current class/job** or **all supported classes/jobs** scope. Includes 21 combat-job presets and nine base-class aliases. Crafting, gathering and Blue Mage presets are not included yet.
 

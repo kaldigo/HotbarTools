@@ -61,4 +61,37 @@ if(args.Length>0) {
     var saved=Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>(File.ReadAllText(args[0]))!;
     Defaults.Validate(saved.Maps);Console.WriteLine($"Saved configuration verified: {saved.Maps.Count} pairs.");
 }
+var gnb=pack.Jobs.Single(j=>j.Job=="GNB");
+var baselineJson=JsonSerializer.Serialize(gnb);
+foreach(var burst in new[]{false,true})foreach(var mit in new[]{false,true})foreach(var mechanics in new[]{false,true})
+Test($"GNB independent variants burst={burst} mitigation={mit} mechanics={mechanics}",()=>{
+    var resolved=Variants.Resolve(gnb,new(){AutoBurst=burst,AutoMitigation=mit,AutoMechanics=mechanics});
+    var enabled=resolved.Settings["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+    foreach(var id in new[]{7008,7011,7201,7204})Equal(enabled.Contains(id),burst);
+    foreach(var id in new[]{7702,7703,7708,7718,7719})Equal(enabled.Contains(id),mit);
+    foreach(var id in new[]{7006,7706,7721,7710,7716,7717,7713,7714,7707})Equal(enabled.Contains(id),false);
+    Equal(resolved.Slots.Single(s=>s.LogicalSlot==3).Action,burst?"Empty":"No Mercy");
+    foreach(var slot in gnb.Slots.Where(s=>s.LogicalSlot!=3))
+        Equal(JsonSerializer.Serialize(resolved.Slots.Single(s=>s.LogicalSlot==slot.LogicalSlot)),JsonSerializer.Serialize(slot));
+    Equal(JsonSerializer.Serialize(gnb),baselineJson);
+    var merged=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray(999999)},[resolved],null);
+    Equal(merged["EnabledActionsV6"]!.AsArray().Any(n=>n!.GetValue<int>()==999999),true);
+});
+Test("switches off restore exact baseline",()=>Equal(JsonSerializer.Serialize(Variants.Resolve(gnb,new())),baselineJson));
+Test("unreviewed variants rejected",()=>Throws(()=>Variants.Resolve(pack.Jobs.Single(j=>j.Job=="WAR"),new(){AutoBurst=true})));
+Test("paired apply writes hotbars then settings",()=>{
+    var calls="";PairedApply.Run(()=>calls+="H",()=>calls+="S",()=>calls+="R");Equal(calls,"HS");
+});
+Test("settings failure rolls back hotbars",()=>{
+    var calls="";try { PairedApply.Run(()=>calls+="H",()=>{calls+="S";throw new InvalidDataException();},()=>calls+="R"); }
+    catch(InvalidDataException) { Equal(calls,"HSR");return; }throw new Exception("Failure swallowed");
+});
+Test("hotbar failure never writes settings",()=>{
+    var calls="";try { PairedApply.Run(()=>throw new InvalidDataException(),()=>calls+="S",()=>calls+="R"); }
+    catch(InvalidDataException) { Equal(calls,"");return; }throw new Exception("Failure swallowed");
+});
+Test("rollback failure reports both errors",()=>{
+    try { PairedApply.Run(()=>{},()=>throw new InvalidDataException("settings"),()=>throw new InvalidOperationException("rollback")); }
+    catch(AggregateException e) { Equal(e.InnerExceptions.Count,2);return; }throw new Exception("Failures swallowed");
+});
 Console.WriteLine($"{count} tests passed.");

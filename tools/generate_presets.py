@@ -20,6 +20,9 @@ for job,jid in ids.items():
   slots.append(dict(LogicalSlot=int(slot),RegularBar=bar,RegularSlot=pos,CrossSlot=cross[controller],Action=action,Function=function))
  settings=json.loads((wrath/f'jobs/{job}/settings.json').read_text())
  jobs.append(dict(JobId=jid,Job=job,BaseClasses=base.get(job,[]),Slots=slots,OwnedPresetIds=[int(n) for n,v in cat.items() if v['job']==job and 'pvp' not in v['name'].lower()],Settings=settings))
+for job in jobs:
+ variant=root/'job-setup/variants'/f"{job['Job']}.json"
+ if variant.exists():job.update(json.loads(variant.read_text(encoding='utf-8-sig')))
 s=json.loads((wrath/'shared.json').read_text())
 shared={k:s[k] for k in ('EnabledActionsV6','CustomHealStack','RaiseStack')}
 # Explicit shared behavior keys only, not every original UI preference/metadata field.
