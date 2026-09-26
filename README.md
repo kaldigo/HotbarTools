@@ -2,7 +2,7 @@
 
 Two independent Dalamud API 15 plugins for keyboard/controller hotbar layouts.
 
-**Initial test release:** 27 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
+**Initial test release:** 31 logic tests, local/CI builds and resolution of all 186 non-empty preset assignments against installed game data pass; game-memory writes still need in-game testing. Installation alone does not change hotbars or Wrath settings.
 
 ## Install
 
@@ -47,7 +47,7 @@ Requires .NET 10 SDK and Dalamud API 15 development assemblies in the normal XIV
 dotnet build hotbar-sync/HotbarBridge/HotbarBridge.csproj -c Release
 dotnet build job-setup/JobSetup/JobSetup.csproj -c Release
 dotnet run --project tests/HotbarTools.Tests -c Release
-python tools/package_release.py --repository kaldigo/HotbarTools --tag v0.2.0
+python tools/package_release.py --repository kaldigo/HotbarTools --tag v0.2.1
 ```
 
 Optional installed-game action validation:

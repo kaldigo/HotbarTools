@@ -11,7 +11,7 @@ Test("cross edit propagates",()=>Equal(SyncRules.Decide(old,a,old),SyncChoice.To
 Test("simultaneous edits conflict",()=>Equal(SyncRules.Decide(a,b,old),SyncChoice.Conflict));
 Test("equal edits converge",()=>Equal(SyncRules.Decide(a,a,old),SyncChoice.None));
 Test("deletion propagates",()=>Equal(SyncRules.Decide(default,old,old),SyncChoice.ToCross));
-Test("empty type noise ignored",()=>Equal(SyncRules.Decide(new(10,0),default,old),SyncChoice.None));
+Test("empty slots ignore stale IDs",()=>Equal(SyncRules.Decide(new(0,10),default,old),SyncChoice.None));
 Test("default mappings valid",()=>Defaults.Validate(Defaults.Maps()));
 Test("overlapping pairs rejected",()=>{var m=Defaults.Maps();m.Add(new SlotMap{Profile="All"});Throws(()=>Defaults.Validate(m));});
 Test("out-of-range mapping rejected",()=>{var m=Defaults.Maps();m[0].CrossSet=9;Throws(()=>Defaults.Validate(m));});
@@ -36,4 +36,8 @@ Test("whole pack merges without duplicate presets",()=>{var r=WrathMerge.Merge(o
 Test("Wrath writes blocked while loaded",()=>{try{WrathWritePolicy.Validate(true,true);}catch(InvalidOperationException){return;}throw new Exception("Loaded Wrath permitted");});
 Test("Wrath writes blocked when absent",()=>{try{WrathWritePolicy.Validate(false,false);}catch(InvalidOperationException){return;}throw new Exception("Absent Wrath permitted");});
 Test("Wrath writes permitted only installed and disabled",()=>WrathWritePolicy.Validate(true,false));
+Test("slot value backup serialization roundtrip",()=>{var json=JsonSerializer.Serialize(a);Equal(JsonSerializer.Deserialize<SlotValue>(json),a);Equal(json.Contains("Normalized"),false);});
+Test("empty slot state serialization roundtrip",()=>{var json=JsonSerializer.Serialize(new Dictionary<string,SlotValue>{{"shared",default}});Equal(JsonSerializer.Deserialize<Dictionary<string,SlotValue>>(json)!["shared"],default);});
+Test("zero-based macro/gearset IDs are preserved",()=>Equal(new SlotValue(7,0).Normalized,new SlotValue(7,0)));
+Test("hotbar backup roundtrip",()=>{var edits=new[]{new SlotEdit(37,new Position(0,0),old,a)};var restored=JsonSerializer.Deserialize<SlotEdit[]>(JsonSerializer.Serialize(edits))!;Equal(restored[0],edits[0]);});
 Console.WriteLine($"{count} tests passed.");

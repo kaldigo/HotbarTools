@@ -3,7 +3,6 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 
 namespace HotbarTools;
 
-public sealed record SlotEdit(uint Job, Position Position, SlotValue Before, SlotValue After);
 public static unsafe class NativeHotbars
 {
     public static RaptureHotbarModule* Ready(uint job)

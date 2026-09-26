@@ -5,14 +5,16 @@ namespace HotbarTools;
 
 public readonly record struct SlotValue(byte Type, uint Id)
 {
-    public SlotValue Normalized => Id == 0 ? default : this;
-    public override string ToString() => Id == 0 ? "Empty" : $"Type {Type}, ID {Id}";
+    [System.Text.Json.Serialization.JsonIgnore]
+    public SlotValue Normalized => Type == 0 ? default : this;
+    public override string ToString() => Type == 0 ? "Empty" : $"Type {Type}, ID {Id}";
 }
 public readonly record struct Position(int Bar, int Slot)
 {
     public bool Valid => Bar is >= 0 and < 18 && Slot >= 0 && Slot < (Bar < 10 ? 12 : 16);
     public override string ToString() => $"{(Bar < 10 ? "Bar" : "Cross")} {(Bar < 10 ? Bar + 1 : Bar - 9)} / {Slot + 1}";
 }
+public sealed record SlotEdit(uint Job, Position Position, SlotValue Before, SlotValue After);
 public sealed class SlotMap
 {
     public string Id { get; set; } = Guid.NewGuid().ToString("N");
