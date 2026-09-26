@@ -279,4 +279,28 @@ Test("no-op status uses applied history without changing global controls",()=>{
     var restored=Newtonsoft.Json.JsonConvert.DeserializeObject<JobSetup.Config>(Newtonsoft.Json.JsonConvert.SerializeObject(config))!;
     Equal(AutomationCommands.Letters(restored.Automation),"B");Equal(AutomationCommands.Letters(restored.AppliedAutomation["CRP"]),"J");
 });
+Test("registered-only variants leave unregistered jobs out of every scope",()=>{
+    var config=new JobSetup.Config();config.RecordSetup("GNB",pack.WrathVersion,DateTimeOffset.UtcNow);
+    Equal(config.SelectPresets(pack.Jobs,37,false,true).Single().Job,"GNB");
+    Equal(config.SelectPresets(pack.Jobs,21,true,true).Single().Job,"GNB");
+    try {config.SelectPresets(pack.Jobs,21,false,true);throw new Exception("Unregistered current job allowed");}catch(InvalidOperationException){}
+    Equal(config.SelectPresets(pack.Jobs,21,false,false).Single().Job,"WAR");
+    Equal(config.SelectPresets(pack.Jobs,21,true,false).Count,32);
+    var original=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},pack.Jobs,null);
+    var changed=WrathMerge.Merge(original,config.SelectPresets(pack.Jobs,37,true,true).Select(p=>Variants.Resolve(p,new(){AutoBurst=true})),null);
+    var war=pack.Jobs.Single(p=>p.Job=="WAR");
+    Equal(AutomationStatus.Infer(war,changed,null)!.AutoBurst,false);
+    Equal(AutomationStatus.Infer(gnb,changed,null)!.AutoBurst,true);
+});
+Test("managed registry migrates only recorded applications and persists timestamps",()=>{
+    var config=new JobSetup.Config{AppliedAutomation=new(){{"GNB",new(){AutoBurst=true}}}};
+    Equal(config.MigrateManagedHistory(pack.Jobs),true);Equal(config.ManagedJobs.Count,1);
+    Equal(config.ManagedJobs["GNB"].ImportedFromHistory,true);Equal(config.ManagedJobs["GNB"].FirstAppliedUtc==null,true);
+    var first=DateTimeOffset.UtcNow;config.RecordSetup("PLD",pack.WrathVersion,first);config.RecordSetup("PLD",pack.WrathVersion,first.AddMinutes(1));
+    Equal(config.ManagedJobs["PLD"].FirstAppliedUtc,first);Equal(config.ManagedJobs["PLD"].LastAppliedUtc,first.AddMinutes(1));
+    Equal(config.SelectPresets(pack.Jobs,1,false,true).Single().Job,"PLD");
+    var copy=Newtonsoft.Json.JsonConvert.DeserializeObject<JobSetup.Config>(Newtonsoft.Json.JsonConvert.SerializeObject(config))!;
+    Equal(copy.ManagedJobs["PLD"].FirstAppliedUtc,first);Equal(copy.ManagedJobs.Count,2);
+    copy.ManagedJobs.Clear();copy.AppliedAutomation.Clear();Equal(copy.MigrateManagedHistory(pack.Jobs),false);Equal(copy.ManagedJobs.Count,0);
+});
 Console.WriteLine($"{count} tests passed.");

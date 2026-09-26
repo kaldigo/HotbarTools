@@ -73,10 +73,10 @@ Place one command in a game macro:
 | Command | Result |
 | --- | --- |
 | `/jobsetup current MBJ` | Enable all three and apply to the current class/job. |
-| `/jobsetup all MBJ` | Enable all three and apply to all supported classes/jobs. |
+| `/jobsetup all MBJ` | Enable all three and apply to all registered classes/jobs. |
 | `/jobsetup current BJ` | Enable burst and job mechanics, disable automatic mitigation, then apply to current. |
 | `/jobsetup current none` | Turn all three off and apply the baseline to current. |
-| `/jobsetup all none` | Turn all three off and apply the baseline to all. |
+| `/jobsetup all none` | Turn all three off and apply the baseline to all registered jobs. |
 | `/jobsetup current toggle M` | Toggle mitigation from the current job’s checked state, preserve its other switches, apply to current. |
 | `/jobsetup all on BJ` | Enable burst/mechanics, preserve mitigation, apply to all. |
 | `/jobsetup current off B` | Disable burst, preserve the other selections, apply to current. |
@@ -92,3 +92,13 @@ The server-info entry reads **Job Settings:** followed by native icons, in mitig
 Build and logic checks cannot verify the appearance and placement of native icons in your game UI; test those in game.
 
 Current-job `on`, `off` and `toggle` commands start from the checked active-job state. If it cannot be determined, use an exact selection such as `/jobsetup current MBJ`. All-job per-switch commands use the global selection because jobs may currently differ. Merely changing class does not apply anything or change the global selection.
+
+## Base-setup registry (0.2.11)
+
+Job Setup keeps an internal `ManagedJobs` record in its configuration, including the first/last successful application time and Wrath version. Only a successful complete preset application to Wrath registers a job. This may be the baseline or a selected variant of the complete preset. Previewing, applying hotbars alone, or a failed/rolled-back operation does not register it.
+
+Use **Preview base setup: hotbars + Wrath** to initialize new jobs. The existing separate Wrath-settings application also registers jobs after success. These explicit setup operations honor current/all scope and may register new jobs. **Preview variant: registered jobs only**, every macro variant operation, and the server-info checks ignore unregistered jobs. An all-job variant command includes only registered jobs and their inherited base-class layouts; a current-job command on an unregistered job asks you to apply base setup first. Variant operations preserve global targeting settings.
+
+The registry follows canonical Wrath jobs: a base class and its upgraded job share settings and registration. It is local to this installation, alongside Wrath's job settings. It does not change the one global set of user-facing switches. Existing successful application history from 0.2.10 is migrated once; unknown dates stay unknown. Similar-looking Wrath settings alone do not enroll a job. Jobs applied in older releases without recorded history need one explicit setup application to register them.
+
+Restoring a full Wrath backup clears registrations and applied-choice history, because the restored file may predate our setup. Apply setup again for the jobs you want managed. Hotbar-only restores leave Wrath registration unchanged.

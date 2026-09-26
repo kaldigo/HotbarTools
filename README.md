@@ -77,3 +77,5 @@ Version 0.2.7 adds a Noncombat sync profile. Existing custom mappings are preser
 Job Setup 0.2.8 uses the same global automation selections for current-job and all-job application. Omission notes remain in documentation. On upgrade the new global switches start off; existing game settings are unchanged until application. Hotbar Bridge remains at 0.2.7.
 
 Job Setup 0.2.9 adds `/jobsetup current MBJ`, `/jobsetup all MBJ` and per-switch `on|off|toggle` macro commands. The server-info entry uses native mitigation/burst/job icons and hides when all switches are off. Version 0.2.10 re-checks the active job on class changes; unapplied global selections do not alter its display. See [macro syntax and behavior](job-setup/README.md#macro-commands-and-server-info-icons-029).
+
+Job Setup 0.2.11 records successful base-setup applications internally. Variant macros, variant previews and status checks skip unregistered jobs. Use **Preview base setup: hotbars + Wrath** to register additional jobs; existing recorded applications carry over.

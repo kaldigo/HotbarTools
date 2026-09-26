@@ -18,7 +18,7 @@ for folder,name in [('hotbar-sync','HotbarBridge'),('job-setup','JobSetup')]:
   if (build/f'{name}.deps.json').exists():z.write(build/f'{name}.deps.json',f'{name}.deps.json')
   z.write(root/'LICENSE','LICENSE')
  url=f'https://github.com/{a.repository}/releases/download/{a.tag}/{name}.zip'
- manifest.update(DownloadLinkInstall=url,DownloadLinkUpdate=url,DownloadLinkTesting=url,Changelog=('0.2.7: crafting and gathering sync profiles; preserves custom mappings.' if name=='HotbarBridge' else '0.2.10: macro variant commands and native status icons; status checks the active job against Wrath on class changes.'))
+ manifest.update(DownloadLinkInstall=url,DownloadLinkUpdate=url,DownloadLinkTesting=url,Changelog=('0.2.7: crafting and gathering sync profiles; preserves custom mappings.' if name=='HotbarBridge' else '0.2.11: internal base-setup registry; variant operations and status checks skip unregistered jobs.'))
  feed.append(manifest);hashes.append(f'{hashlib.sha256(zip_path.read_bytes()).hexdigest()}  {zip_path.name}')
 text=json.dumps(feed,indent=2)+'\n';(root/'pluginmaster.json').write_text(text);(out/'pluginmaster.json').write_text(text)
 (out/'SHA256SUMS.txt').write_text('\n'.join(hashes)+'\n')
