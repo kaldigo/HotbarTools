@@ -26,7 +26,7 @@ Your default regular bar 1 slots 9–12 become individually shared on both sides
 
 **Compact keyboard layout** works for all supported jobs: fills bound keyboard positions while keeping ST, AoE, mobility and tank/healer reserves fixed. Controller positions stay fixed. Turn it off and apply to restore gaps. Update both plugins to 0.2.7 so Bridge follows the generated per-job routes.
 
-Three independent automation selections are available for reviewed variants: **Auto burst**, **Auto mitigation** and **Auto job mechanics**. All 21 combat jobs have individual variants; a switch can deliberately make no additional change where the baseline already covers it. Use the combined preview to apply matching hotbars and Wrath settings. Unautomated manual controls remain available. See [variant review](job-setup/variant-review.md).
+One global set of three independent automation selections is available: **Auto burst**, **Auto mitigation** and **Auto job mechanics**. All 21 combat jobs have individual variants; a switch can deliberately make no additional change where the baseline already covers it. Use the combined preview to apply matching hotbars and Wrath settings. Unautomated manual controls remain available. See [variant review](job-setup/variant-review.md).
 
 Separate **hotbar layouts** and **Wrath settings** previews, each with **current class/job** or **all supported classes/jobs** scope. Includes 21 combat jobs, eight crafters, Miner, Botanist, Fisher and nine base-class aliases. Blue Mage is excluded. Noncombat layouts use 12 job slots on one page; see [buttons and usage](job-setup/noncombat-hotbars.md) and [documented omissions](job-setup/noncombat-omissions.md).
 
@@ -73,3 +73,5 @@ Tagging `v*` runs the release workflow, builds/tests both projects, creates ZIP 
 This project was developed with AI assistance. It is an independent custom-repository project, not affiliated with Dalamud or Wrath Combo.
 
 Version 0.2.7 adds a Noncombat sync profile. Existing custom mappings are preserved; only non-overlapping default pairs are added once. An intentionally empty map stays empty. If a custom All-profile pair blocks a job position, adjust the map in Bridge before applying that layout. Bard burst, Dancer burst and Black Mage mitigation change detailed settings and still require unload/reload; the remaining reviewed preset-only transitions support live updates.
+
+Job Setup 0.2.8 uses the same global automation selections for current-job and all-job application. Omission notes remain in documentation. On upgrade the new global switches start off; existing game settings are unchanged until application. Hotbar Bridge remains at 0.2.7.

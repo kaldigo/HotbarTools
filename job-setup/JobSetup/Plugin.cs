@@ -14,19 +14,6 @@ using Sheets=Lumina.Excel.Sheets;
 
 namespace JobSetup;
 
-public sealed class Config : IPluginConfiguration
-{
-    public int Version { get; set; }=1;
-    public int RegularBar1 { get; set; }=1;
-    public int RegularBar2 { get; set; }=2;
-    public int CrossSet { get; set; }=1;
-    public bool ApplyCross { get; set; }=true;
-    public bool CompactKeyboard { get; set; }=true;
-    public bool AutoManageWrath { get; set; }
-    public bool PreferLiveWrath { get; set; }=true;
-    [Newtonsoft.Json.JsonProperty(ObjectCreationHandling=Newtonsoft.Json.ObjectCreationHandling.Replace)]
-    public Dictionary<string,VariantSelection> Variants { get; set; }=new();
-}
 public sealed class Plugin : IDalamudPlugin
 {
     private readonly IDalamudPluginInterface pi;
@@ -80,42 +67,18 @@ public sealed class Plugin : IDalamudPlugin
     }
     private JobPreset Current(uint id)=>pack.Jobs.FirstOrDefault(j=>j.JobId==id || j.BaseClasses.Contains(id))??throw new InvalidOperationException("No reviewed preset for this class/job. Blue Mage is not included.");
     private IEnumerable<JobPreset> Baselines(uint job)=>all?pack.Jobs:[Current(job)];
-    private IEnumerable<JobPreset> Selected(uint job)=>Baselines(job).Select(p=>HotbarTools.Variants.Resolve(p,config.Variants.GetValueOrDefault(p.Job)??new()));
+    private IEnumerable<JobPreset> Selected(uint job)=>Baselines(job).Select(p=>HotbarTools.Variants.Resolve(p,config.Automation));
     private void DrawVariants()
     {
-        ImGui.Separator();ImGui.TextWrapped("Job variants — independent switches, reviewed per job");
-        var job=objects.LocalPlayer?.ClassJob.RowId??0;
-        var presets=all?pack.Jobs:pack.Jobs.Where(p=>p.JobId==job||p.BaseClasses.Contains(job));
-        foreach(var preset in presets)
+        ImGui.Separator();ImGui.TextUnformatted("Automation");
+        var selection=config.Automation;
+        Toggle("Auto burst",selection.AutoBurst,v=>selection.AutoBurst=v);
+        Toggle("Auto mitigation",selection.AutoMitigation,v=>selection.AutoMitigation=v);
+        Toggle("Auto job mechanics",selection.AutoMechanics,v=>selection.AutoMechanics=v);
+        ImGui.TextWrapped("These global selections apply to the current class/job or all supported classes/jobs using the scope above. Preview and apply to update hotbars and Wrath settings.");
+        void Toggle(string label,bool value,Action<bool> set)
         {
-            if(preset.AutoBurst==null && preset.AutoMitigation==null && preset.AutoMechanics==null && !preset.MechanicsAlreadyAutomatic)
-            { if(!all)ImGui.TextWrapped(preset.Job+": variants not reviewed yet; current curated setup is preserved.");continue; }
-            if(!config.Variants.TryGetValue(preset.Job,out var selection))config.Variants[preset.Job]=selection=new();
-            ImGui.PushID(preset.Job);ImGui.TextUnformatted(preset.Job);
-            if(preset.OmittedActions.Length>0 && ImGui.TreeNode("Twelve-slot usage and omissions"))
-            {
-                ImGui.TextWrapped(preset.Usage);
-                ImGui.TextWrapped("Not on this page: "+string.Join(", ",preset.OmittedActions)+". Access these through Actions & Traits or customize the layout.");
-                ImGui.TreePop();
-            }
-            Toggle("Auto burst",preset.AutoBurst,selection.AutoBurst,v=>selection.AutoBurst=v);
-            Toggle("Auto mitigation",preset.AutoMitigation,selection.AutoMitigation,v=>selection.AutoMitigation=v);
-            if(preset.MechanicsAlreadyAutomatic)
-            {
-                var mechanics=selection.AutoMechanics;
-                if(ImGui.Checkbox("Auto job mechanics",ref mechanics)){selection.AutoMechanics=mechanics;ClearPreview();pi.SavePluginConfig(config);}
-                ImGui.TextWrapped("No additional change for this job: "+preset.MechanicsDescription);
-            }
-            else Toggle("Auto job mechanics",preset.AutoMechanics,selection.AutoMechanics,v=>selection.AutoMechanics=v);
-            ImGui.PopID();
-        }
-        ImGui.TextWrapped("Off restores the existing curated behavior. These options select actions on your button presses, not hands-free rotation.");
-        void Toggle(string label,PresetVariant? variant,bool value,Action<bool> set)
-        {
-            ImGui.BeginDisabled(variant==null);
             if(ImGui.Checkbox(label,ref value)){set(value);ClearPreview();pi.SavePluginConfig(config);}
-            ImGui.EndDisabled();
-            if(variant!=null)ImGui.TextWrapped(variant.Description);
         }
     }
     private void ClearPreview(){hotbarPreview=null;wrathPreview=null;routePreview=null;routeOriginal=null;layoutSummary.Clear();}
@@ -237,7 +200,7 @@ public sealed class Plugin : IDalamudPlugin
                     wrathPreview=WrathMerge.Merge(JsonNode.Parse(wrathOriginal)!.AsObject(),Selected(job),shared?pack.SharedSettings:null);
                     previewScope+=(shared?" + global targeting/role settings":all?"; global targeting preserved":"; other jobs/global targeting preserved");
                     previewScope+=string.Join("",Baselines(job).Where(p=>p.AutoBurst!=null||p.AutoMitigation!=null).Select(p=>{
-                        var v=config.Variants.GetValueOrDefault(p.Job)??new();
+                        var v=config.Automation;
                         return $"; {p.Job} burst {(v.AutoBurst?"auto":"baseline")}, mitigation {(v.AutoMitigation?"auto":"baseline")}, mechanics {(v.AutoMechanics?"auto":"baseline")}{(p.MechanicsAlreadyAutomatic?" (already covered)":"")}";
                     }));
                     previewScope+=WrathLoaded?"; live Wrath commands (no unload)":"; unloaded configuration write";

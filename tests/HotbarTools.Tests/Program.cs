@@ -216,4 +216,13 @@ Test("every preset-only variant transition models Wrath command side effects",()
         }
     }
 });
+Test("global automation selection persists without per-job selections",()=>{
+    var c=new JobSetup.Config{Automation=new(){AutoBurst=true,AutoMitigation=false,AutoMechanics=true}};
+    var json=Newtonsoft.Json.JsonConvert.SerializeObject(c);
+    var restored=Newtonsoft.Json.JsonConvert.DeserializeObject<JobSetup.Config>(json)!;
+    Equal(restored.Automation.AutoBurst,true);Equal(restored.Automation.AutoMitigation,false);Equal(restored.Automation.AutoMechanics,true);
+    Equal(json.Contains("Variants"),false);
+    var legacy=Newtonsoft.Json.JsonConvert.DeserializeObject<JobSetup.Config>("""{"Variants":{"GNB":{"AutoBurst":true}},"CompactKeyboard":false}""")!;
+    Equal(legacy.Automation.AutoBurst,false);Equal(legacy.CompactKeyboard,false);
+});
 Console.WriteLine($"{count} tests passed.");

@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
-  <ItemGroup><Compile Include="../../common/Models.cs" Link="Models.cs" /><None Include="../../job-setup/JobSetup/presets.json" Link="presets.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><Compile Include="../../job-setup/JobSetup/Config.cs" Link="JobSetupConfig.cs" /><Compile Include="../../common/Models.cs" Link="Models.cs" /><None Include="../../job-setup/JobSetup/presets.json" Link="presets.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Compile Include="../../hotbar-sync/HotbarBridge/BridgeConfig.cs" Link="BridgeConfig.cs" /><PackageReference Include="Newtonsoft.Json" Version="13.0.3" /></ItemGroup>
 </Project>
