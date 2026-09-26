@@ -29,7 +29,7 @@ public sealed class SyncController : IDisposable
     private readonly IPluginLog log;
     private BridgeConfig config;
     private BridgeState state=new();
-    private string character="", context="", message="Sync is off. Preview regular-to-cross initialization first.";
+    private string character="", context="", message="Mapped hotbars are monitored continuously while live sync is enabled.";
     private DateTime stableAfter,nextTick,observedAt;
     private string observed="";
     private bool external;
