@@ -1,0 +1,30 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Searing Light. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      17000,
+      17017,
+      17049,
+      17053
+    ],
+    "Disable": [
+      17041,
+      17066
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Gem/demi sequencing already runs automatically. Astral Flow stays for movement and targeted Rekindle.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "AutoBurst": {
+    "Description": "No additional change: this healer already uses automatic offensive cooldowns; healing remains the priority.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMitigation": {
+    "Description": "Enables Kerachole and conditional Holos for detected raidwide damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      14069,
+      14071,
+      14072
+    ],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Addersgall and Rhizomata are already handled. Kardia remains manual: its automatic resolver does not implement the agreed focus-target override. Pneuma remains deliberate.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

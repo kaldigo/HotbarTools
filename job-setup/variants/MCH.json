@@ -1,0 +1,25 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Wildfire on ST. Continue pressing ST/AoE; scripted openers stay off. Heat Blast stays as the manual AoE burst route; Wildfire automation is ST-only. Flamethrower remains manual.",
+    "Enable": [
+      8100,
+      8108
+    ],
+    "Disable": [
+      8001
+    ],
+    "EmptySlots": []
+  },
+  "AutoMitigation": {
+    "Description": "No additional change: conditional Tactician is already enabled through ST. Dismantle stays manual on the shared defense button. In the pinned Wrath version its advanced ST automation requires an existing Dismantled duration above the configured threshold, so it cannot reliably initiate protection. Keep manual defense for planned timing and AoE.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Heat, battery and tools are already handled. Heat Blast stays as the manual AoE burst route; Wildfire automation is ST-only. Flamethrower remains manual.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

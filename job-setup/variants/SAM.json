@@ -1,0 +1,49 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Ikishoten. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      15003,
+      15011,
+      15012,
+      15103,
+      15108,
+      15115
+    ],
+    "Disable": [
+      15002,
+      15102
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      15003,
+      15095
+    ],
+    "Disable": [
+      15002
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Enables Meikyo Shisui through ST/AoE. ",
+    "Enable": [
+      15003,
+      15011,
+      15018,
+      15103,
+      15114,
+      15115
+    ],
+    "Disable": [
+      15002,
+      15102
+    ],
+    "EmptySlots": [
+      6
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Technical Step initiation. Continue pressing ST/AoE; scripted openers stay off. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged.",
+    "Enable": [
+      4010,
+      4018,
+      4040,
+      4045
+    ],
+    "Disable": [
+      4001,
+      4002,
+      4070,
+      4071,
+      4072,
+      4073,
+      4090,
+      4091,
+      4092,
+      4093
+    ],
+    "EmptySlots": [
+      3
+    ],
+    "Settings": {
+      "CustomIntValuesV6": {
+        "DNC_ST_ADV_TS_IncludeTS": 1,
+        "DNC_AoE_Adv_TS_IncludeTS": 1
+      }
+    }
+  },
+  "AutoMitigation": {
+    "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Standard Step, Flourish and procs are already handled. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

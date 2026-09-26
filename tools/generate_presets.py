@@ -23,6 +23,7 @@ for job,jid in ids.items():
 for job in jobs:
  variant=root/'job-setup/variants'/f"{job['Job']}.json"
  if variant.exists():job.update(json.loads(variant.read_text(encoding='utf-8-sig')))
+jobs.extend(json.loads(p.read_text(encoding='utf-8-sig')) for p in sorted((root/'job-setup/noncombat').glob('*.json')))
 s=json.loads((wrath/'shared.json').read_text())
 shared={k:s[k] for k in ('EnabledActionsV6','CustomHealStack','RaiseStack')}
 # Explicit shared behavior keys only, not every original UI preference/metadata field.

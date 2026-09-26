@@ -1,0 +1,39 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Fight or Flight. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      11002,
+      11003,
+      11015,
+      11016
+    ],
+    "Disable": [
+      11000,
+      11001
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables pack Rampart, Sentinel/Guardian and Reprisal; detected boss tankbuster Rampart and Sentinel/Guardian. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      11086,
+      11087,
+      11088,
+      11089,
+      11095,
+      11099,
+      11101,
+      11102
+    ],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Oath support stays targeted; damage and gauge follow-ups already run through ST/AoE.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

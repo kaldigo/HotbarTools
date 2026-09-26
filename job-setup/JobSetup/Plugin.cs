@@ -78,7 +78,7 @@ public sealed class Plugin : IDalamudPlugin
     {
         WrathWritePolicy.Validate(pi.InstalledPlugins.Any(p=>p.InternalName=="WrathCombo"),WrathLoaded);
     }
-    private JobPreset Current(uint id)=>pack.Jobs.FirstOrDefault(j=>j.JobId==id || j.BaseClasses.Contains(id))??throw new InvalidOperationException("No reviewed preset for this class/job. Crafting, gathering and Blue Mage are not included yet.");
+    private JobPreset Current(uint id)=>pack.Jobs.FirstOrDefault(j=>j.JobId==id || j.BaseClasses.Contains(id))??throw new InvalidOperationException("No reviewed preset for this class/job. Blue Mage is not included.");
     private IEnumerable<JobPreset> Baselines(uint job)=>all?pack.Jobs:[Current(job)];
     private IEnumerable<JobPreset> Selected(uint job)=>Baselines(job).Select(p=>HotbarTools.Variants.Resolve(p,config.Variants.GetValueOrDefault(p.Job)??new()));
     private void DrawVariants()
@@ -92,6 +92,12 @@ public sealed class Plugin : IDalamudPlugin
             { if(!all)ImGui.TextWrapped(preset.Job+": variants not reviewed yet; current curated setup is preserved.");continue; }
             if(!config.Variants.TryGetValue(preset.Job,out var selection))config.Variants[preset.Job]=selection=new();
             ImGui.PushID(preset.Job);ImGui.TextUnformatted(preset.Job);
+            if(preset.OmittedActions.Length>0 && ImGui.TreeNode("Twelve-slot usage and omissions"))
+            {
+                ImGui.TextWrapped(preset.Usage);
+                ImGui.TextWrapped("Not on this page: "+string.Join(", ",preset.OmittedActions)+". Access these through Actions & Traits or customize the layout.");
+                ImGui.TreePop();
+            }
             Toggle("Auto burst",preset.AutoBurst,selection.AutoBurst,v=>selection.AutoBurst=v);
             Toggle("Auto mitigation",preset.AutoMitigation,selection.AutoMitigation,v=>selection.AutoMitigation=v);
             if(preset.MechanicsAlreadyAutomatic)
@@ -103,7 +109,7 @@ public sealed class Plugin : IDalamudPlugin
             else Toggle("Auto job mechanics",preset.AutoMechanics,selection.AutoMechanics,v=>selection.AutoMechanics=v);
             ImGui.PopID();
         }
-        ImGui.TextWrapped("Off restores the existing curated behavior. Only reviewed variants change; other jobs keep their baseline. These options select actions on your button presses, not hands-free rotation.");
+        ImGui.TextWrapped("Off restores the existing curated behavior. These options select actions on your button presses, not hands-free rotation.");
         void Toggle(string label,PresetVariant? variant,bool value,Action<bool> set)
         {
             ImGui.BeginDisabled(variant==null);
@@ -120,7 +126,7 @@ public sealed class Plugin : IDalamudPlugin
         if(ImGui.Begin("Job Setup",ref visible))
         {
             ImGui.BeginDisabled(lifecycleTask!=null);
-            ImGui.TextWrapped("21 reviewed combat jobs and nine base-class aliases. No crafting/gathering presets yet. Applying is deliberate, not continuous.");
+            ImGui.TextWrapped("21 combat jobs, eight crafters, Miner, Botanist, Fisher and nine base-class aliases. Applying is deliberate, not continuous.");
             if(ImGui.Checkbox("All supported classes/jobs (otherwise current)",ref all))ClearPreview();
             ImGui.TextWrapped(message);
             if(ImGui.CollapsingHeader("Hotbar destinations"))
@@ -218,7 +224,7 @@ public sealed class Plugin : IDalamudPlugin
                 wrathCycle=WrathLifecycle.Resolve();actionAfterUnload=action;restoringWrath=false;
                 lifecycleTask=wrathCycle.UnloadAsync();message="Waiting for Wrath to unload...";return;
             }
-            if(action!=3){ClearPreview();previewJob=job;previewIdentity=Character;previewScope=all?"All 21 jobs plus nine base-class layouts":"Current class/job";}
+            if(action!=3){ClearPreview();previewJob=job;previewIdentity=Character;previewScope=all?"All 32 presets plus nine base-class layouts":"Current class/job";}
             switch(action)
             {
                 case 1: PreviewHotbars(job);break;
@@ -273,7 +279,7 @@ public sealed class Plugin : IDalamudPlugin
                 routeOriginal[job]=old.GetValueOrDefault(job)??new();
         }
         var edits=new Dictionary<(uint,Position),SlotEdit>();
-        actions ??= new ActionCatalog(data.GetExcelSheet<Sheets.Action>(ClientLanguage.English));
+        actions ??= new ActionCatalog(data.GetExcelSheet<Sheets.Action>(ClientLanguage.English),data.GetExcelSheet<Sheets.CraftAction>(ClientLanguage.English));
         foreach(var preset in Selected(current))
         {
             var layout=KeyboardLayout.Compile(preset,config.CompactKeyboard);
@@ -290,8 +296,7 @@ public sealed class Plugin : IDalamudPlugin
                 foreach(var source in KeyboardLayout.Positions)
                 {
                     var slot=preset.Slots.SingleOrDefault(s=>new Position(s.RegularBar-1,s.RegularSlot-1)==source);
-                    var id=slot==null?0:actions.Resolve(preset.Job,slot.Action);
-                    var value=id==0?default:new SlotValue(1,id);
+                    var value=slot==null?default:actions.ResolveSlot(preset.Job,slot.Action);
                     var original=Remap(source);
                     var regular=Remap(layout[source]);
                     var destination=new Position(config.CrossSet+9,defaults.Single(m=>m.Regular==source).Cross.Slot);
@@ -399,7 +404,14 @@ public sealed class Plugin : IDalamudPlugin
         }
         catch(Exception failure)
         {
-            try {foreach(var id in plan.Keys)Send(id,old.Contains(id));foreach(var id in plan.Keys)if(ReadLive(id)!=old.Contains(id))throw new InvalidOperationException("Wrath switch rollback failed; use the backup.");}
+            try
+            {
+                var restore=LivePresetPlan.Create(wrathPreview!,before)??throw new InvalidOperationException("No safe reverse command plan; use the backup.");
+                foreach(var (id,enabled) in restore)Send(id,enabled);
+                foreach(var id in plan.Keys)if(ReadLive(id)!=old.Contains(id))throw new InvalidOperationException("Wrath switch rollback failed; use the backup.");
+                var saved=JsonNode.Parse(File.ReadAllText(WrathPath))!["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+                if(!saved.SetEquals(old))throw new InvalidOperationException("Wrath did not persist the rollback; use the backup.");
+            }
             catch(Exception rollback){throw new AggregateException("Live update and rollback failed.",failure,rollback);}
             throw;
         }

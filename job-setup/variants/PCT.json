@@ -1,0 +1,35 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Starry Muse. Continue pressing ST/AoE; scripted openers stay off. Hammer Stamp stays for deliberate spending and movement; Tempera stays for manual party shielding.",
+    "Enable": [
+      20005,
+      20021,
+      20040,
+      20054
+    ],
+    "Disable": [
+      20000,
+      20001
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables conditional Tempera Coat through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      20005,
+      20071
+    ],
+    "Disable": [
+      20000
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Motifs, palette and hammer follow-ups are already handled. Hammer Stamp stays for deliberate spending and movement; Tempera stays for manual party shielding.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

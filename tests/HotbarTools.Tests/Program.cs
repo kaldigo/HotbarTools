@@ -27,7 +27,7 @@ Test("merge leaves original untouched",()=>{WrathMerge.Merge(original,[job],null
 Test("shared options require explicit argument",()=>{var shared=JsonNode.Parse("""{"UseCustomHealStack":true}""")!.AsObject();Equal(WrathMerge.Merge(original,[job],null).ContainsKey("UseCustomHealStack"),false);Equal(WrathMerge.Merge(original,[job],shared)["UseCustomHealStack"]!.GetValue<bool>(),true);});
 Test("wrong Wrath schema rejected",()=>Throws(()=>WrathMerge.Merge(new JsonObject{["Version"]=7},[job],null)));
 var pack=JsonSerializer.Deserialize<PresetPack>(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"presets.json")))!;
-Test("21 jobs and 9 base classes",()=>{Equal(pack.Jobs.Count,21);Equal(pack.Jobs.Sum(j=>j.BaseClasses.Length),9);Equal(pack.Jobs.SelectMany(j=>j.BaseClasses).Distinct().Count(),9);});
+Test("32 presets and 9 base classes",()=>{Equal(pack.Jobs.Count,32);Equal(pack.Jobs.Sum(j=>j.BaseClasses.Length),9);Equal(pack.Jobs.SelectMany(j=>j.BaseClasses).Distinct().Count(),9);});
 Test("preset mappings match Bridge defaults",()=>{foreach(var j in pack.Jobs)foreach(var s in j.Slots){var map=Defaults.Maps().Single(m=>m.Applies(j.JobId)&&m.Regular==new Position(s.RegularBar-1,s.RegularSlot-1));Equal(map.Cross,new Position(10,s.CrossSlot-1));Equal(map.SharedAcrossJobs,false);}});
 Test("all preset targets are unique",()=>{foreach(var j in pack.Jobs){Equal(j.Slots.Select(s=>(s.RegularBar,s.RegularSlot)).Distinct().Count(),j.Slots.Length);Equal(j.Slots.Select(s=>s.CrossSlot).Distinct().Count(),j.Slots.Length);}});
 Test("no shared utility is overwritten by job presets",()=>{foreach(var j in pack.Jobs)foreach(var s in j.Slots){Equal(s.RegularBar==1&&s.RegularSlot>=9,false);Equal(s.CrossSlot is >=5 and <=8,false);}});
@@ -51,7 +51,7 @@ Test("saved mappings replace defaults on every reload",()=>{
     config.Maps.RemoveAt(1);
     for(var i=0;i<3;i++) {
         config=Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>(Newtonsoft.Json.JsonConvert.SerializeObject(config))!;
-        Equal(config.Maps.Count,43);Equal(config.Maps[0].Label,"Custom label");Equal(config.Maps[0].Enabled,false);
+        Equal(config.Maps.Count,55);Equal(config.Maps[0].Label,"Custom label");Equal(config.Maps[0].Enabled,false);
         Equal(config.Revision,7);Equal(config.Enabled,true);Defaults.Validate(config.Maps);
     }
 });
@@ -79,7 +79,7 @@ Test($"GNB independent variants burst={burst} mitigation={mit} mechanics={mechan
     Equal(merged["EnabledActionsV6"]!.AsArray().Any(n=>n!.GetValue<int>()==999999),true);
 });
 Test("switches off restore exact baseline",()=>Equal(JsonSerializer.Serialize(Variants.Resolve(gnb,new())),baselineJson));
-Test("unreviewed variants rejected",()=>Throws(()=>Variants.Resolve(pack.Jobs.Single(j=>j.Job=="WAR"),new(){AutoBurst=true})));
+Test("unreviewed variants rejected",()=>Throws(()=>Variants.Resolve(new JobPreset{Job="unreviewed"},new(){AutoBurst=true})));
 Test("paired apply writes hotbars then settings",()=>{
     var calls="";PairedApply.Run(()=>calls+="H",()=>calls+="S",()=>calls+="R");Equal(calls,"HS");
 });
@@ -108,7 +108,7 @@ Test("compaction matrix preserves every remaining function for all jobs",()=>{
         Equal(layout[new(0,0)],new Position(0,0));Equal(layout[new(0,1)],new Position(0,1));
         var healer=Defaults.IsHealer(p.JobId);var tank=p.JobId is 19 or 21 or 32 or 37;
         if(tank||healer){Equal(layout[new(1,11)],new Position(1,11));Equal(layout[new(1,10)],new Position(1,10));}
-        if(!healer && p.Slots.Single(x=>x.LogicalSlot==4).Action!="Empty")Equal(layout[new(1,0)],new Position(1,0));
+        if(Defaults.IsCombat(p.JobId) && !healer && p.Slots.Single(x=>x.LogicalSlot==4).Action!="Empty")Equal(layout[new(1,0)],new Position(1,0));
         var active=p.Slots.Where(x=>x.Action!="Empty").ToArray();
         Equal(active.Select(x=>layout[new(x.RegularBar-1,x.RegularSlot-1)]).Distinct().Count(),active.Length);
         foreach(var job in new[]{p.JobId}.Concat(p.BaseClasses))
@@ -141,7 +141,7 @@ Test("shared routes and colliding routes are rejected",()=>{
 Test("saved compaction routes reload without changing positions",()=>{
     var c=new HotbarBridge.BridgeConfig();c.JobRoutes[37]=new(){{"Combat-0",new(0,0)}};
     var result=Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>(Newtonsoft.Json.JsonConvert.SerializeObject(c))!;
-    Equal(result.JobRoutes[37]["Combat-0"],new Position(0,0));Equal(result.Maps.Count,44);
+    Equal(result.JobRoutes[37]["Combat-0"],new Position(0,0));Equal(result.Maps.Count,56);
 });
 Test("complete layout backup retains routing and assignments",()=>{
     var backup=new LayoutBackup {Edits=[new(37,new(0,3),a,b)],Routes=new(){{37,new(){{"Combat-3",new(1,0)}}}}};
@@ -163,5 +163,57 @@ Test("live plan refuses custom values and unknown preset changes",()=>{
     var after=(JsonObject)before.DeepClone();after["CustomIntValuesV6"]!["GNB_ST_NoMercyStop"]=123;
     Equal(LivePresetPlan.Create(before,after)==null,true);
     after=(JsonObject)before.DeepClone();after["EnabledActionsV6"]!.AsArray().Add(999999);Equal(LivePresetPlan.Create(before,after)==null,true);
+});
+Test("noncombat migration preserves custom maps and is idempotent",()=>{
+    var c=new HotbarBridge.BridgeConfig{Maps=Defaults.Maps().Where(m=>m.Profile!="Noncombat").ToList()};
+    c.Maps[0].Label="User label";c.Revision=8;
+    Equal(c.AddNoncombatDefaults(),true);Equal(c.Maps.Count,56);Equal(c.Maps[0].Label,"User label");Equal(c.Revision,8);
+    Equal(c.AddNoncombatDefaults(),false);Defaults.Validate(c.Maps);
+    var empty=new HotbarBridge.BridgeConfig{Maps=[]};empty.AddNoncombatDefaults();Equal(empty.Maps.Count,0);
+    var custom=new HotbarBridge.BridgeConfig{Maps=[new(){Id="custom",Profile="All",RegularBar=1,RegularSlot=1,CrossSlot=16}]};
+    custom.AddNoncombatDefaults();Equal(custom.Maps[0].Id,"custom");Defaults.Validate(custom.Maps);
+});
+Test("all noncombat layouts use twelve slots and document omissions",()=>{
+    foreach(var p in pack.Jobs.Where(p=>p.JobId is >=8 and <=18)){
+        Equal(p.Slots.Length,12);Equal(p.OmittedActions.Length>0,true);Equal(p.Usage.Length>50,true);
+    }
+});
+Test("all variants preserve baseline and generate valid routes",()=>{
+    foreach(var p in pack.Jobs)for(var bits=0;bits<8;bits++){
+        var original=JsonSerializer.Serialize(p);
+        var v=Variants.Resolve(p,new(){AutoBurst=(bits&1)!=0,AutoMitigation=(bits&2)!=0,AutoMechanics=(bits&4)!=0});
+        var ids=v.Settings["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+        foreach(var id in ids){
+            if(LivePresetPlan.Parents.GetValueOrDefault(id,[]).Any(parent=>!ids.Contains(parent)))throw new Exception(p.Job+" missing parent");
+            if(LivePresetPlan.Conflicts.GetValueOrDefault(id,[]).Any(ids.Contains))throw new Exception(p.Job+" conflicting features");
+        }
+        var route=KeyboardLayout.Compile(v,true);Equal(route.Values.Distinct().Count(),12);
+        Equal(JsonSerializer.Serialize(p),original);
+    }
+});
+Test("every preset-only variant transition models Wrath command side effects",()=>{
+    foreach(var p in pack.Jobs){
+        var states=Enumerable.Range(0,8).Select(bits=>WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},[Variants.Resolve(p,new(){AutoBurst=(bits&1)!=0,AutoMitigation=(bits&2)!=0,AutoMechanics=(bits&4)!=0})],null)).ToArray();
+        foreach(var before in states)foreach(var after in states){
+            var x=(JsonObject)before.DeepClone();var y=(JsonObject)after.DeepClone();x.Remove("EnabledActionsV6");y.Remove("EnabledActionsV6");
+            var plan=LivePresetPlan.Create(before,after);
+            if(!JsonNode.DeepEquals(x,y)){Equal(plan==null,true);continue;}
+            if(plan==null)throw new Exception(p.Job+" should support preset-only transition");
+            var ids=before["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+            void Enable(int id){ids.Add(id);foreach(var parent in LivePresetPlan.Parents.GetValueOrDefault(id,[]))Enable(parent);ids.ExceptWith(LivePresetPlan.Conflicts.GetValueOrDefault(id,[]));}
+            var initial=ids.ToHashSet();
+            var reverse=LivePresetPlan.Create(after,before)??throw new Exception("Missing reverse plan");
+            // Every partial command failure must be reversible, including implicit parents/conflicts.
+            for(var prefix=0;prefix<=plan.Count;prefix++){
+                ids=initial.ToHashSet();
+                foreach(var (id,on) in plan.Take(prefix)){if(on)Enable(id);else ids.Remove(id);}
+                foreach(var (id,on) in reverse){if(on)Enable(id);else ids.Remove(id);}
+                Equal(ids.SetEquals(initial),true);
+            }
+            ids=initial.ToHashSet();
+            foreach(var (id,on) in plan){if(on)Enable(id);else ids.Remove(id);}
+            Equal(ids.SetEquals(after["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>())),true);
+        }
+    }
 });
 Console.WriteLine($"{count} tests passed.");

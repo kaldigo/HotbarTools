@@ -1,0 +1,39 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Berserk/Inner Release. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      18002,
+      18003,
+      18016,
+      18019
+    ],
+    "Disable": [
+      18000,
+      18001
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables pack Rampart, Vengeance/Damnation and Reprisal; detected boss tankbuster Rampart and Vengeance/Damnation. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      18131,
+      18132,
+      18133,
+      18135,
+      18137,
+      18142,
+      18148,
+      18149
+    ],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Infuriate, gauge spending and damage follow-ups already run through ST/AoE. Targeted support stays manual.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

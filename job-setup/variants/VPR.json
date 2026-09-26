@@ -1,0 +1,51 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Serpent’s Ire. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      30001,
+      30005,
+      30101,
+      30104
+    ],
+    "Disable": [
+      30000,
+      30100,
+      30209,
+      30210
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      30001,
+      30094
+    ],
+    "Disable": [
+      30000,
+      30209,
+      30210
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Enables Reawaken through ST/AoE. ",
+    "Enable": [
+      30001,
+      30011,
+      30101,
+      30110
+    ],
+    "Disable": [
+      30000,
+      30100,
+      30209,
+      30210
+    ],
+    "EmptySlots": [
+      6
+    ]
+  }
+}

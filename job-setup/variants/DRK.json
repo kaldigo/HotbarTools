@@ -1,0 +1,41 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Delirium and Living Shadow. Continue pressing ST/AoE; scripted openers stay off. Carve and Spit stays available because its selector also provides manual interrupt access.",
+    "Enable": [
+      5010,
+      5013,
+      5015,
+      5016,
+      5050,
+      5051,
+      5054,
+      5055
+    ],
+    "Disable": [
+      5001,
+      5002
+    ],
+    "EmptySlots": []
+  },
+  "AutoMitigation": {
+    "Description": "Enables pack Rampart, Shadow Wall/Shadowed Vigil and Reprisal; detected boss tankbuster Rampart and Shadow Wall/Shadowed Vigil. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      5300,
+      5301,
+      5302,
+      5303,
+      5309,
+      5313,
+      5315,
+      5316
+    ],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Blood/MP spending and damage follow-ups already run through ST/AoE. Targeted TBN stays manual.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

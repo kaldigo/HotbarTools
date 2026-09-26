@@ -1,0 +1,51 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Raging Strikes, Battle Voice, Barrage and Radiant Finale. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      3009,
+      3015,
+      3017,
+      3032
+    ],
+    "Disable": [
+      3035,
+      3036
+    ],
+    "EmptySlots": [
+      3
+    ],
+    "Settings": {
+      "CustomBoolArrayValuesV6": {
+        "BRD_Adv_Buffs_Options": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "BRD_AoE_Adv_Buffs_Options": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    }
+  },
+  "AutoMitigation": {
+    "Description": "Enables Nature’s Minne through ST, alongside the existing conditional Troubadour automation. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      3009,
+      3070
+    ],
+    "Disable": [
+      3036
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "All three songs cycle through ST/AoE; DoTs and procs already run automatically.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

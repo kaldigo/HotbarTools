@@ -1,0 +1,46 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Arcane Circle. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      12001,
+      12006,
+      12101,
+      12105
+    ],
+    "Disable": [
+      12000,
+      12100
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables Feint and conditional Arcane Crest through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      12001,
+      12022,
+      12095
+    ],
+    "Disable": [
+      12000
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Enables Enshroud through ST/AoE. ",
+    "Enable": [
+      12001,
+      12010,
+      12101,
+      12109
+    ],
+    "Disable": [
+      12000,
+      12100
+    ],
+    "EmptySlots": [
+      6
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Battle Litany and Lance Charge. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      6100,
+      6102,
+      6103,
+      6104,
+      6201,
+      6202,
+      6203,
+      6204
+    ],
+    "Disable": [
+      6001,
+      6200
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      6100,
+      6195
+    ],
+    "Disable": [
+      6001
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Enables Geirskogul/Life of the Dragon through ST/AoE. ",
+    "Enable": [
+      6100,
+      6105,
+      6116,
+      6201,
+      6205,
+      6216
+    ],
+    "Disable": [
+      6001,
+      6200
+    ],
+    "EmptySlots": [
+      6
+    ]
+  }
+}

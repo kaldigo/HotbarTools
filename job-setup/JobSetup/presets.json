@@ -357,6 +357,43 @@
           "PLD_ST_AdvancedMode": false,
           "PLD_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Fight or Flight. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          11002,
+          11003,
+          11015,
+          11016
+        ],
+        "Disable": [
+          11000,
+          11001
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables pack Rampart, Sentinel/Guardian and Reprisal; detected boss tankbuster Rampart and Sentinel/Guardian. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          11086,
+          11087,
+          11088,
+          11089,
+          11095,
+          11099,
+          11101,
+          11102
+        ],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Oath support stays targeted; damage and gauge follow-ups already run through ST/AoE.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -731,6 +768,43 @@
             false
           ]
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Berserk/Inner Release. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          18002,
+          18003,
+          18016,
+          18019
+        ],
+        "Disable": [
+          18000,
+          18001
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables pack Rampart, Vengeance/Damnation and Reprisal; detected boss tankbuster Rampart and Vengeance/Damnation. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          18131,
+          18132,
+          18133,
+          18135,
+          18137,
+          18142,
+          18148,
+          18149
+        ],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Infuriate, gauge spending and damage follow-ups already run through ST/AoE. Targeted support stays manual.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -1126,6 +1200,45 @@
           "DRK_ST_Adv": false,
           "DRK_AoE_Adv": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Delirium and Living Shadow. Continue pressing ST/AoE; scripted openers stay off. Carve and Spit stays available because its selector also provides manual interrupt access.",
+        "Enable": [
+          5010,
+          5013,
+          5015,
+          5016,
+          5050,
+          5051,
+          5054,
+          5055
+        ],
+        "Disable": [
+          5001,
+          5002
+        ],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "Enables pack Rampart, Shadow Wall/Shadowed Vigil and Reprisal; detected boss tankbuster Rampart and Shadow Wall/Shadowed Vigil. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          5300,
+          5301,
+          5302,
+          5303,
+          5309,
+          5313,
+          5315,
+          5316
+        ],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Blood/MP spending and damage follow-ups already run through ST/AoE. Targeted TBN stays manual.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -1889,6 +2002,28 @@
             true
           ]
         }
+      },
+      "AutoBurst": {
+        "Description": "No additional change: this healer already uses automatic offensive cooldowns; healing remains the priority.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "Enables Asylum and Temperance for detected raidwide damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          19220,
+          19221,
+          19222
+        ],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Lily healing/damage follow-ups already run through the existing buttons. Bell placement and early release stay manual.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -2233,6 +2368,36 @@
           "SCH_ST_Heal": false,
           "SCH_AoE_Heal": false
         }
+      },
+      "AutoBurst": {
+        "Description": "No additional change: this healer already uses automatic offensive cooldowns; healing remains the priority.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "Enables Sacred Soil for detected raidwide damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          16059,
+          16065
+        ],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Enables conditional Dissipation through single-target and party healing. Conditional Dissipation may dismiss the fairy to replenish Aetherflow during healing. Keep the button for deliberate timing; normal fairy following remains the plan.",
+        "Enable": [
+          16018,
+          16023,
+          16040,
+          16041
+        ],
+        "Disable": [
+          16074,
+          16084,
+          16085
+        ],
+        "EmptySlots": []
       }
     },
     {
@@ -2609,6 +2774,28 @@
           "AST_ST_Heals": false,
           "AST_AoE_Heals": false
         }
+      },
+      "AutoBurst": {
+        "Description": "No additional change: this healer already uses automatic offensive cooldowns; healing remains the priority.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "Enables Collective Unconscious and Neutral Sect for detected raidwide damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          1075,
+          1076,
+          1077
+        ],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Draw/play, Lord and Earthly Star are already automated. Synastry and Macrocosmos timing stay manual.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -2945,6 +3132,28 @@
           "SGE_ST_Advanced_Heal": false,
           "SGE_AoE_Advanced_Heal": false
         }
+      },
+      "AutoBurst": {
+        "Description": "No additional change: this healer already uses automatic offensive cooldowns; healing remains the priority.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "Enables Kerachole and conditional Holos for detected raidwide damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          14069,
+          14071,
+          14072
+        ],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Addersgall and Rhizomata are already handled. Kardia remains manual: its automatic resolver does not implement the agreed focus-target override. Pneuma remains deliberate.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -3126,6 +3335,53 @@
           "MNK_ST_AdvancedMode": false,
           "MNK_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Brotherhood and Riddle of Fire. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          9005,
+          9008,
+          9009,
+          9011,
+          9027,
+          9029,
+          9030,
+          9032
+        ],
+        "Disable": [
+          9003,
+          9004
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          9005,
+          9095
+        ],
+        "Disable": [
+          9004
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Enables Perfect Balance through ST/AoE. ",
+        "Enable": [
+          9005,
+          9013,
+          9027,
+          9034
+        ],
+        "Disable": [
+          9003,
+          9004
+        ],
+        "EmptySlots": [
+          6
+        ]
       }
     },
     {
@@ -3341,6 +3597,55 @@
           "DRG_ST_AdvancedMode": false,
           "DRG_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Battle Litany and Lance Charge. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          6100,
+          6102,
+          6103,
+          6104,
+          6201,
+          6202,
+          6203,
+          6204
+        ],
+        "Disable": [
+          6001,
+          6200
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          6100,
+          6195
+        ],
+        "Disable": [
+          6001
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Enables Geirskogul/Life of the Dragon through ST/AoE. ",
+        "Enable": [
+          6100,
+          6105,
+          6116,
+          6201,
+          6205,
+          6216
+        ],
+        "Disable": [
+          6001,
+          6200
+        ],
+        "EmptySlots": [
+          6
+        ]
       }
     },
     {
@@ -3574,6 +3879,53 @@
           "NIN_ST_AdvancedMode": false,
           "NIN_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Trick Attack and Mug upgrades. Continue pressing ST/AoE; scripted openers stay off. Hide stays for prepull mudra reset; Kassatsu stays for prepull use.",
+        "Enable": [
+          10002,
+          10003,
+          10006,
+          10007,
+          10022,
+          10023
+        ],
+        "Disable": [
+          10000,
+          10001
+        ],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          10002,
+          10020
+        ],
+        "Disable": [
+          10000
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Enables Kassatsu, Ten Chi Jin and Meisui during combat through ST/AoE. Hide stays for prepull mudra reset; Kassatsu stays for prepull use.",
+        "Enable": [
+          10002,
+          10003,
+          10010,
+          10011,
+          10013,
+          10026,
+          10027,
+          10029
+        ],
+        "Disable": [
+          10000,
+          10001
+        ],
+        "EmptySlots": [
+          8
+        ]
       }
     },
     {
@@ -3810,6 +4162,53 @@
           "SAM_ST_AdvancedMode": false,
           "SAM_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Ikishoten. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          15003,
+          15011,
+          15012,
+          15103,
+          15108,
+          15115
+        ],
+        "Disable": [
+          15002,
+          15102
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          15003,
+          15095
+        ],
+        "Disable": [
+          15002
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Enables Meikyo Shisui through ST/AoE. ",
+        "Enable": [
+          15003,
+          15011,
+          15018,
+          15103,
+          15114,
+          15115
+        ],
+        "Disable": [
+          15002,
+          15102
+        ],
+        "EmptySlots": [
+          6
+        ]
       }
     },
     {
@@ -4024,6 +4423,50 @@
           "RPR_ST_AdvancedMode": false,
           "RPR_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Arcane Circle. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          12001,
+          12006,
+          12101,
+          12105
+        ],
+        "Disable": [
+          12000,
+          12100
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables Feint and conditional Arcane Crest through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          12001,
+          12022,
+          12095
+        ],
+        "Disable": [
+          12000
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Enables Enshroud through ST/AoE. ",
+        "Enable": [
+          12001,
+          12010,
+          12101,
+          12109
+        ],
+        "Disable": [
+          12000,
+          12100
+        ],
+        "EmptySlots": [
+          6
+        ]
       }
     },
     {
@@ -4182,6 +4625,55 @@
         "CustomBoolValuesV6": {
           "VPR_ST_TrueNorthDynamicHoldCharge": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Serpent\u2019s Ire. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          30001,
+          30005,
+          30101,
+          30104
+        ],
+        "Disable": [
+          30000,
+          30100,
+          30209,
+          30210
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          30001,
+          30094
+        ],
+        "Disable": [
+          30000,
+          30209,
+          30210
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Enables Reawaken through ST/AoE. ",
+        "Enable": [
+          30001,
+          30011,
+          30101,
+          30110
+        ],
+        "Disable": [
+          30000,
+          30100,
+          30209,
+          30210
+        ],
+        "EmptySlots": [
+          6
+        ]
       }
     },
     {
@@ -4385,6 +4877,55 @@
           "BRD_ST_AdvMode": false,
           "BRD_AoE_AdvMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Raging Strikes, Battle Voice, Barrage and Radiant Finale. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          3009,
+          3015,
+          3017,
+          3032
+        ],
+        "Disable": [
+          3035,
+          3036
+        ],
+        "EmptySlots": [
+          3
+        ],
+        "Settings": {
+          "CustomBoolArrayValuesV6": {
+            "BRD_Adv_Buffs_Options": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "BRD_AoE_Adv_Buffs_Options": [
+              true,
+              true,
+              true,
+              true
+            ]
+          }
+        }
+      },
+      "AutoMitigation": {
+        "Description": "Enables Nature\u2019s Minne through ST, alongside the existing conditional Troubadour automation. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          3009,
+          3070
+        ],
+        "Disable": [
+          3036
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "All three songs cycle through ST/AoE; DoTs and procs already run automatically.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -4587,6 +5128,29 @@
           "MCH_ST_AdvancedMode": false,
           "MCH_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Wildfire on ST. Continue pressing ST/AoE; scripted openers stay off. Heat Blast stays as the manual AoE burst route; Wildfire automation is ST-only. Flamethrower remains manual.",
+        "Enable": [
+          8100,
+          8108
+        ],
+        "Disable": [
+          8001
+        ],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "No additional change: conditional Tactician is already enabled through ST. Dismantle stays manual on the shared defense button. In the pinned Wrath version its advanced ST automation requires an existing Dismantled duration above the configured threshold, so it cannot reliably initiate protection. Keep manual defense for planned timing and AoE.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Heat, battery and tools are already handled. Heat Blast stays as the manual AoE burst route; Wildfire automation is ST-only. Flamethrower remains manual.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -4850,6 +5414,48 @@
           0,
           0
         ]
+      },
+      "AutoBurst": {
+        "Description": "Enables Technical Step initiation. Continue pressing ST/AoE; scripted openers stay off. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged.",
+        "Enable": [
+          4010,
+          4018,
+          4040,
+          4045
+        ],
+        "Disable": [
+          4001,
+          4002,
+          4070,
+          4071,
+          4072,
+          4073,
+          4090,
+          4091,
+          4092,
+          4093
+        ],
+        "EmptySlots": [
+          3
+        ],
+        "Settings": {
+          "CustomIntValuesV6": {
+            "DNC_ST_ADV_TS_IncludeTS": 1,
+            "DNC_AoE_Adv_TS_IncludeTS": 1
+          }
+        }
+      },
+      "AutoMitigation": {
+        "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Standard Step, Flourish and procs are already handled. Improvisation and Curing Waltz remain manual; dance partner selection is unchanged.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -5067,6 +5673,46 @@
           "BLM_ST_AdvancedMode": false,
           "BLM_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Ley Lines. Continue pressing ST/AoE; scripted openers stay off. Ley Lines stays because the same button also supplies manual Retrace.",
+        "Enable": [
+          2100,
+          2103,
+          2200,
+          2202
+        ],
+        "Disable": [
+          2001,
+          2002,
+          2052,
+          2071
+        ],
+        "EmptySlots": []
+      },
+      "AutoMitigation": {
+        "Description": "Enables Manaward through ST for detected group damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          2100,
+          2199
+        ],
+        "Disable": [
+          2001,
+          2052,
+          2071
+        ],
+        "EmptySlots": [],
+        "Settings": {
+          "CustomIntValuesV6": {
+            "BLM_ST_ManawardTrigger": 2
+          }
+        }
+      },
+      "AutoMechanics": {
+        "Description": "Fire/ice and resource flow are already handled. Transpose stays for downtime.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -5288,6 +5934,34 @@
           "SMN_ST_Advanced_Combo": false,
           "SMN_AoE_Advanced_Combo": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Searing Light. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          17000,
+          17017,
+          17049,
+          17053
+        ],
+        "Disable": [
+          17041,
+          17066
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Gem/demi sequencing already runs automatically. Astral Flow stays for movement and targeted Rekindle.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -5544,6 +6218,36 @@
           "RDM_ST_DPS": false,
           "RDM_AoE_DPS": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Embolden and Manafication. Continue pressing ST/AoE; scripted openers stay off. ",
+        "Enable": [
+          13001,
+          13010,
+          13011,
+          13201,
+          13207,
+          13208
+        ],
+        "Disable": [
+          13000,
+          13200
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Mana and melee finishers are already handled. Vercure and Raise remain available.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
       }
     },
     {
@@ -5741,6 +6445,1612 @@
           "PCT_ST_AdvancedMode": false,
           "PCT_AoE_AdvancedMode": false
         }
+      },
+      "AutoBurst": {
+        "Description": "Enables Starry Muse. Continue pressing ST/AoE; scripted openers stay off. Hammer Stamp stays for deliberate spending and movement; Tempera stays for manual party shielding.",
+        "Enable": [
+          20005,
+          20021,
+          20040,
+          20054
+        ],
+        "Disable": [
+          20000,
+          20001
+        ],
+        "EmptySlots": [
+          3
+        ]
+      },
+      "AutoMitigation": {
+        "Description": "Enables conditional Tempera Coat through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+        "Enable": [
+          20005,
+          20071
+        ],
+        "Disable": [
+          20000
+        ],
+        "EmptySlots": []
+      },
+      "AutoMechanics": {
+        "Description": "Motifs, palette and hammer follow-ups are already handled. Hammer Stamp stays for deliberate spending and movement; Tempera stays for manual party shielding.",
+        "Enable": [],
+        "Disable": [],
+        "EmptySlots": []
+      }
+    },
+    {
+      "JobId": 14,
+      "Job": "ALC",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      }
+    },
+    {
+      "JobId": 10,
+      "Job": "ARM",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      }
+    },
+    {
+      "JobId": 9,
+      "Job": "BSM",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      }
+    },
+    {
+      "JobId": 17,
+      "Job": "BTN",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Bountiful Harvest",
+          "Function": "Next-hit yield"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Blessed Harvest II",
+          "Function": "Node yield"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Field Mastery III",
+          "Function": "Gathering chance"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Ageless Words",
+          "Function": "Integrity / Wise to the World"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Pioneer's Gift II",
+          "Function": "Boon chance"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Nophica's Tidings",
+          "Function": "Boon yield"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "The Giving Land",
+          "Function": "Crystal yield"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Collect",
+          "Function": "Collectable mode"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Scour",
+          "Function": "Collectability"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Meticulous Woodsman",
+          "Function": "Collectability / integrity preservation"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Scrutiny",
+          "Function": "Next collectability buff"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Arbor Call II",
+          "Function": "Rare-node search / Truth"
+        }
+      ],
+      "OwnedPresetIds": [
+        51001,
+        51012
+      ],
+      "Settings": {
+        "EnabledActionsV6": [
+          51001,
+          51012
+        ]
+      },
+      "Usage": "Use yield and boon buffs to suit the node and available GP. Use the integrity button for Solid Reason/Ageless Words; Wrath offers Wise to the World during Eureka Moment. For collectables, enable Collect, then build collectability with Scrutiny and Scour or Meticulous before collecting. The search button first offers Truth when its buff is absent, then the rare-node search. Enable Prospect/Triangulate and Sneak through Actions & Traits when needed.",
+      "OmittedActions": [
+        "Arbor Call",
+        "Blessed Harvest",
+        "Brazen Woodsman",
+        "Collector's Focus",
+        "Field Mastery",
+        "Field Mastery II",
+        "Flora Mastery",
+        "Luck of the Pioneer",
+        "Pioneer's Gift I",
+        "Priming Touch",
+        "Sneak",
+        "Triangulate",
+        "the Twelve's Bounty"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      }
+    },
+    {
+      "JobId": 8,
+      "Job": "CRP",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      }
+    },
+    {
+      "JobId": 15,
+      "Job": "CUL",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      }
+    },
+    {
+      "JobId": 18,
+      "Job": "FSH",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Cast",
+          "Function": "Cast / Hook / Gig"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Mooch",
+          "Function": "Mooch / Shark Eye"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Surface Slap",
+          "Function": "Exclude catch / Veteran Trade"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Prize Catch",
+          "Function": "Large catch / Nature's Bounty"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Snagging",
+          "Function": "Special catches / Salvage"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Fish Eyes",
+          "Function": "Time restriction / Vital Sight"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Chum",
+          "Function": "Bite speed / Baited Breath"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Cast Light",
+          "Function": "Light / Electric Current"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Patience II",
+          "Function": "Large-catch chance"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Precision Hookset",
+          "Function": "Weak-bite hookset"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Powerful Hookset",
+          "Function": "Strong-bite hookset"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Thaliak's Favor",
+          "Function": "GP recovery"
+        }
+      ],
+      "OwnedPresetIds": [
+        51002,
+        51008,
+        51003,
+        51004,
+        51005,
+        51006,
+        51007,
+        51009,
+        51010,
+        51011
+      ],
+      "Settings": {
+        "EnabledActionsV6": [
+          51002,
+          51008,
+          51003,
+          51004,
+          51005,
+          51006,
+          51007,
+          51009,
+          51010,
+          51011
+        ]
+      },
+      "Usage": "Select bait and enable Collect through Actions & Traits before fishing when needed. Cast changes to Hook while fishing and Gig while diving. Under Patience use Precision Hookset for weak bites and Powerful Hookset for strong bites. Mooch, Surface Slap, Prize Catch, Snagging, Fish Eyes, Chum and Cast Light change to their listed spearfishing functions while diving. Use Thaliak\u2019s Favor to recover GP when available. Bait, catch choice and every activation remain manual; specialized ocean-fishing and big-fish sequences need omitted actions.",
+      "OmittedActions": [
+        "Ambitious Lure",
+        "Bait",
+        "Big-game Fishing",
+        "Collect",
+        "Double Hook",
+        "Fathom",
+        "Identical Cast",
+        "Makeshift Bait",
+        "Modest Lure",
+        "Mooch II",
+        "Patience",
+        "Quit",
+        "Release",
+        "Release List",
+        "Rest",
+        "Shark Eye II",
+        "Sneak",
+        "Spareful Hand",
+        "Triple Hook",
+        "Truth of Oceans"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      }
+    },
+    {
+      "JobId": 11,
+      "Job": "GSM",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      }
+    },
+    {
+      "JobId": 12,
+      "Job": "LTW",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      }
+    },
+    {
+      "JobId": 16,
+      "Job": "MIN",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Bountiful Yield",
+          "Function": "Next-hit yield"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "King's Yield II",
+          "Function": "Node yield"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Sharp Vision III",
+          "Function": "Gathering chance"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Solid Reason",
+          "Function": "Integrity / Wise to the World"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Mountaineer's Gift II",
+          "Function": "Boon chance"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Nald'thal's Tidings",
+          "Function": "Boon yield"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "The Giving Land",
+          "Function": "Crystal yield"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Collect",
+          "Function": "Collectable mode"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Scour",
+          "Function": "Collectability"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Meticulous Prospector",
+          "Function": "Collectability / integrity preservation"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Scrutiny",
+          "Function": "Next collectability buff"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Lay of the Land II",
+          "Function": "Rare-node search / Truth"
+        }
+      ],
+      "OwnedPresetIds": [
+        51001,
+        51012
+      ],
+      "Settings": {
+        "EnabledActionsV6": [
+          51001,
+          51012
+        ]
+      },
+      "Usage": "Use yield and boon buffs to suit the node and available GP. Use the integrity button for Solid Reason/Ageless Words; Wrath offers Wise to the World during Eureka Moment. For collectables, enable Collect, then build collectability with Scrutiny and Scour or Meticulous before collecting. The search button first offers Truth when its buff is absent, then the rare-node search. Enable Prospect/Triangulate and Sneak through Actions & Traits when needed.",
+      "OmittedActions": [
+        "Brazen Prospector",
+        "Clear Vision",
+        "Collector's Focus",
+        "King's Yield",
+        "Lay of the Land",
+        "Luck of the Mountaineer",
+        "Mountaineer's Gift I",
+        "Priming Touch",
+        "Prospect",
+        "Sharp Vision",
+        "Sharp Vision II",
+        "Sneak",
+        "the Twelve's Bounty"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. The reviewed context replacements are already included in every variant; Wrath does not automatically gather or fish."
+      }
+    },
+    {
+      "JobId": 13,
+      "Job": "WVR",
+      "BaseClasses": [],
+      "Slots": [
+        {
+          "LogicalSlot": 1,
+          "RegularBar": 1,
+          "RegularSlot": 1,
+          "CrossSlot": 16,
+          "Action": "Basic Synthesis",
+          "Function": "Progress"
+        },
+        {
+          "LogicalSlot": 2,
+          "RegularBar": 1,
+          "RegularSlot": 2,
+          "CrossSlot": 15,
+          "Action": "Basic Touch",
+          "Function": "Quality"
+        },
+        {
+          "LogicalSlot": 3,
+          "RegularBar": 1,
+          "RegularSlot": 3,
+          "CrossSlot": 14,
+          "Action": "Master's Mend",
+          "Function": "Durability recovery"
+        },
+        {
+          "LogicalSlot": 4,
+          "RegularBar": 1,
+          "RegularSlot": 4,
+          "CrossSlot": 12,
+          "Action": "Standard Touch",
+          "Function": "Quality combo"
+        },
+        {
+          "LogicalSlot": 5,
+          "RegularBar": 2,
+          "RegularSlot": 1,
+          "CrossSlot": 13,
+          "Action": "Veneration",
+          "Function": "Progress buff"
+        },
+        {
+          "LogicalSlot": 6,
+          "RegularBar": 2,
+          "RegularSlot": 2,
+          "CrossSlot": 11,
+          "Action": "Innovation",
+          "Function": "Quality buff"
+        },
+        {
+          "LogicalSlot": 7,
+          "RegularBar": 2,
+          "RegularSlot": 3,
+          "CrossSlot": 9,
+          "Action": "Waste Not II",
+          "Function": "Durability efficiency"
+        },
+        {
+          "LogicalSlot": 8,
+          "RegularBar": 2,
+          "RegularSlot": 4,
+          "CrossSlot": 10,
+          "Action": "Great Strides",
+          "Function": "Next-touch buff"
+        },
+        {
+          "LogicalSlot": 9,
+          "RegularBar": 2,
+          "RegularSlot": 12,
+          "CrossSlot": 4,
+          "Action": "Byregot's Blessing",
+          "Function": "Quality finisher"
+        },
+        {
+          "LogicalSlot": 10,
+          "RegularBar": 2,
+          "RegularSlot": 11,
+          "CrossSlot": 2,
+          "Action": "Manipulation",
+          "Function": "Durability regeneration"
+        },
+        {
+          "LogicalSlot": 11,
+          "RegularBar": 2,
+          "RegularSlot": 5,
+          "CrossSlot": 3,
+          "Action": "Muscle Memory",
+          "Function": "Progress opener"
+        },
+        {
+          "LogicalSlot": 12,
+          "RegularBar": 2,
+          "RegularSlot": 6,
+          "CrossSlot": 1,
+          "Action": "Reflect",
+          "Function": "Quality opener"
+        }
+      ],
+      "OwnedPresetIds": [],
+      "Settings": {
+        "EnabledActionsV6": []
+      },
+      "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+      "OmittedActions": [
+        "Advanced Touch",
+        "Careful Observation",
+        "Careful Synthesis",
+        "Delicate Synthesis",
+        "Final Appraisal",
+        "Groundwork",
+        "Hasty Touch",
+        "Heart and Soul",
+        "Immaculate Mend",
+        "Intensive Synthesis",
+        "Observe",
+        "Precise Touch",
+        "Preparatory Touch",
+        "Prudent Synthesis",
+        "Prudent Touch",
+        "Quick Innovation",
+        "Rapid Synthesis",
+        "Refined Touch",
+        "Trained Eye",
+        "Trained Finesse",
+        "Trained Perfection",
+        "Tricks of the Trade",
+        "Waste Not"
+      ],
+      "AutoBurst": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMitigation": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+      },
+      "AutoMechanics": {
+        "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
       }
     }
   ],

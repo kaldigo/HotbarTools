@@ -1,0 +1,142 @@
+{
+  "JobId": 13,
+  "Job": "WVR",
+  "BaseClasses": [],
+  "Slots": [
+    {
+      "LogicalSlot": 1,
+      "RegularBar": 1,
+      "RegularSlot": 1,
+      "CrossSlot": 16,
+      "Action": "Basic Synthesis",
+      "Function": "Progress"
+    },
+    {
+      "LogicalSlot": 2,
+      "RegularBar": 1,
+      "RegularSlot": 2,
+      "CrossSlot": 15,
+      "Action": "Basic Touch",
+      "Function": "Quality"
+    },
+    {
+      "LogicalSlot": 3,
+      "RegularBar": 1,
+      "RegularSlot": 3,
+      "CrossSlot": 14,
+      "Action": "Master's Mend",
+      "Function": "Durability recovery"
+    },
+    {
+      "LogicalSlot": 4,
+      "RegularBar": 1,
+      "RegularSlot": 4,
+      "CrossSlot": 12,
+      "Action": "Standard Touch",
+      "Function": "Quality combo"
+    },
+    {
+      "LogicalSlot": 5,
+      "RegularBar": 2,
+      "RegularSlot": 1,
+      "CrossSlot": 13,
+      "Action": "Veneration",
+      "Function": "Progress buff"
+    },
+    {
+      "LogicalSlot": 6,
+      "RegularBar": 2,
+      "RegularSlot": 2,
+      "CrossSlot": 11,
+      "Action": "Innovation",
+      "Function": "Quality buff"
+    },
+    {
+      "LogicalSlot": 7,
+      "RegularBar": 2,
+      "RegularSlot": 3,
+      "CrossSlot": 9,
+      "Action": "Waste Not II",
+      "Function": "Durability efficiency"
+    },
+    {
+      "LogicalSlot": 8,
+      "RegularBar": 2,
+      "RegularSlot": 4,
+      "CrossSlot": 10,
+      "Action": "Great Strides",
+      "Function": "Next-touch buff"
+    },
+    {
+      "LogicalSlot": 9,
+      "RegularBar": 2,
+      "RegularSlot": 12,
+      "CrossSlot": 4,
+      "Action": "Byregot's Blessing",
+      "Function": "Quality finisher"
+    },
+    {
+      "LogicalSlot": 10,
+      "RegularBar": 2,
+      "RegularSlot": 11,
+      "CrossSlot": 2,
+      "Action": "Manipulation",
+      "Function": "Durability regeneration"
+    },
+    {
+      "LogicalSlot": 11,
+      "RegularBar": 2,
+      "RegularSlot": 5,
+      "CrossSlot": 3,
+      "Action": "Muscle Memory",
+      "Function": "Progress opener"
+    },
+    {
+      "LogicalSlot": 12,
+      "RegularBar": 2,
+      "RegularSlot": 6,
+      "CrossSlot": 1,
+      "Action": "Reflect",
+      "Function": "Quality opener"
+    }
+  ],
+  "OwnedPresetIds": [],
+  "Settings": {
+    "EnabledActionsV6": []
+  },
+  "Usage": "Choose Muscle Memory for a progress opener or Reflect for a quality opener, only on the first step. Use Veneration with synthesis, Innovation with touches, and Basic Touch then Standard Touch for their CP combo. Manage durability with Waste Not II, Manipulation and repair; build Inner Quiet before Great Strides into Byregot. Finish progress before durability runs out. All actions are manual and require their unlocks; this is a compact general layout, not an expert-craft rotation.",
+  "OmittedActions": [
+    "Advanced Touch",
+    "Careful Observation",
+    "Careful Synthesis",
+    "Delicate Synthesis",
+    "Final Appraisal",
+    "Groundwork",
+    "Hasty Touch",
+    "Heart and Soul",
+    "Immaculate Mend",
+    "Intensive Synthesis",
+    "Observe",
+    "Precise Touch",
+    "Preparatory Touch",
+    "Prudent Synthesis",
+    "Prudent Touch",
+    "Quick Innovation",
+    "Rapid Synthesis",
+    "Refined Touch",
+    "Trained Eye",
+    "Trained Finesse",
+    "Trained Perfection",
+    "Tricks of the Trade",
+    "Waste Not"
+  ],
+  "AutoBurst": {
+    "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+  },
+  "AutoMitigation": {
+    "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+  },
+  "AutoMechanics": {
+    "Description": "No change: this is a manual noncombat layout. Wrath does not provide a crafting rotation."
+  }
+}

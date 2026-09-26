@@ -1,0 +1,49 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Brotherhood and Riddle of Fire. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      9005,
+      9008,
+      9009,
+      9011,
+      9027,
+      9029,
+      9030,
+      9032
+    ],
+    "Disable": [
+      9003,
+      9004
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      9005,
+      9095
+    ],
+    "Disable": [
+      9004
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Enables Perfect Balance through ST/AoE. ",
+    "Enable": [
+      9005,
+      9013,
+      9027,
+      9034
+    ],
+    "Disable": [
+      9003,
+      9004
+    ],
+    "EmptySlots": [
+      6
+    ]
+  }
+}

@@ -1,0 +1,1735 @@
+{
+  "1075": {
+    "Id": 1075,
+    "Name": "AST_Raidwide",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "1076": {
+    "Id": 1076,
+    "Name": "AST_Raidwide_CollectiveUnconscious",
+    "Parents": [
+      1075
+    ],
+    "Conflicts": []
+  },
+  "1077": {
+    "Id": 1077,
+    "Name": "AST_Raidwide_NeutralSect",
+    "Parents": [
+      1075
+    ],
+    "Conflicts": []
+  },
+  "2001": {
+    "Id": 2001,
+    "Name": "BLM_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      2100,
+      2052,
+      2071
+    ]
+  },
+  "2002": {
+    "Id": 2002,
+    "Name": "BLM_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      2200
+    ]
+  },
+  "2052": {
+    "Id": 2052,
+    "Name": "BLM_Blizzard1and3",
+    "Parents": [],
+    "Conflicts": [
+      2001,
+      2100,
+      2071
+    ]
+  },
+  "2071": {
+    "Id": 2071,
+    "Name": "BLM_B1toB4",
+    "Parents": [],
+    "Conflicts": [
+      2001,
+      2100,
+      2052
+    ]
+  },
+  "2100": {
+    "Id": 2100,
+    "Name": "BLM_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      2001,
+      2052,
+      2071
+    ]
+  },
+  "2103": {
+    "Id": 2103,
+    "Name": "BLM_ST_LeyLines",
+    "Parents": [
+      2100
+    ],
+    "Conflicts": []
+  },
+  "2199": {
+    "Id": 2199,
+    "Name": "BLM_ST_Manaward",
+    "Parents": [
+      2100
+    ],
+    "Conflicts": []
+  },
+  "2200": {
+    "Id": 2200,
+    "Name": "BLM_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      2002
+    ]
+  },
+  "2202": {
+    "Id": 2202,
+    "Name": "BLM_AoE_LeyLines",
+    "Parents": [
+      2200
+    ],
+    "Conflicts": []
+  },
+  "3009": {
+    "Id": 3009,
+    "Name": "BRD_ST_AdvMode",
+    "Parents": [],
+    "Conflicts": [
+      3036
+    ]
+  },
+  "3015": {
+    "Id": 3015,
+    "Name": "BRD_AoE_AdvMode",
+    "Parents": [],
+    "Conflicts": [
+      3035
+    ]
+  },
+  "3017": {
+    "Id": 3017,
+    "Name": "BRD_Adv_Buffs",
+    "Parents": [
+      3009
+    ],
+    "Conflicts": []
+  },
+  "3032": {
+    "Id": 3032,
+    "Name": "BRD_AoE_Adv_Buffs",
+    "Parents": [
+      3015
+    ],
+    "Conflicts": []
+  },
+  "3035": {
+    "Id": 3035,
+    "Name": "BRD_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      3015
+    ]
+  },
+  "3036": {
+    "Id": 3036,
+    "Name": "BRD_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      3009
+    ]
+  },
+  "3070": {
+    "Id": 3070,
+    "Name": "BRD_Adv_NaturesMinne",
+    "Parents": [
+      3009
+    ],
+    "Conflicts": []
+  },
+  "4001": {
+    "Id": 4001,
+    "Name": "DNC_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      4070,
+      4010
+    ]
+  },
+  "4002": {
+    "Id": 4002,
+    "Name": "DNC_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      4090,
+      4040
+    ]
+  },
+  "4010": {
+    "Id": 4010,
+    "Name": "DNC_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      4070,
+      4001
+    ]
+  },
+  "4018": {
+    "Id": 4018,
+    "Name": "DNC_ST_Adv_TS",
+    "Parents": [
+      4010
+    ],
+    "Conflicts": []
+  },
+  "4040": {
+    "Id": 4040,
+    "Name": "DNC_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      4090,
+      4002
+    ]
+  },
+  "4045": {
+    "Id": 4045,
+    "Name": "DNC_AoE_Adv_TS",
+    "Parents": [
+      4040
+    ],
+    "Conflicts": []
+  },
+  "4070": {
+    "Id": 4070,
+    "Name": "DNC_ST_MultiButton",
+    "Parents": [],
+    "Conflicts": [
+      4010,
+      4001
+    ]
+  },
+  "4071": {
+    "Id": 4071,
+    "Name": "DNC_ST_EspritOvercap",
+    "Parents": [
+      4070
+    ],
+    "Conflicts": []
+  },
+  "4072": {
+    "Id": 4072,
+    "Name": "DNC_ST_FanDanceOvercap",
+    "Parents": [
+      4070
+    ],
+    "Conflicts": []
+  },
+  "4073": {
+    "Id": 4073,
+    "Name": "DNC_ST_FanDance34",
+    "Parents": [
+      4070
+    ],
+    "Conflicts": []
+  },
+  "4090": {
+    "Id": 4090,
+    "Name": "DNC_AoE_MultiButton",
+    "Parents": [],
+    "Conflicts": [
+      4040,
+      4002
+    ]
+  },
+  "4091": {
+    "Id": 4091,
+    "Name": "DNC_AoE_EspritOvercap",
+    "Parents": [
+      4090
+    ],
+    "Conflicts": []
+  },
+  "4092": {
+    "Id": 4092,
+    "Name": "DNC_AoE_FanDanceOvercap",
+    "Parents": [
+      4090
+    ],
+    "Conflicts": []
+  },
+  "4093": {
+    "Id": 4093,
+    "Name": "DNC_AoE_FanDance34",
+    "Parents": [
+      4090
+    ],
+    "Conflicts": []
+  },
+  "5001": {
+    "Id": 5001,
+    "Name": "DRK_ST_Simple",
+    "Parents": [],
+    "Conflicts": [
+      5010
+    ]
+  },
+  "5002": {
+    "Id": 5002,
+    "Name": "DRK_AoE_Simple",
+    "Parents": [],
+    "Conflicts": [
+      5050
+    ]
+  },
+  "5010": {
+    "Id": 5010,
+    "Name": "DRK_ST_Adv",
+    "Parents": [],
+    "Conflicts": [
+      5001
+    ]
+  },
+  "5013": {
+    "Id": 5013,
+    "Name": "DRK_ST_CDs",
+    "Parents": [
+      5010
+    ],
+    "Conflicts": []
+  },
+  "5015": {
+    "Id": 5015,
+    "Name": "DRK_ST_CD_Delirium",
+    "Parents": [
+      5013
+    ],
+    "Conflicts": []
+  },
+  "5016": {
+    "Id": 5016,
+    "Name": "DRK_ST_CD_Shadow",
+    "Parents": [
+      5013
+    ],
+    "Conflicts": []
+  },
+  "5050": {
+    "Id": 5050,
+    "Name": "DRK_AoE_Adv",
+    "Parents": [],
+    "Conflicts": [
+      5002
+    ]
+  },
+  "5051": {
+    "Id": 5051,
+    "Name": "DRK_AoE_CDs",
+    "Parents": [
+      5050
+    ],
+    "Conflicts": []
+  },
+  "5054": {
+    "Id": 5054,
+    "Name": "DRK_AoE_CD_Delirium",
+    "Parents": [
+      5051
+    ],
+    "Conflicts": []
+  },
+  "5055": {
+    "Id": 5055,
+    "Name": "DRK_AoE_CD_Shadow",
+    "Parents": [
+      5051
+    ],
+    "Conflicts": []
+  },
+  "5300": {
+    "Id": 5300,
+    "Name": "DRK_Mitigation",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "5301": {
+    "Id": 5301,
+    "Name": "DRK_Mitigation_NonBoss",
+    "Parents": [
+      5300
+    ],
+    "Conflicts": []
+  },
+  "5302": {
+    "Id": 5302,
+    "Name": "DRK_Mitigation_NonBoss_Rampart",
+    "Parents": [
+      5301
+    ],
+    "Conflicts": []
+  },
+  "5303": {
+    "Id": 5303,
+    "Name": "DRK_Mitigation_NonBoss_ShadowWall",
+    "Parents": [
+      5301
+    ],
+    "Conflicts": []
+  },
+  "5309": {
+    "Id": 5309,
+    "Name": "DRK_Mitigation_Boss",
+    "Parents": [
+      5300
+    ],
+    "Conflicts": []
+  },
+  "5313": {
+    "Id": 5313,
+    "Name": "DRK_Mitigation_NonBoss_Reprisal",
+    "Parents": [
+      5301
+    ],
+    "Conflicts": []
+  },
+  "5315": {
+    "Id": 5315,
+    "Name": "DRK_Mitigation_Boss_ShadowWall",
+    "Parents": [
+      5309
+    ],
+    "Conflicts": []
+  },
+  "5316": {
+    "Id": 5316,
+    "Name": "DRK_Mitigation_Boss_Rampart",
+    "Parents": [
+      5309
+    ],
+    "Conflicts": []
+  },
+  "6001": {
+    "Id": 6001,
+    "Name": "DRG_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      6100
+    ]
+  },
+  "6100": {
+    "Id": 6100,
+    "Name": "DRG_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      6001
+    ]
+  },
+  "6102": {
+    "Id": 6102,
+    "Name": "DRG_ST_Buffs",
+    "Parents": [
+      6100
+    ],
+    "Conflicts": []
+  },
+  "6103": {
+    "Id": 6103,
+    "Name": "DRG_ST_BattleLitany",
+    "Parents": [
+      6102
+    ],
+    "Conflicts": []
+  },
+  "6104": {
+    "Id": 6104,
+    "Name": "DRG_ST_LanceCharge",
+    "Parents": [
+      6102
+    ],
+    "Conflicts": []
+  },
+  "6105": {
+    "Id": 6105,
+    "Name": "DRG_ST_Damage",
+    "Parents": [
+      6100
+    ],
+    "Conflicts": []
+  },
+  "6116": {
+    "Id": 6116,
+    "Name": "DRG_ST_Geirskogul",
+    "Parents": [
+      6105
+    ],
+    "Conflicts": []
+  },
+  "6195": {
+    "Id": 6195,
+    "Name": "DRG_ST_Feint",
+    "Parents": [
+      6100
+    ],
+    "Conflicts": []
+  },
+  "6200": {
+    "Id": 6200,
+    "Name": "DRG_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      6201
+    ]
+  },
+  "6201": {
+    "Id": 6201,
+    "Name": "DRG_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      6200
+    ]
+  },
+  "6202": {
+    "Id": 6202,
+    "Name": "DRG_AoE_Buffs",
+    "Parents": [
+      6201
+    ],
+    "Conflicts": []
+  },
+  "6203": {
+    "Id": 6203,
+    "Name": "DRG_AoE_BattleLitany",
+    "Parents": [
+      6202
+    ],
+    "Conflicts": []
+  },
+  "6204": {
+    "Id": 6204,
+    "Name": "DRG_AoE_LanceCharge",
+    "Parents": [
+      6202
+    ],
+    "Conflicts": []
+  },
+  "6205": {
+    "Id": 6205,
+    "Name": "DRG_AoE_Damage",
+    "Parents": [
+      6201
+    ],
+    "Conflicts": []
+  },
+  "6216": {
+    "Id": 6216,
+    "Name": "DRG_AoE_Geirskogul",
+    "Parents": [
+      6205
+    ],
+    "Conflicts": []
+  },
+  "7001": {
+    "Id": 7001,
+    "Name": "GNB_ST_Simple",
+    "Parents": [],
+    "Conflicts": [
+      7003
+    ]
+  },
+  "7002": {
+    "Id": 7002,
+    "Name": "GNB_AoE_Simple",
+    "Parents": [],
+    "Conflicts": [
+      7200
+    ]
+  },
+  "7003": {
+    "Id": 7003,
+    "Name": "GNB_ST_Advanced",
+    "Parents": [],
+    "Conflicts": [
+      7001
+    ]
+  },
+  "7008": {
+    "Id": 7008,
+    "Name": "GNB_ST_NoMercy",
+    "Parents": [
+      7003
+    ],
+    "Conflicts": [
+      7500
+    ]
+  },
+  "7011": {
+    "Id": 7011,
+    "Name": "GNB_ST_Bloodfest",
+    "Parents": [
+      7003
+    ],
+    "Conflicts": []
+  },
+  "7200": {
+    "Id": 7200,
+    "Name": "GNB_AoE_Advanced",
+    "Parents": [],
+    "Conflicts": [
+      7002
+    ]
+  },
+  "7201": {
+    "Id": 7201,
+    "Name": "GNB_AoE_NoMercy",
+    "Parents": [
+      7200
+    ],
+    "Conflicts": [
+      7500
+    ]
+  },
+  "7204": {
+    "Id": 7204,
+    "Name": "GNB_AoE_Bloodfest",
+    "Parents": [
+      7200
+    ],
+    "Conflicts": []
+  },
+  "7500": {
+    "Id": 7500,
+    "Name": "GNB_NM_Features",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "7501": {
+    "Id": 7501,
+    "Name": "GNB_NM_Bloodfest",
+    "Parents": [
+      7500
+    ],
+    "Conflicts": []
+  },
+  "7700": {
+    "Id": 7700,
+    "Name": "GNB_Mit_Advanced",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "7701": {
+    "Id": 7701,
+    "Name": "GNB_Mit_Advanced_NonBoss",
+    "Parents": [
+      7700
+    ],
+    "Conflicts": []
+  },
+  "7702": {
+    "Id": 7702,
+    "Name": "GNB_Mit_Advanced_NonBoss_Rampart",
+    "Parents": [
+      7701
+    ],
+    "Conflicts": []
+  },
+  "7703": {
+    "Id": 7703,
+    "Name": "GNB_Mit_Advanced_NonBoss_Nebula",
+    "Parents": [
+      7701
+    ],
+    "Conflicts": []
+  },
+  "7708": {
+    "Id": 7708,
+    "Name": "GNB_Mit_Advanced_NonBoss_Reprisal",
+    "Parents": [
+      7701
+    ],
+    "Conflicts": []
+  },
+  "7711": {
+    "Id": 7711,
+    "Name": "GNB_Mit_Advanced_Boss",
+    "Parents": [
+      7700
+    ],
+    "Conflicts": []
+  },
+  "7718": {
+    "Id": 7718,
+    "Name": "GNB_Mit_Advanced_Boss_Nebula",
+    "Parents": [
+      7711
+    ],
+    "Conflicts": []
+  },
+  "7719": {
+    "Id": 7719,
+    "Name": "GNB_Mit_Advanced_Boss_Rampart",
+    "Parents": [
+      7711
+    ],
+    "Conflicts": []
+  },
+  "8001": {
+    "Id": 8001,
+    "Name": "MCH_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      8100
+    ]
+  },
+  "8100": {
+    "Id": 8100,
+    "Name": "MCH_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      8001
+    ]
+  },
+  "8108": {
+    "Id": 8108,
+    "Name": "MCH_ST_Adv_WildFire",
+    "Parents": [
+      8100
+    ],
+    "Conflicts": []
+  },
+  "9003": {
+    "Id": 9003,
+    "Name": "MNK_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      9027
+    ]
+  },
+  "9004": {
+    "Id": 9004,
+    "Name": "MNK_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      9005
+    ]
+  },
+  "9005": {
+    "Id": 9005,
+    "Name": "MNK_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      9004
+    ]
+  },
+  "9008": {
+    "Id": 9008,
+    "Name": "MNK_STUseBuffs",
+    "Parents": [
+      9005
+    ],
+    "Conflicts": []
+  },
+  "9009": {
+    "Id": 9009,
+    "Name": "MNK_STUseBrotherhood",
+    "Parents": [
+      9008
+    ],
+    "Conflicts": []
+  },
+  "9011": {
+    "Id": 9011,
+    "Name": "MNK_STUseROF",
+    "Parents": [
+      9008
+    ],
+    "Conflicts": []
+  },
+  "9013": {
+    "Id": 9013,
+    "Name": "MNK_STUsePerfectBalance",
+    "Parents": [
+      9005
+    ],
+    "Conflicts": []
+  },
+  "9027": {
+    "Id": 9027,
+    "Name": "MNK_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      9003
+    ]
+  },
+  "9029": {
+    "Id": 9029,
+    "Name": "MNK_AoEUseBuffs",
+    "Parents": [
+      9027
+    ],
+    "Conflicts": []
+  },
+  "9030": {
+    "Id": 9030,
+    "Name": "MNK_AoEUseBrotherhood",
+    "Parents": [
+      9029
+    ],
+    "Conflicts": []
+  },
+  "9032": {
+    "Id": 9032,
+    "Name": "MNK_AoEUseROF",
+    "Parents": [
+      9029
+    ],
+    "Conflicts": []
+  },
+  "9034": {
+    "Id": 9034,
+    "Name": "MNK_AoEUsePerfectBalance",
+    "Parents": [
+      9027
+    ],
+    "Conflicts": []
+  },
+  "9095": {
+    "Id": 9095,
+    "Name": "MNK_ST_Feint",
+    "Parents": [
+      9005
+    ],
+    "Conflicts": []
+  },
+  "10000": {
+    "Id": 10000,
+    "Name": "NIN_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      10002
+    ]
+  },
+  "10001": {
+    "Id": 10001,
+    "Name": "NIN_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      10003
+    ]
+  },
+  "10002": {
+    "Id": 10002,
+    "Name": "NIN_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      10000
+    ]
+  },
+  "10003": {
+    "Id": 10003,
+    "Name": "NIN_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      10001
+    ]
+  },
+  "10006": {
+    "Id": 10006,
+    "Name": "NIN_ST_AdvancedMode_TrickAttack",
+    "Parents": [
+      10002
+    ],
+    "Conflicts": []
+  },
+  "10007": {
+    "Id": 10007,
+    "Name": "NIN_ST_AdvancedMode_Mug",
+    "Parents": [
+      10002
+    ],
+    "Conflicts": []
+  },
+  "10010": {
+    "Id": 10010,
+    "Name": "NIN_ST_AdvancedMode_Kassatsu",
+    "Parents": [
+      10002
+    ],
+    "Conflicts": []
+  },
+  "10011": {
+    "Id": 10011,
+    "Name": "NIN_ST_AdvancedMode_TenChiJin",
+    "Parents": [
+      10002
+    ],
+    "Conflicts": []
+  },
+  "10013": {
+    "Id": 10013,
+    "Name": "NIN_ST_AdvancedMode_Meisui",
+    "Parents": [
+      10002
+    ],
+    "Conflicts": []
+  },
+  "10020": {
+    "Id": 10020,
+    "Name": "NIN_ST_AdvancedMode_Feint",
+    "Parents": [
+      10002
+    ],
+    "Conflicts": []
+  },
+  "10022": {
+    "Id": 10022,
+    "Name": "NIN_AoE_AdvancedMode_TrickAttack",
+    "Parents": [
+      10003
+    ],
+    "Conflicts": []
+  },
+  "10023": {
+    "Id": 10023,
+    "Name": "NIN_AoE_AdvancedMode_Mug",
+    "Parents": [
+      10003
+    ],
+    "Conflicts": []
+  },
+  "10026": {
+    "Id": 10026,
+    "Name": "NIN_AoE_AdvancedMode_Kassatsu",
+    "Parents": [
+      10003
+    ],
+    "Conflicts": []
+  },
+  "10027": {
+    "Id": 10027,
+    "Name": "NIN_AoE_AdvancedMode_TenChiJin",
+    "Parents": [
+      10003
+    ],
+    "Conflicts": []
+  },
+  "10029": {
+    "Id": 10029,
+    "Name": "NIN_AoE_AdvancedMode_Meisui",
+    "Parents": [
+      10003
+    ],
+    "Conflicts": []
+  },
+  "11000": {
+    "Id": 11000,
+    "Name": "PLD_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      11002
+    ]
+  },
+  "11001": {
+    "Id": 11001,
+    "Name": "PLD_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      11015
+    ]
+  },
+  "11002": {
+    "Id": 11002,
+    "Name": "PLD_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      11000
+    ]
+  },
+  "11003": {
+    "Id": 11003,
+    "Name": "PLD_ST_AdvancedMode_FoF",
+    "Parents": [
+      11002
+    ],
+    "Conflicts": []
+  },
+  "11015": {
+    "Id": 11015,
+    "Name": "PLD_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      11001
+    ]
+  },
+  "11016": {
+    "Id": 11016,
+    "Name": "PLD_AoE_AdvancedMode_FoF",
+    "Parents": [
+      11015
+    ],
+    "Conflicts": []
+  },
+  "11086": {
+    "Id": 11086,
+    "Name": "PLD_Mitigation",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "11087": {
+    "Id": 11087,
+    "Name": "PLD_Mitigation_NonBoss",
+    "Parents": [
+      11086
+    ],
+    "Conflicts": []
+  },
+  "11088": {
+    "Id": 11088,
+    "Name": "PLD_Mitigation_NonBoss_Rampart",
+    "Parents": [
+      11087
+    ],
+    "Conflicts": []
+  },
+  "11089": {
+    "Id": 11089,
+    "Name": "PLD_Mitigation_NonBoss_Sentinel",
+    "Parents": [
+      11087
+    ],
+    "Conflicts": []
+  },
+  "11095": {
+    "Id": 11095,
+    "Name": "PLD_Mitigation_Boss",
+    "Parents": [
+      11086
+    ],
+    "Conflicts": []
+  },
+  "11099": {
+    "Id": 11099,
+    "Name": "PLD_Mitigation_NonBoss_Reprisal",
+    "Parents": [
+      11087
+    ],
+    "Conflicts": []
+  },
+  "11101": {
+    "Id": 11101,
+    "Name": "PLD_Mitigation_Boss_Sentinel",
+    "Parents": [
+      11095
+    ],
+    "Conflicts": []
+  },
+  "11102": {
+    "Id": 11102,
+    "Name": "PLD_Mitigation_Boss_Rampart",
+    "Parents": [
+      11095
+    ],
+    "Conflicts": []
+  },
+  "12000": {
+    "Id": 12000,
+    "Name": "RPR_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      12001
+    ]
+  },
+  "12001": {
+    "Id": 12001,
+    "Name": "RPR_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      12000
+    ]
+  },
+  "12006": {
+    "Id": 12006,
+    "Name": "RPR_ST_ArcaneCircle",
+    "Parents": [
+      12001
+    ],
+    "Conflicts": []
+  },
+  "12010": {
+    "Id": 12010,
+    "Name": "RPR_ST_Enshroud",
+    "Parents": [
+      12001
+    ],
+    "Conflicts": []
+  },
+  "12022": {
+    "Id": 12022,
+    "Name": "RPR_ST_ArcaneCrest",
+    "Parents": [
+      12001
+    ],
+    "Conflicts": []
+  },
+  "12095": {
+    "Id": 12095,
+    "Name": "RPR_ST_Feint",
+    "Parents": [
+      12001
+    ],
+    "Conflicts": []
+  },
+  "12100": {
+    "Id": 12100,
+    "Name": "RPR_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      12101
+    ]
+  },
+  "12101": {
+    "Id": 12101,
+    "Name": "RPR_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      12100
+    ]
+  },
+  "12105": {
+    "Id": 12105,
+    "Name": "RPR_AoE_ArcaneCircle",
+    "Parents": [
+      12101
+    ],
+    "Conflicts": []
+  },
+  "12109": {
+    "Id": 12109,
+    "Name": "RPR_AoE_Enshroud",
+    "Parents": [
+      12101
+    ],
+    "Conflicts": []
+  },
+  "13000": {
+    "Id": 13000,
+    "Name": "RDM_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      13001
+    ]
+  },
+  "13001": {
+    "Id": 13001,
+    "Name": "RDM_ST_DPS",
+    "Parents": [],
+    "Conflicts": [
+      13000
+    ]
+  },
+  "13010": {
+    "Id": 13010,
+    "Name": "RDM_ST_Embolden",
+    "Parents": [
+      13001
+    ],
+    "Conflicts": []
+  },
+  "13011": {
+    "Id": 13011,
+    "Name": "RDM_ST_Manafication",
+    "Parents": [
+      13001
+    ],
+    "Conflicts": []
+  },
+  "13200": {
+    "Id": 13200,
+    "Name": "RDM_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      13201
+    ]
+  },
+  "13201": {
+    "Id": 13201,
+    "Name": "RDM_AoE_DPS",
+    "Parents": [],
+    "Conflicts": [
+      13200
+    ]
+  },
+  "13207": {
+    "Id": 13207,
+    "Name": "RDM_AoE_Embolden",
+    "Parents": [
+      13201
+    ],
+    "Conflicts": []
+  },
+  "13208": {
+    "Id": 13208,
+    "Name": "RDM_AoE_Manafication",
+    "Parents": [
+      13201
+    ],
+    "Conflicts": []
+  },
+  "14069": {
+    "Id": 14069,
+    "Name": "SGE_Raidwide",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "14071": {
+    "Id": 14071,
+    "Name": "SGE_Raidwide_Kerachole",
+    "Parents": [
+      14069
+    ],
+    "Conflicts": []
+  },
+  "14072": {
+    "Id": 14072,
+    "Name": "SGE_Raidwide_Holos",
+    "Parents": [
+      14069
+    ],
+    "Conflicts": []
+  },
+  "15002": {
+    "Id": 15002,
+    "Name": "SAM_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      15003
+    ]
+  },
+  "15003": {
+    "Id": 15003,
+    "Name": "SAM_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      15002
+    ]
+  },
+  "15011": {
+    "Id": 15011,
+    "Name": "SAM_ST_Adv_CDs",
+    "Parents": [
+      15003
+    ],
+    "Conflicts": []
+  },
+  "15012": {
+    "Id": 15012,
+    "Name": "SAM_ST_Adv_Ikishoten",
+    "Parents": [
+      15011
+    ],
+    "Conflicts": []
+  },
+  "15018": {
+    "Id": 15018,
+    "Name": "SAM_ST_Adv_Meikyo",
+    "Parents": [
+      15011
+    ],
+    "Conflicts": []
+  },
+  "15095": {
+    "Id": 15095,
+    "Name": "SAM_ST_Adv_Feint",
+    "Parents": [
+      15003
+    ],
+    "Conflicts": []
+  },
+  "15102": {
+    "Id": 15102,
+    "Name": "SAM_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      15103
+    ]
+  },
+  "15103": {
+    "Id": 15103,
+    "Name": "SAM_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      15102
+    ]
+  },
+  "15108": {
+    "Id": 15108,
+    "Name": "SAM_AoE_Adv_Ikishoten",
+    "Parents": [
+      15115
+    ],
+    "Conflicts": []
+  },
+  "15114": {
+    "Id": 15114,
+    "Name": "SAM_AoE_Adv_Meikyo",
+    "Parents": [
+      15115
+    ],
+    "Conflicts": []
+  },
+  "15115": {
+    "Id": 15115,
+    "Name": "SAM_AoE_Adv_CDs",
+    "Parents": [
+      15103
+    ],
+    "Conflicts": []
+  },
+  "16018": {
+    "Id": 16018,
+    "Name": "SCH_AoE_Heal",
+    "Parents": [],
+    "Conflicts": [
+      16084
+    ]
+  },
+  "16023": {
+    "Id": 16023,
+    "Name": "SCH_ST_Heal",
+    "Parents": [],
+    "Conflicts": [
+      16085,
+      16074
+    ]
+  },
+  "16040": {
+    "Id": 16040,
+    "Name": "SCH_ST_Heal_Dissipation",
+    "Parents": [
+      16023
+    ],
+    "Conflicts": []
+  },
+  "16041": {
+    "Id": 16041,
+    "Name": "SCH_AoE_Heal_Dissipation",
+    "Parents": [
+      16018
+    ],
+    "Conflicts": []
+  },
+  "16059": {
+    "Id": 16059,
+    "Name": "SCH_Raidwide_SacredSoil",
+    "Parents": [
+      16065
+    ],
+    "Conflicts": []
+  },
+  "16065": {
+    "Id": 16065,
+    "Name": "SCH_Raidwide",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "16073": {
+    "Id": 16073,
+    "Name": "SCH_Retarget",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "16074": {
+    "Id": 16074,
+    "Name": "SCH_Retarget_Physick",
+    "Parents": [
+      16073
+    ],
+    "Conflicts": [
+      16085,
+      16023
+    ]
+  },
+  "16084": {
+    "Id": 16084,
+    "Name": "SCH_Simple_AoE_Heal",
+    "Parents": [],
+    "Conflicts": [
+      16018
+    ]
+  },
+  "16085": {
+    "Id": 16085,
+    "Name": "SCH_Simple_ST_Heal",
+    "Parents": [],
+    "Conflicts": [
+      16023,
+      16074
+    ]
+  },
+  "17000": {
+    "Id": 17000,
+    "Name": "SMN_ST_Advanced_Combo",
+    "Parents": [],
+    "Conflicts": [
+      17041
+    ]
+  },
+  "17017": {
+    "Id": 17017,
+    "Name": "SMN_ST_Advanced_Combo_SearingLight",
+    "Parents": [
+      17000
+    ],
+    "Conflicts": []
+  },
+  "17041": {
+    "Id": 17041,
+    "Name": "SMN_ST_Simple_Combo",
+    "Parents": [],
+    "Conflicts": [
+      17000
+    ]
+  },
+  "17049": {
+    "Id": 17049,
+    "Name": "SMN_AoE_Advanced_Combo",
+    "Parents": [],
+    "Conflicts": [
+      17066
+    ]
+  },
+  "17053": {
+    "Id": 17053,
+    "Name": "SMN_AoE_Advanced_Combo_SearingLight",
+    "Parents": [
+      17049
+    ],
+    "Conflicts": []
+  },
+  "17066": {
+    "Id": 17066,
+    "Name": "SMN_AoE_Simple_Combo",
+    "Parents": [],
+    "Conflicts": [
+      17049
+    ]
+  },
+  "18000": {
+    "Id": 18000,
+    "Name": "WAR_ST_Simple",
+    "Parents": [],
+    "Conflicts": [
+      18002
+    ]
+  },
+  "18001": {
+    "Id": 18001,
+    "Name": "WAR_AoE_Simple",
+    "Parents": [],
+    "Conflicts": [
+      18016
+    ]
+  },
+  "18002": {
+    "Id": 18002,
+    "Name": "WAR_ST_Advanced",
+    "Parents": [],
+    "Conflicts": [
+      18000
+    ]
+  },
+  "18003": {
+    "Id": 18003,
+    "Name": "WAR_ST_InnerRelease",
+    "Parents": [
+      18002
+    ],
+    "Conflicts": []
+  },
+  "18016": {
+    "Id": 18016,
+    "Name": "WAR_AoE_Advanced",
+    "Parents": [],
+    "Conflicts": [
+      18001
+    ]
+  },
+  "18019": {
+    "Id": 18019,
+    "Name": "WAR_AoE_InnerRelease",
+    "Parents": [
+      18016
+    ],
+    "Conflicts": []
+  },
+  "18131": {
+    "Id": 18131,
+    "Name": "WAR_Mitigation",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "18132": {
+    "Id": 18132,
+    "Name": "WAR_Mitigation_NonBoss",
+    "Parents": [
+      18131
+    ],
+    "Conflicts": []
+  },
+  "18133": {
+    "Id": 18133,
+    "Name": "WAR_Mitigation_NonBoss_Rampart",
+    "Parents": [
+      18132
+    ],
+    "Conflicts": []
+  },
+  "18135": {
+    "Id": 18135,
+    "Name": "WAR_Mitigation_NonBoss_Vengeance",
+    "Parents": [
+      18132
+    ],
+    "Conflicts": []
+  },
+  "18137": {
+    "Id": 18137,
+    "Name": "WAR_Mitigation_NonBoss_Reprisal",
+    "Parents": [
+      18132
+    ],
+    "Conflicts": []
+  },
+  "18142": {
+    "Id": 18142,
+    "Name": "WAR_Mitigation_Boss",
+    "Parents": [
+      18131
+    ],
+    "Conflicts": []
+  },
+  "18148": {
+    "Id": 18148,
+    "Name": "WAR_Mitigation_Boss_Vengeance",
+    "Parents": [
+      18142
+    ],
+    "Conflicts": []
+  },
+  "18149": {
+    "Id": 18149,
+    "Name": "WAR_Mitigation_Boss_Rampart",
+    "Parents": [
+      18142
+    ],
+    "Conflicts": []
+  },
+  "19220": {
+    "Id": 19220,
+    "Name": "WHM_Raidwide",
+    "Parents": [],
+    "Conflicts": []
+  },
+  "19221": {
+    "Id": 19221,
+    "Name": "WHM_Raidwide_Asylum",
+    "Parents": [
+      19220
+    ],
+    "Conflicts": []
+  },
+  "19222": {
+    "Id": 19222,
+    "Name": "WHM_Raidwide_Temperance",
+    "Parents": [
+      19220
+    ],
+    "Conflicts": []
+  },
+  "20000": {
+    "Id": 20000,
+    "Name": "PCT_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      20005
+    ]
+  },
+  "20001": {
+    "Id": 20001,
+    "Name": "PCT_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      20040
+    ]
+  },
+  "20005": {
+    "Id": 20005,
+    "Name": "PCT_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      20000
+    ]
+  },
+  "20021": {
+    "Id": 20021,
+    "Name": "PCT_ST_AdvancedMode_ScenicMuse",
+    "Parents": [
+      20005
+    ],
+    "Conflicts": []
+  },
+  "20040": {
+    "Id": 20040,
+    "Name": "PCT_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      20001
+    ]
+  },
+  "20054": {
+    "Id": 20054,
+    "Name": "PCT_AoE_AdvancedMode_ScenicMuse",
+    "Parents": [
+      20040
+    ],
+    "Conflicts": []
+  },
+  "20071": {
+    "Id": 20071,
+    "Name": "PCT_ST_AdvancedMode_Tempera",
+    "Parents": [
+      20005
+    ],
+    "Conflicts": []
+  },
+  "30000": {
+    "Id": 30000,
+    "Name": "VPR_ST_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      30001,
+      30210,
+      30209
+    ]
+  },
+  "30001": {
+    "Id": 30001,
+    "Name": "VPR_ST_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      30000,
+      30210,
+      30209
+    ]
+  },
+  "30005": {
+    "Id": 30005,
+    "Name": "VPR_ST_SerpentsIre",
+    "Parents": [
+      30001
+    ],
+    "Conflicts": []
+  },
+  "30011": {
+    "Id": 30011,
+    "Name": "VPR_ST_Reawaken",
+    "Parents": [
+      30001
+    ],
+    "Conflicts": []
+  },
+  "30015": {
+    "Id": 30015,
+    "Name": "VPR_ST_BasicCombo",
+    "Parents": [],
+    "Conflicts": [
+      30203,
+      30209,
+      30210
+    ]
+  },
+  "30094": {
+    "Id": 30094,
+    "Name": "VPR_ST_Feint",
+    "Parents": [
+      30001
+    ],
+    "Conflicts": []
+  },
+  "30100": {
+    "Id": 30100,
+    "Name": "VPR_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      30101,
+      30210
+    ]
+  },
+  "30101": {
+    "Id": 30101,
+    "Name": "VPR_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      30100,
+      30210
+    ]
+  },
+  "30104": {
+    "Id": 30104,
+    "Name": "VPR_AoE_SerpentsIre",
+    "Parents": [
+      30101
+    ],
+    "Conflicts": []
+  },
+  "30110": {
+    "Id": 30110,
+    "Name": "VPR_AoE_Reawaken",
+    "Parents": [
+      30101
+    ],
+    "Conflicts": []
+  },
+  "30203": {
+    "Id": 30203,
+    "Name": "VPR_ReawakenLegacy",
+    "Parents": [],
+    "Conflicts": [
+      30209,
+      30015
+    ]
+  },
+  "30209": {
+    "Id": 30209,
+    "Name": "VPR_Legacies",
+    "Parents": [],
+    "Conflicts": [
+      30000,
+      30001,
+      30210,
+      30203,
+      30015
+    ]
+  },
+  "30210": {
+    "Id": 30210,
+    "Name": "VPR_SerpentsTail",
+    "Parents": [],
+    "Conflicts": [
+      30000,
+      30100,
+      30001,
+      30101,
+      30209,
+      30015
+    ]
+  }
+}

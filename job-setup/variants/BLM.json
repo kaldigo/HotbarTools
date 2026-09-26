@@ -1,0 +1,42 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Ley Lines. Continue pressing ST/AoE; scripted openers stay off. Ley Lines stays because the same button also supplies manual Retrace.",
+    "Enable": [
+      2100,
+      2103,
+      2200,
+      2202
+    ],
+    "Disable": [
+      2001,
+      2002,
+      2052,
+      2071
+    ],
+    "EmptySlots": []
+  },
+  "AutoMitigation": {
+    "Description": "Enables Manaward through ST for detected group damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      2100,
+      2199
+    ],
+    "Disable": [
+      2001,
+      2052,
+      2071
+    ],
+    "EmptySlots": [],
+    "Settings": {
+      "CustomIntValuesV6": {
+        "BLM_ST_ManawardTrigger": 2
+      }
+    }
+  },
+  "AutoMechanics": {
+    "Description": "Fire/ice and resource flow are already handled. Transpose stays for downtime.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Trick Attack and Mug upgrades. Continue pressing ST/AoE; scripted openers stay off. Hide stays for prepull mudra reset; Kassatsu stays for prepull use.",
+    "Enable": [
+      10002,
+      10003,
+      10006,
+      10007,
+      10022,
+      10023
+    ],
+    "Disable": [
+      10000,
+      10001
+    ],
+    "EmptySlots": []
+  },
+  "AutoMitigation": {
+    "Description": "Enables Feint through ST. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      10002,
+      10020
+    ],
+    "Disable": [
+      10000
+    ],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Enables Kassatsu, Ten Chi Jin and Meisui during combat through ST/AoE. Hide stays for prepull mudra reset; Kassatsu stays for prepull use.",
+    "Enable": [
+      10002,
+      10003,
+      10010,
+      10011,
+      10013,
+      10026,
+      10027,
+      10029
+    ],
+    "Disable": [
+      10000,
+      10001
+    ],
+    "EmptySlots": [
+      8
+    ]
+  }
+}

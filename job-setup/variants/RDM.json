@@ -1,0 +1,32 @@
+{
+  "AutoBurst": {
+    "Description": "Enables Embolden and Manafication. Continue pressing ST/AoE; scripted openers stay off. ",
+    "Enable": [
+      13001,
+      13010,
+      13011,
+      13201,
+      13207,
+      13208
+    ],
+    "Disable": [
+      13000,
+      13200
+    ],
+    "EmptySlots": [
+      3
+    ]
+  },
+  "AutoMitigation": {
+    "Description": "No additional change: the baseline already enables the reviewed conditional defensive automation. Keep manual defenses for AoE, planned timing and uncovered conditions.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Mana and melee finishers are already handled. Vercure and Raise remain available.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

@@ -36,3 +36,7 @@ The original read-only capture uses schema 2 and includes 10 regular bars, eight
 Version 0.2.3 makes live operation explicit: a persistent enable switch, separate live status, and resume without repeated alignment. First activation requires reviewing initial differences. Mapping edits require saving and reinitializing; ordinary hotbar edits never require opening the window or pressing a sync button. Both plugin windows open at 900Ã—680 (clamped to the display), with resizable bounds and scrollable long content.
 
 Version 0.2.6 accepts per-job keyboard route overrides from Job Setup during a bracketed external edit. These change regular endpoints only; shared pairs and controller endpoints remain fixed. Overrides are persisted in configuration. The mapping editor shows the base mapping; apply a Job Setup layout with compaction off to restore that job's original spacing. Updates validate overlapping destinations and discard affected job-only baselines so an old baseline cannot undo a newly applied layout. Shared assignments remain intact.
+
+## Crafting and gathering profiles (0.2.7)
+
+The Noncombat profile maps twelve job controls for class IDs 8–18. Four shared cross slots and the side utility page retain their existing mapping. On first update, only non-overlapping default noncombat pairs are added; existing custom pairs, routes and shared baselines are preserved. An explicitly empty map stays empty. Any position blocked by a custom All-profile pair must be resolved in the editor before Job Setup can apply that layout.

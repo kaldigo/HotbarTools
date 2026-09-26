@@ -1,0 +1,24 @@
+{
+  "AutoBurst": {
+    "Description": "No additional change: this healer already uses automatic offensive cooldowns; healing remains the priority.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMitigation": {
+    "Description": "Enables Collective Unconscious and Neutral Sect for detected raidwide damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      1075,
+      1076,
+      1077
+    ],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Draw/play, Lord and Earthly Star are already automated. Synastry and Macrocosmos timing stay manual.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  }
+}

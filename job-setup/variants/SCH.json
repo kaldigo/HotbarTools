@@ -1,0 +1,32 @@
+{
+  "AutoBurst": {
+    "Description": "No additional change: this healer already uses automatic offensive cooldowns; healing remains the priority.",
+    "Enable": [],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMitigation": {
+    "Description": "Enables Sacred Soil for detected raidwide damage. Wrath applies its readiness, content, HP and damage-detection conditions. Keep manual defenses for deliberate timing and paths not covered by automation. Automated and manual uses share cooldowns.",
+    "Enable": [
+      16059,
+      16065
+    ],
+    "Disable": [],
+    "EmptySlots": []
+  },
+  "AutoMechanics": {
+    "Description": "Enables conditional Dissipation through single-target and party healing. Conditional Dissipation may dismiss the fairy to replenish Aetherflow during healing. Keep the button for deliberate timing; normal fairy following remains the plan.",
+    "Enable": [
+      16018,
+      16023,
+      16040,
+      16041
+    ],
+    "Disable": [
+      16074,
+      16084,
+      16085
+    ],
+    "EmptySlots": []
+  }
+}

@@ -44,6 +44,7 @@ public sealed class SyncController : IDisposable
     {
         this.pi=pi;this.objects=objects;this.player=player;this.condition=condition;this.log=log;
         config=pi.GetPluginConfig() as BridgeConfig ?? new();
+        if(config.AddNoncombatDefaults())pi.SavePluginConfig(config);
         Defaults.Validate(config.Maps);
         mapping=pi.GetIpcProvider<string>("HotbarBridge.GetMapping");
         mapping.RegisterFunc(()=>JsonSerializer.Serialize(config.Maps));
@@ -252,8 +253,8 @@ public sealed class SyncController : IDisposable
                     changed|=ImGui.InputInt("Regular bar",ref rb);changed|=ImGui.InputInt("Regular slot",ref rs);
                     changed|=ImGui.InputInt("Cross set",ref cb);changed|=ImGui.InputInt("Cross slot",ref cs);
                     map.RegularBar=rb;map.RegularSlot=rs;map.CrossSet=cb;map.CrossSlot=cs;
-                    var profile=Array.IndexOf(new[]{"All","Combat","Healer"},map.Profile);
-                    if(ImGui.Combo("Profile",ref profile,new[]{"All","Combat","Healer"},3)){map.Profile=new[]{"All","Combat","Healer"}[profile];changed=true;}
+                    var profile=Array.IndexOf(new[]{"All","Combat","Healer","Noncombat"},map.Profile);
+                    if(ImGui.Combo("Profile",ref profile,new[]{"All","Combat","Healer","Noncombat"},4)){map.Profile=new[]{"All","Combat","Healer","Noncombat"}[profile];changed=true;}
                     var shared=map.SharedAcrossJobs;if(ImGui.Checkbox("Share these assignments across jobs",ref shared)){map.SharedAcrossJobs=shared;changed=true;}
                     if(ImGui.Button("Remove pair"))remove=i;
                     ImGui.TreePop();
