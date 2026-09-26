@@ -8,13 +8,6 @@ using HotbarTools;
 
 namespace HotbarBridge;
 
-public sealed class BridgeConfig : IPluginConfiguration
-{
-    public int Version { get; set; }=1;
-    public int Revision { get; set; }
-    public bool Enabled { get; set; }
-    public List<SlotMap> Maps { get; set; }=Defaults.Maps();
-}
 public sealed class BridgeState
 {
     public Dictionary<string,SlotValue> Baselines { get; set; }=[];

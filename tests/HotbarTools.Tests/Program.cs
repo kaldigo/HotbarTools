@@ -44,4 +44,21 @@ Test("first live activation requires alignment",()=>Equal(LiveSyncStart.Decide(f
 Test("live resume preserves existing baselines",()=>Equal(LiveSyncStart.Decide(false,["0:37:Combat-0"],0),LiveStartChoice.Resume));
 Test("new mapping revision requires new alignment",()=>Equal(LiveSyncStart.Decide(false,["0:37:Combat-0"],1),LiveStartChoice.Initialize));
 Test("unsaved mapping cannot resume",()=>Equal(LiveSyncStart.Decide(true,["0:37:Combat-0"],0),LiveStartChoice.SaveMapping));
+Test("saved mappings replace defaults on every reload",()=>{
+    var config=new HotbarBridge.BridgeConfig { Revision=7,Enabled=true };
+    config.Maps[0].Label="Custom label";
+    config.Maps[0].Enabled=false;
+    config.Maps.RemoveAt(1);
+    for(var i=0;i<3;i++) {
+        config=Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>(Newtonsoft.Json.JsonConvert.SerializeObject(config))!;
+        Equal(config.Maps.Count,43);Equal(config.Maps[0].Label,"Custom label");Equal(config.Maps[0].Enabled,false);
+        Equal(config.Revision,7);Equal(config.Enabled,true);Defaults.Validate(config.Maps);
+    }
+});
+Test("explicit empty mapping stays empty",()=>Equal(Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>("{\"Maps\":[]}")!.Maps.Count,0));
+Test("legacy config without mappings receives defaults",()=>Defaults.Validate(Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>("{}")!.Maps));
+if(args.Length>0) {
+    var saved=Newtonsoft.Json.JsonConvert.DeserializeObject<HotbarBridge.BridgeConfig>(File.ReadAllText(args[0]))!;
+    Defaults.Validate(saved.Maps);Console.WriteLine($"Saved configuration verified: {saved.Maps.Count} pairs.");
+}
 Console.WriteLine($"{count} tests passed.");

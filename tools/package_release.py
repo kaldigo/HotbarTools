@@ -18,7 +18,7 @@ for folder,name in [('hotbar-sync','HotbarBridge'),('job-setup','JobSetup')]:
   if (build/f'{name}.deps.json').exists():z.write(build/f'{name}.deps.json',f'{name}.deps.json')
   z.write(root/'LICENSE','LICENSE')
  url=f'https://github.com/{a.repository}/releases/download/{a.tag}/{name}.zip'
- manifest.update(DownloadLinkInstall=url,DownloadLinkUpdate=url,DownloadLinkTesting=url,Changelog=('0.2.3: live-sync switch/status and resume; sensible window sizing and scrollable panels.' if name=='HotbarBridge' else '0.2.3: sensible window sizing and scrollable settings preview. Wrath must be disabled to apply settings.'))
+ manifest.update(DownloadLinkInstall=url,DownloadLinkUpdate=url,DownloadLinkTesting=url,Changelog=('0.2.4: fix saved mapping reload preventing Hotbar Bridge from loading.' if name=='HotbarBridge' else '0.2.4: sensible window sizing and scrollable settings preview. Wrath must be disabled to apply settings.'))
  feed.append(manifest);hashes.append(f'{hashlib.sha256(zip_path.read_bytes()).hexdigest()}  {zip_path.name}')
 text=json.dumps(feed,indent=2)+'\n';(root/'pluginmaster.json').write_text(text);(out/'pluginmaster.json').write_text(text)
 (out/'SHA256SUMS.txt').write_text('\n'.join(hashes)+'\n')
