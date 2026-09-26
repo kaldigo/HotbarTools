@@ -77,7 +77,7 @@ Place one command in a game macro:
 | `/jobsetup current BJ` | Enable burst and job mechanics, disable automatic mitigation, then apply to current. |
 | `/jobsetup current none` | Turn all three off and apply the baseline to current. |
 | `/jobsetup all none` | Turn all three off and apply the baseline to all. |
-| `/jobsetup current toggle M` | Toggle mitigation, preserve the other selections, apply to current. |
+| `/jobsetup current toggle M` | Toggle mitigation from the current job’s checked state, preserve its other switches, apply to current. |
 | `/jobsetup all on BJ` | Enable burst/mechanics, preserve mitigation, apply to all. |
 | `/jobsetup current off B` | Disable burst, preserve the other selections, apply to current. |
 | `/jobsetup current` / `/jobsetup all` | Apply the existing global selections to that scope. |
@@ -87,6 +87,8 @@ M means mitigation, B means burst, J means job mechanics. Letters are case-insen
 
 Run outside combat and loading. A command is rejected while another operation is queued or running; use a single combined command rather than several toggle lines in the same macro. If a reload is needed, the existing opt-in automatic Wrath reload setting is honored; otherwise the command reports that manual unloading is required. Changing character or job during the operation cancels it before application. Commands do not activate hands-free rotation.
 
-The server-info entry reads **Job Settings:** followed by native icons, in mitigation/burst/job-mechanics order: tank/shield, drawn sword, class/job. Disabled icons disappear; when all three are off, the whole entry hides. It also hides while logged out. Hover for the legend; click to open Job Setup. This represents the saved/global selections, not a live audit of every job's Wrath configuration. UI checkbox edits update it immediately; a pending macro retains the preceding display until application succeeds. Dalamud's server-info settings can independently hide or reorder the entry.
+The server-info entry reads **Job Settings:** followed by native icons, in mitigation/burst/job-mechanics order: tank/shield, drawn sword, class/job. Disabled icons disappear; when all three are off, the whole entry hides. It also hides while logged out. Hover for the legend; click to open Job Setup. The entry checks the active job against Wrath on class/character change, after application, and every two seconds. It checks relevant live preset states through Wrath IPC and custom option values in the saved configuration. Unapplied global checkbox edits do not change the active-job display. The entry hides during application/loading, while Wrath is disabled, or when the current job cannot be matched to a reviewed combination. No-op switches cannot be inferred from identical Wrath settings, so these retain that job’s last successful application result; without a record they display off. These records are outcomes, not per-job user controls. Dalamud's server-info settings can independently hide or reorder the entry.
 
 Build and logic checks cannot verify the appearance and placement of native icons in your game UI; test those in game.
+
+Current-job `on`, `off` and `toggle` commands start from the checked active-job state. If it cannot be determined, use an exact selection such as `/jobsetup current MBJ`. All-job per-switch commands use the global selection because jobs may currently differ. Merely changing class does not apply anything or change the global selection.

@@ -30,6 +30,11 @@ public sealed class Plugin : IDalamudPlugin
     private readonly IChatGui chat;
     private readonly IDtrBarEntry status;
     private string statusText="";
+    private uint statusJob;
+    private ulong statusCharacter;
+    private DateTime nextStatusCheck;
+    private VariantSelection? activeAutomation;
+    private bool recordSelection;
     private MacroOperation? macro;
     private sealed record MacroOperation(VariantSelection Previous,bool All,bool Shared,uint Job,ulong Character);
     private Config config;
@@ -59,7 +64,7 @@ public sealed class Plugin : IDalamudPlugin
         status=dtr.Get("Job Settings");status.Shown=false;
         status.Tooltip=new SeStringBuilder().AddIcon(BitmapFontIcon.Tank).AddText(" Mitigation (M)  ")
             .AddIcon(BitmapFontIcon.SwordUnsheathed).AddText(" Burst (B)  ")
-            .AddIcon(BitmapFontIcon.AnyClass).AddText(" Job mechanics (J)\nGlobal selections, applied using current/all scope. Click to open Job Setup.").Build();
+            .AddIcon(BitmapFontIcon.AnyClass).AddText(" Job mechanics (J)\nChecked against the current job’s Wrath settings. Click to open Job Setup.").Build();
         status.OnClick=_=>Open();
         using var stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("JobSetup.presets.json")!;
         pack=JsonSerializer.Deserialize<PresetPack>(stream)??throw new InvalidDataException("Missing presets");
@@ -73,7 +78,11 @@ public sealed class Plugin : IDalamudPlugin
         try
         {
             if(macro!=null || lifecycleTask!=null || request!=0)throw new InvalidOperationException("Job Setup is busy. Wait for the current operation to finish.");
-            var parsed=AutomationCommands.Parse(args,config.Automation);
+            var words=args.Split((char[]?)null,StringSplitOptions.RemoveEmptyEntries);
+            var basis=config.Automation;
+            if(words.Length==3 && words[0].Equals("current",StringComparison.OrdinalIgnoreCase) && new[]{"on","off","toggle"}.Contains(words[1],StringComparer.OrdinalIgnoreCase))
+                basis=ReadActiveAutomation()??throw new InvalidOperationException("Current job settings do not match a known variant. Apply an exact selection first, such as /jobsetup current MBJ.");
+            var parsed=AutomationCommands.Parse(args,basis);
             var job=objects.LocalPlayer?.ClassJob.RowId??0;
             if(job==0 || player.ContentId==0)throw new InvalidOperationException("Log in before applying job settings.");
             macro=new(config.Automation,all,shared,job,player.ContentId);
@@ -90,19 +99,53 @@ public sealed class Plugin : IDalamudPlugin
         if(success){pi.SavePluginConfig(config);chat.Print(wrathCycle==null?message:message.Replace("Re-enable Wrath Combo.","Restoring Wrath automatically."),"Job Setup");}
         else chat.PrintError(message,"Job Setup");
     }
+    private VariantSelection? ReadActiveAutomation()
+    {
+        var job=objects.LocalPlayer?.ClassJob.RowId??0;
+        var preset=pack.Jobs.FirstOrDefault(p=>p.JobId==job || p.BaseClasses.Contains(job));
+        if(preset==null || !File.Exists(WrathPath))return null;
+        var actual=JsonNode.Parse(File.ReadAllText(WrathPath))!.AsObject();
+        if(WrathLoaded && actual["EnabledActionsV6"] is JsonArray array)
+        {
+            var ids=array.Select(n=>n!.GetValue<int>()).ToHashSet();
+            var relevant=new[]{preset.AutoBurst,preset.AutoMitigation,preset.AutoMechanics}.OfType<PresetVariant>()
+                .SelectMany(v=>v.Enable.Concat(v.Disable)).Distinct();
+            foreach(var id in relevant)
+            {
+                if(!LivePresetPlan.Supported.TryGetValue(id,out var name))return null;
+                var on=pi.GetIpcSubscriber<string,bool>("WrathCombo.GetComboOptionState").InvokeFunc(name);
+                if(on)ids.Add(id);else ids.Remove(id);
+            }
+            actual["EnabledActionsV6"]=new JsonArray(ids.Select(id=>(JsonNode?)JsonValue.Create(id)).ToArray());
+        }
+        return AutomationStatus.Infer(preset,actual,config.AppliedAutomation.GetValueOrDefault(preset.Job));
+    }
     private void UpdateStatus()
     {
-        var text=AutomationCommands.Status(macro?.Previous??config.Automation);
+        var job=objects.LocalPlayer?.ClassJob.RowId??0;
+        if(job!=statusJob || player.ContentId!=statusCharacter)
+        {
+            statusJob=job;statusCharacter=player.ContentId;activeAutomation=null;nextStatusCheck=default;status.Shown=false;
+        }
+        if(job==0 || !WrathLoaded || condition[ConditionFlag.BetweenAreas] || condition[ConditionFlag.BetweenAreas51]){status.Shown=false;return;}
+        if(macro!=null || lifecycleTask!=null){status.Shown=false;return;}
+        if(DateTime.UtcNow>=nextStatusCheck)
+        {
+            nextStatusCheck=DateTime.UtcNow.AddSeconds(2);
+            try {activeAutomation=ReadActiveAutomation();}
+            catch {activeAutomation=null;} // Unavailable IPC or a partial save cannot establish active settings.
+        }
+        var text=activeAutomation==null?"":AutomationCommands.Status(activeAutomation);
         if(text!=statusText)
         {
-            var value=macro?.Previous??config.Automation;
+            var value=activeAutomation??new();
             var builder=new SeStringBuilder().AddText("Job Settings: ");
             if(value.AutoMitigation)builder.AddIcon(BitmapFontIcon.Tank);
             if(value.AutoBurst)builder.AddIcon(BitmapFontIcon.SwordUnsheathed);
             if(value.AutoMechanics)builder.AddIcon(BitmapFontIcon.AnyClass);
             status.Text=builder.Build();statusText=text;
         }
-        status.Shown=text.Length>0 && objects.LocalPlayer!=null;
+        status.Shown=text.Length>0;
     }
     private void Open()=>visible=true;
     private bool WrathLoaded=>pi.InstalledPlugins.Any(p=>p.InternalName=="WrathCombo" && p.IsLoaded);
@@ -132,7 +175,7 @@ public sealed class Plugin : IDalamudPlugin
             if(ImGui.Checkbox(label,ref value)){set(value);ClearPreview();pi.SavePluginConfig(config);}
         }
     }
-    private void ClearPreview(){hotbarPreview=null;wrathPreview=null;routePreview=null;routeOriginal=null;layoutSummary.Clear();}
+    private void ClearPreview(){recordSelection=false;hotbarPreview=null;wrathPreview=null;routePreview=null;routeOriginal=null;layoutSummary.Clear();}
     private void Draw()
     {
         if(!visible)return;
@@ -253,6 +296,7 @@ public sealed class Plugin : IDalamudPlugin
                     if(action is 6 or 7)PreviewHotbars(job);
                     wrathOriginal=File.ReadAllText(WrathPath);
                     wrathPreview=WrathMerge.Merge(JsonNode.Parse(wrathOriginal)!.AsObject(),Selected(job),shared?pack.SharedSettings:null);
+                    recordSelection=true;
                     previewScope+=(shared?" + global targeting/role settings":all?"; global targeting preserved":"; other jobs/global targeting preserved");
                     previewScope+=string.Join("",Baselines(job).Where(p=>p.AutoBurst!=null||p.AutoMitigation!=null).Select(p=>{
                         var v=config.Automation;
@@ -371,6 +415,14 @@ public sealed class Plugin : IDalamudPlugin
             message=wrathPreview!=null?"Selected settings applied"+(hotbarPreview!=null?" with matching hotbars":"")+(WrathLoaded?". Wrath updated live. Backups saved.":". Re-enable Wrath Combo. Backups saved."):"Hotbar layouts and sync routes applied. Backup saved; test the actions in game.";
         }
         finally { if(bridge)pi.GetIpcSubscriber<bool>("HotbarBridge.EndExternalEdit").InvokeFunc(); }
+        if(wrathPreview!=null)
+        {
+            if(recordSelection)foreach(var preset in Baselines(job))
+                config.AppliedAutomation[preset.Job]=new(){AutoBurst=config.Automation.AutoBurst,AutoMitigation=config.Automation.AutoMitigation,AutoMechanics=config.Automation.AutoMechanics};
+            else config.AppliedAutomation.Clear();
+            pi.SavePluginConfig(config);
+        }
+        nextStatusCheck=default;
         ClearPreview();
     }
     private void SetRoutes(Dictionary<uint,Dictionary<string,Position>> routes)

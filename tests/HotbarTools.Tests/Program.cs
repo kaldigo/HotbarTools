@@ -250,4 +250,33 @@ Test("invalid macro arguments fail without changing selection",()=>{
         Throws(()=>AutomationCommands.Parse(input,selection));
     Equal(AutomationCommands.Letters(selection),"B");
 });
+Test("active status recognizes every job variant independently of global selection",()=>{
+    foreach(var preset in pack.Jobs)for(var mask=0;mask<8;mask++){
+        var choice=new VariantSelection{AutoBurst=(mask&1)!=0,AutoMitigation=(mask&2)!=0,AutoMechanics=(mask&4)!=0};
+        var actual=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},[Variants.Resolve(preset,choice)],null);
+        var found=AutomationStatus.Infer(preset,actual,choice)??throw new Exception(preset.Job+" unknown status");
+        Equal(AutomationCommands.Letters(found),AutomationCommands.Letters(choice));
+        Equal(AutomationStatus.Infer(preset,actual,null)!=null,true);
+    }
+});
+Test("class change reads each jobs actual settings and detects external changes",()=>{
+    var war=pack.Jobs.Single(j=>j.Job=="WAR");
+    var actual=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},[Variants.Resolve(gnb,new(){AutoBurst=true}),war],null);
+    Equal(AutomationStatus.Infer(gnb,actual,null)!.AutoBurst,true);
+    Equal(AutomationStatus.Infer(war,actual,null)!.AutoBurst,false);
+    actual=WrathMerge.Merge(actual,[gnb],null);
+    Equal(AutomationStatus.Infer(gnb,actual,new(){AutoBurst=true})!.AutoBurst,false);
+    // A half-enabled automatic burst is not a supported variant; never display a false active state.
+    actual["EnabledActionsV6"]!.AsArray().Add(7008);
+    Equal(AutomationStatus.Infer(gnb,actual,null)==null,true);
+});
+Test("no-op status uses applied history without changing global controls",()=>{
+    var crafter=pack.Jobs.Single(j=>j.Job=="CRP");
+    var actual=new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()};
+    Equal(AutomationCommands.Letters(AutomationStatus.Infer(crafter,actual,null)!),"");
+    Equal(AutomationCommands.Letters(AutomationStatus.Infer(crafter,actual,new(){AutoMechanics=true})!),"J");
+    var config=new JobSetup.Config{Automation=new(){AutoBurst=true},AppliedAutomation=new(){{"CRP",new(){AutoMechanics=true}}}};
+    var restored=Newtonsoft.Json.JsonConvert.DeserializeObject<JobSetup.Config>(Newtonsoft.Json.JsonConvert.SerializeObject(config))!;
+    Equal(AutomationCommands.Letters(restored.Automation),"B");Equal(AutomationCommands.Letters(restored.AppliedAutomation["CRP"]),"J");
+});
 Console.WriteLine($"{count} tests passed.");

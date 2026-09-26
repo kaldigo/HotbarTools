@@ -15,4 +15,7 @@ public sealed class Config : IPluginConfiguration
     public bool PreferLiveWrath { get; set; }=true;
     [Newtonsoft.Json.JsonProperty(ObjectCreationHandling=Newtonsoft.Json.ObjectCreationHandling.Replace)]
     public VariantSelection Automation { get; set; }=new();
+    // Applied outcomes, not per-job user choices. Only resolves indistinguishable no-op switches.
+    [Newtonsoft.Json.JsonProperty(ObjectCreationHandling=Newtonsoft.Json.ObjectCreationHandling.Replace)]
+    public Dictionary<string,VariantSelection> AppliedAutomation { get; set; }=new();
 }
