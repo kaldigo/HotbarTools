@@ -28,7 +28,7 @@ for job in jobs:
  job['Settings']['EnabledActionsV6']=sorted(enabled)
 jobs.extend(json.loads(p.read_text(encoding='utf-8-sig')) for p in sorted((root/'job-setup/noncombat').glob('*.json')))
 s=json.loads((wrath/'shared.json').read_text())
-shared={k:s[k] for k in ('EnabledActionsV6','CustomHealStack','RaiseStack')}
+shared={k:s[k] for k in ('EnabledActionsV6','CustomHealStack','RaiseStack','RetargetHealingActionsToStack')}
 # Explicit shared behavior keys only, not every original UI preference/metadata field.
 for section in ('CustomBoolValuesV6','CustomBoolArrayValuesV6','CustomIntValuesV6'):
  values={k:v for k,v in s[section].items() if k.startswith(('ALL_Healer_Rescue','AllTank','AllCaster','AllMelee','AllRanged'))}

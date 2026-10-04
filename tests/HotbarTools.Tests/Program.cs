@@ -29,6 +29,16 @@ Test("wrong Wrath schema rejected",()=>Throws(()=>WrathMerge.Merge(new JsonObjec
 var pack=JsonSerializer.Deserialize<PresetPack>(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"presets.json")))!;
 Test("32 presets and 9 base classes",()=>{Equal(pack.Jobs.Count,32);Equal(pack.Jobs.Sum(j=>j.BaseClasses.Length),9);Equal(pack.Jobs.SelectMany(j=>j.BaseClasses).Distinct().Count(),9);});
 Test("preset mappings match Bridge defaults",()=>{foreach(var j in pack.Jobs)foreach(var s in j.Slots){var map=Defaults.Maps().Single(m=>m.Applies(j.JobId)&&m.Regular==new Position(s.RegularBar-1,s.RegularSlot-1));Equal(map.Cross,new Position(10,s.CrossSlot-1));Equal(map.SharedAcrossJobs,false);}});
+Test("shared targeting apply enables retargeting and preserves unrelated preferences",()=>{
+    var existing=JsonNode.Parse("""{"Version":6,"EnabledActionsV6":[],"RetargetHealingActionsToStack":false,"CustomHealStack":["ModelMouseOverTarget","Self"],"UseFieldMouseoverOverridesInDefaultHealStack":true,"Unrelated":"keep"}""")!.AsObject();
+    var result=WrathMerge.Merge(existing,[],pack.SharedSettings);
+    Equal(result["RetargetHealingActionsToStack"]!.GetValue<bool>(),true);
+    Equal(result["UseFieldMouseoverOverridesInDefaultHealStack"]!.GetValue<bool>(),false);
+    Equal(result["UseCustomHealStack"]!.GetValue<bool>(),true);
+    Equal(string.Join(",",result["CustomHealStack"]!.AsArray().Select(n=>n!.GetValue<string>())),"FocusTarget,UIMouseOverTarget,SoftTarget,HardTarget,TargetsTarget,AnyLivingTank,Self");
+    Equal(result["Unrelated"]!.GetValue<string>(),"keep");
+    Equal(WrathMerge.Merge(existing,[],null)["RetargetHealingActionsToStack"]!.GetValue<bool>(),false);
+});
 Test("all preset targets are unique",()=>{foreach(var j in pack.Jobs){Equal(j.Slots.Select(s=>(s.RegularBar,s.RegularSlot)).Distinct().Count(),j.Slots.Length);Equal(j.Slots.Select(s=>s.CrossSlot).Distinct().Count(),j.Slots.Length);}});
 Test("no shared utility is overwritten by job presets",()=>{foreach(var j in pack.Jobs)foreach(var s in j.Slots){Equal(s.RegularBar==1&&s.RegularSlot>=9,false);Equal(s.CrossSlot is >=5 and <=8,false);}});
 Test("base action roots preserve level-sync use",()=>{Equal(pack.Jobs.Single(j=>j.Job=="GNB").Slots.Single(s=>s.LogicalSlot==6).Action,"Heart of Stone");Equal(pack.Jobs.Single(j=>j.Job=="WHM").Slots.Single(s=>s.LogicalSlot==1).Action,"Stone");});

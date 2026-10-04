@@ -8053,9 +8053,10 @@
     "CustomHealStack": [
       "FocusTarget",
       "UIMouseOverTarget",
-      "ModelMouseOverTarget",
       "SoftTarget",
       "HardTarget",
+      "TargetsTarget",
+      "AnyLivingTank",
       "Self"
     ],
     "RaiseStack": [
@@ -8065,6 +8066,7 @@
       "AnyRaiser",
       "AnyDeadPartyMember"
     ],
+    "RetargetHealingActionsToStack": true,
     "CustomBoolArrayValuesV6": {
       "ALL_Healer_RescueRetargetingOptions": [
         false,
@@ -8079,7 +8081,7 @@
       "AllRangedMitigationThreshold": 0
     },
     "UseUIMouseoverOverridesInDefaultHealStack": true,
-    "UseFieldMouseoverOverridesInDefaultHealStack": true,
+    "UseFieldMouseoverOverridesInDefaultHealStack": false,
     "UseFocusTargetOverrideInDefaultHealStack": true,
     "UseLowestHPOverrideInDefaultHealStack": false,
     "UseCustomHealStack": true
