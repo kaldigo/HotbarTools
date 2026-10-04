@@ -13,3 +13,5 @@ The Gunbreaker capture defines editable shipped defaults, not permanent mappings
 The first Gunbreaker export was reviewed on 2026-09-26. The user explicitly says the cross layout is not set up: regular hotbars are authoritative and the stated controller map determines cross destinations. Existing cross contents must not be treated as binding layout requirements or as conflicts needing a user decision.
 
 A locally hashed character key may partition runtime sync state and backups to avoid cross-character leakage; it is never part of captures or repository content.
+
+Utility defaults use cross hotbar 8, preserving regular hotbar 10 plus hotbar 9 slots 1–4. Migrate only the complete old default group and pause sync for reviewed regular-to-cross initialization; preserve custom mappings. Offer explicit old-page cleanup with backup, clearing only unmapped cross hotbar 2 duplicates confirmed against both source and new destination. Keep current/all scope and native shared storage semantics explicit.

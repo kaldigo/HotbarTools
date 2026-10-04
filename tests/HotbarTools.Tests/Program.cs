@@ -18,7 +18,63 @@ Test("out-of-range mapping rejected",()=>{var m=Defaults.Maps();m[0].CrossSet=9;
 Test("regular/cross position bounds",()=>{Equal(new Position(9,12).Valid,false);Equal(new Position(10,15).Valid,true);Equal(new Position(18,0).Valid,false);});
 Test("healer physical buttons",()=>{var m=Defaults.Maps().Single(x=>x.Applies(24)&&x.Regular==new Position(0,2));Equal(m.Cross,new Position(10,12));});
 Test("gunbreaker physical buttons",()=>{var m=Defaults.Maps().Single(x=>x.Applies(37)&&x.Regular==new Position(0,2));Equal(m.Cross,new Position(10,13));});
-Test("utility bar exact verified positions",()=>{var m=Defaults.Maps().Where(x=>x.Id.StartsWith("utility-")).ToList();Equal(m.Count,16);Equal(m.Count(x=>x.RegularBar==10),12);Equal(string.Join(",",m.Where(x=>x.RegularBar==9).Select(x=>x.RegularSlot)),"1,2,3,4");});
+Test("utility bar exact verified positions",()=>{var m=Defaults.Maps().Where(x=>x.Id.StartsWith("utility-")).ToList();Equal(m.Count,16);Equal(m.All(x=>x.CrossSet==8),true);Equal(string.Join(",",m.Select(x=>x.CrossSlot)),string.Join(",",Enumerable.Range(1,16)));Equal(m.Count(x=>x.RegularBar==10),12);Equal(string.Join(",",m.Where(x=>x.RegularBar==9).Select(x=>x.RegularSlot)),"1,2,3,4");});
+Test("utility default migration pauses sync and preserves routes and labels",()=>{
+    var c=new HotbarBridge.BridgeConfig{Revision=9,Enabled=true};
+    foreach(var m in c.Maps.Where(m=>m.Id.StartsWith("utility-")))m.CrossSet=2;
+    c.Maps.Single(m=>m.Id=="utility-0").Label="My utility";
+    c.JobRoutes[37]=new(){["Combat-0"]=new(0,0)};
+    Equal(c.MigrateUtilityCrossbar(out var notice),true);Equal(notice!=null,true);
+    Equal(c.Maps.Where(m=>m.Id.StartsWith("utility-")).All(m=>m.CrossSet==8),true);
+    Equal(c.Revision,10);Equal(c.Enabled,false);Equal(c.JobRoutes[37]["Combat-0"],new Position(0,0));
+    Equal(c.Maps.Single(m=>m.Id=="utility-0").Label,"My utility");
+    Equal(c.MigrateUtilityCrossbar(out _),false);Equal(c.Revision,10);
+    Defaults.Validate(c.Maps);
+});
+Test("utility migration preserves customized empty and new maps",()=>{
+    var c=new HotbarBridge.BridgeConfig{Enabled=true};
+    foreach(var m in c.Maps.Where(m=>m.Id.StartsWith("utility-")))m.CrossSet=2;
+    c.Maps.Single(m=>m.Id=="utility-0").CrossSet=7;
+    var before=JsonSerializer.Serialize(c.Maps);c.MigrateUtilityCrossbar(out _);
+    Equal(JsonSerializer.Serialize(c.Maps),before);Equal(c.Enabled,true);Equal(c.Revision,0);
+    var empty=new HotbarBridge.BridgeConfig{Maps=[]};empty.MigrateUtilityCrossbar(out _);Equal(empty.Maps.Count,0);
+    var fresh=new HotbarBridge.BridgeConfig{Enabled=true};fresh.MigrateUtilityCrossbar(out _);Equal(fresh.Enabled,true);Equal(fresh.Revision,0);
+});
+Test("utility migration is atomic when last crossbar is already mapped",()=>{
+    var c=new HotbarBridge.BridgeConfig{Enabled=true,Revision=4};
+    foreach(var m in c.Maps.Where(m=>m.Id.StartsWith("utility-")))m.CrossSet=2;
+    c.Maps.Add(new(){Id="custom",Profile="All",RegularBar=3,RegularSlot=1,CrossSet=8,CrossSlot=1});
+    var before=JsonSerializer.Serialize(c.Maps);c.MigrateUtilityCrossbar(out var notice);
+    Equal(notice!=null,true);Equal(JsonSerializer.Serialize(c.Maps),before);Equal(c.Enabled,true);Equal(c.Revision,4);
+    Defaults.Validate(c.Maps);
+});
+Test("old utility cleanup requires both source and destination confirmation",()=>{
+    var maps=Defaults.Maps();
+    var values=new Dictionary<(uint,Position),SlotValue>();
+    foreach(uint job in new uint[]{24,37})foreach(var map in maps.Where(m=>m.Id.StartsWith("utility-")))
+    {
+        values[(job,map.Regular)]=new(1,(uint)map.CrossSlot);
+        values[(job,map.Cross)]=new(1,(uint)map.CrossSlot);
+        values[(job,new(11,map.Cross.Slot))]=new(1,(uint)map.CrossSlot);
+    }
+    values[(24,new(11,0))]=new(1,999); // User changed an old slot.
+    values[(24,new(17,1))]=default; // Destination has not been aligned.
+    maps.Add(new(){Id="custom",RegularBar=3,RegularSlot=1,CrossSet=2,CrossSlot=3});
+    var edits=UtilityCleanup.Plan(24,new uint[]{24,37},maps,false,(job,p)=>values.GetValueOrDefault((job,p)));
+    Equal(edits.Count,28);Equal(edits.All(e=>e.Position.Bar==11 && e.After==default),true);
+    Equal(edits.Any(e=>e.Position.Slot==2),false);
+    Equal(edits.Count(e=>e.Job==24),13);Equal(edits.Count(e=>e.Job==37),15);
+    var shared=UtilityCleanup.Plan(24,new uint[]{24,37},maps,true,(job,p)=>values.GetValueOrDefault((job,p)));
+    Equal(shared.Count,13);Equal(shared.All(e=>e.Job==24),true);
+    var current=UtilityCleanup.Plan(24,new uint[]{24},maps,false,(job,p)=>values.GetValueOrDefault((job,p)));
+    Equal(current.Count,13);
+});
+Test("old utility cleanup ignores empty and customized utility mappings",()=>{
+    var maps=Defaults.Maps();maps.Single(m=>m.Id=="utility-0").CrossSet=7;
+    var edits=UtilityCleanup.Plan(37,new uint[]{37},maps,false,(_,_)=>new SlotValue(1,100));
+    Equal(edits.Count,15);Equal(edits.Any(e=>e.Position.Slot==0),false);
+    Equal(UtilityCleanup.Plan(37,new uint[]{37},maps,false,(_,_)=>new SlotValue(0,100)).Count,0);
+});
 Test("shared keys exact destinations",()=>{var m=Defaults.Maps().Where(x=>x.Id.StartsWith("shared-")).ToList();Equal(string.Join(",",m.Select(x=>x.RegularSlot)),"9,10,11,12");Equal(string.Join(",",m.Select(x=>x.CrossSlot)),"5,6,7,8");});
 var original=JsonNode.Parse("""{"Version":6,"EnabledActionsV6":[10,20,999],"CustomIntValuesV6":{"A":1,"B":2},"Other":"keep"}""")!.AsObject();
 var job=new JobPreset{OwnedPresetIds=[10,11],Settings=JsonNode.Parse("""{"EnabledActionsV6":[11],"CustomIntValuesV6":{"A":3}}""")!.AsObject()};

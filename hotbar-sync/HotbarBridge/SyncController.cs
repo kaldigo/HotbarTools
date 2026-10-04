@@ -33,6 +33,15 @@ public sealed class SyncController : IDisposable
     private string previewCharacter="";
     private List<SlotEdit>? preview;
     private string restorePath="";
+    private bool utilityCleanupAll,utilityCleanupPreview;
+    private string cleanupMapState="";
+    private List<SlotEdit> cleanupChecks=[];
+    private unsafe string CleanupMapState(uint job)
+    {
+        var m=NativeHotbars.Ready(job);var sharing="";
+        for(var bar=0;bar<18;bar++)sharing+=m->IsHotbarShared((uint)bar)?"1":"0";
+        return sharing+JsonSerializer.Serialize(config.Maps)+JsonSerializer.Serialize(config.JobRoutes);
+    }
     private readonly List<SlotMap> conflicts=[];
     private readonly Dalamud.Plugin.Ipc.ICallGateProvider<string> mapping;
     private readonly Dalamud.Plugin.Ipc.ICallGateProvider<bool> begin;
@@ -44,7 +53,10 @@ public sealed class SyncController : IDisposable
     {
         this.pi=pi;this.objects=objects;this.player=player;this.condition=condition;this.log=log;
         config=pi.GetPluginConfig() as BridgeConfig ?? new();
-        if(config.AddNoncombatDefaults())pi.SavePluginConfig(config);
+        var changed=config.AddNoncombatDefaults();
+        changed|=config.MigrateUtilityCrossbar(out var migrationNotice);
+        if(changed)pi.SavePluginConfig(config);
+        if(migrationNotice!=null)message=migrationNotice;
         Defaults.Validate(config.Maps);
         mapping=pi.GetIpcProvider<string>("HotbarBridge.GetMapping");
         mapping.RegisterFunc(()=>JsonSerializer.Serialize(config.Maps));
@@ -122,8 +134,34 @@ public sealed class SyncController : IDisposable
                 action=1;
                 message="First use: review the initial regular-to-cross alignment below, then start live sync.";
             }
+            if(action==7)
+            {
+                if(!config.LegacyUtilityCleanupAvailable)throw new InvalidOperationException("No migrated utility page to clean up.");
+                cleanupChecks=[];
+                SlotValue ReadChecked(uint target,Position p)
+                {
+                    var value=NativeHotbars.Read(target,p);
+                    cleanupChecks.Add(new(target,p,value,value));return value;
+                }
+                preview=UtilityCleanup.Plan(job,utilityCleanupAll?Enumerable.Range(1,42).Select(i=>(uint)i):new[]{job},config.Maps,
+                    m->IsHotbarShared(11),ReadChecked);
+                previewJob=job;previewCharacter=character;utilityCleanupPreview=true;cleanupMapState=CleanupMapState(job);
+                message=$"Old utility page cleanup: {preview.Count} confirmed duplicates on cross hotbar 2. Other assignments are preserved. Shared cross hotbar 2 changes affect all jobs.";
+            }
+            if(action==8)
+            {
+                if(!utilityCleanupPreview || preview==null || previewJob!=job || previewCharacter!=character)
+                    throw new InvalidOperationException("Preview utility cleanup for this character/job first.");
+                if(cleanupMapState!=CleanupMapState(job) || cleanupChecks.Any(e=>NativeHotbars.Read(e.Job,e.Position)!=e.Before))
+                    throw new InvalidOperationException("Utility assignments, mapping or sharing changed. Preview cleanup again.");
+                var count=preview.Count;
+                if(count>0)NativeHotbars.Apply(job,preview,BackupPath);
+                preview=null;utilityCleanupPreview=false;cleanupChecks=[];observed="";
+                message=$"Cleared {count} old utility duplicates. {(count>0?"Backup saved. ":"")}Live sync remains {(config.Enabled?"on":"off")}.";
+            }
             if(action==1 || action==4 || action==5)
             {
+                utilityCleanupPreview=false;
                 var edits=new List<SlotEdit>();
                 foreach(var map in ActiveMaps(job))
                 {
@@ -151,6 +189,7 @@ public sealed class SyncController : IDisposable
             }
             if(action==3)
             {
+                utilityCleanupPreview=false;
                 if(!File.Exists(restorePath))throw new InvalidOperationException("Choose an existing backup file.");
                 if(!Path.GetFullPath(restorePath).StartsWith(Path.GetFullPath(BackupPath)+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Select a backup for this character.");
                 preview=NativeHotbars.RestorePlan(job,restorePath);previewJob=job;previewCharacter=character;message=$"Restore preview: {preview.Count} slots. Apply creates a new backup first.";
@@ -221,13 +260,21 @@ public sealed class SyncController : IDisposable
         ImGui.TextWrapped("First activation previews the regular-to-cross alignment. After that, the switch resumes continuous sync without another alignment. Combat/loading pauses resume automatically.");
         if(ImGui.CollapsingHeader("Reinitialize from regular hotbars"))
             if(ImGui.Button("Preview a fresh regular -> cross alignment")){config.Enabled=false;Save();request=1;}
+        if(config.LegacyUtilityCleanupAvailable && ImGui.CollapsingHeader("Clean up old utility page"))
+        {
+            ImGui.TextWrapped("After aligning cross hotbar 8, remove matching utility duplicates from cross hotbar 2. Changed slots and mapped slots are preserved. Preview and backup required; a game-shared cross hotbar affects every job.");
+            if(ImGui.Checkbox("Clean all classes/jobs (otherwise current)",ref utilityCleanupAll) && utilityCleanupPreview)preview=null;
+            ImGui.BeginDisabled(mappingDirty || external);
+            if(ImGui.Button("Preview old utility page cleanup"))request=7;
+            ImGui.EndDisabled();
+        }
         if(preview!=null)
         {
             ImGui.TextWrapped($"{preview.Count} pending changes for job {previewJob}. No changes yet.");
             if(ImGui.BeginChild("sync-preview",new System.Numerics.Vector2(0,200)))
                 foreach(var e in preview)ImGui.TextWrapped($"Job {e.Job} {e.Position}: {e.Before} -> {e.After}");
             ImGui.EndChild();
-            if(ImGui.Button("Apply alignment and start LIVE sync"))request=2;
+            if(ImGui.Button(utilityCleanupPreview?"Clear previewed old utility slots":"Apply alignment and start LIVE sync"))request=utilityCleanupPreview?8:2;
             ImGui.SameLine();if(ImGui.Button("Cancel preview"))preview=null;
         }
         if(conflicts.Count>0)

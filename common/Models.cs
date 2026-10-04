@@ -45,7 +45,7 @@ public static class Defaults
                 result.Add(new SlotMap { Id=$"{profile}-{i}", Label=$"{profile} control {i+1}", Profile=profile,
                     RegularBar=positions[i].Item1, RegularSlot=positions[i].Item2, CrossSet=1, CrossSlot=(profile=="Healer"?healer:normal)[i] });
         for(var i=0;i<4;i++) result.Add(new SlotMap { Id=$"shared-{i}", Label=new[]{"Potion (9)","Potion (0)","Limit Break (-)","Sprint (=)"}[i], Profile="All", RegularBar=1, RegularSlot=9+i, CrossSlot=5+i, SharedAcrossJobs=true });
-        for(var i=0;i<16;i++) result.Add(new SlotMap { Id=$"utility-{i}", Label=$"Utility {i+1}", Profile="All", RegularBar=i<12?10:9, RegularSlot=i<12?i+1:i-11, CrossSet=2, CrossSlot=i+1, SharedAcrossJobs=true });
+        for(var i=0;i<16;i++) result.Add(new SlotMap { Id=$"utility-{i}", Label=$"Utility {i+1}", Profile="All", RegularBar=i<12?10:9, RegularSlot=i<12?i+1:i-11, CrossSet=8, CrossSlot=i+1, SharedAcrossJobs=true });
         return result;
     }
     public static void Validate(IEnumerable<SlotMap> maps)
