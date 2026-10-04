@@ -14,16 +14,16 @@
     "Punchline": "Inspect regular and cross hotbars for slot-based synchronization.",
     "AcceptsFeedback": true,
     "RepoUrl": "https://github.com/kaldigo/HotbarTools",
-    "DownloadLinkInstall": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.13/HotbarBridge.zip",
-    "DownloadLinkUpdate": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.13/HotbarBridge.zip",
-    "DownloadLinkTesting": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.13/HotbarBridge.zip",
+    "DownloadLinkInstall": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.14/HotbarBridge.zip",
+    "DownloadLinkUpdate": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.14/HotbarBridge.zip",
+    "DownloadLinkTesting": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.14/HotbarBridge.zip",
     "Changelog": "0.2.7: crafting and gathering sync profiles; preserves custom mappings."
   },
   {
     "Author": "kaldigo",
     "Name": "Job Setup",
     "InternalName": "JobSetup",
-    "AssemblyVersion": "0.2.13.0",
+    "AssemblyVersion": "0.2.14.0",
     "Description": "Preview and apply current-class or all-class hotbar layouts and Wrath presets, with backups. Wrath must be disabled for configuration writes.",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 15,
@@ -34,9 +34,9 @@
     "Punchline": "Apply curated job hotbars and Wrath settings.",
     "AcceptsFeedback": true,
     "RepoUrl": "https://github.com/kaldigo/HotbarTools",
-    "DownloadLinkInstall": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.13/JobSetup.zip",
-    "DownloadLinkUpdate": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.13/JobSetup.zip",
-    "DownloadLinkTesting": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.13/JobSetup.zip",
-    "Changelog": "0.2.13: shared healing targeting adds friendly target-of-target and living-tank fallbacks, excludes world mouseover, and includes the global retarget switch."
+    "DownloadLinkInstall": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.14/JobSetup.zip",
+    "DownloadLinkUpdate": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.14/JobSetup.zip",
+    "DownloadLinkTesting": "https://github.com/kaldigo/HotbarTools/releases/download/v0.2.14/JobSetup.zip",
+    "Changelog": "0.2.14: optional layout cleanup removes obsolete job slots, preserving Bridge shared pairs and native shared bars, with preview and backups."
   }
 ]
