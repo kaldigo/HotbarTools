@@ -36,6 +36,7 @@ public sealed class Plugin : IDalamudPlugin
     private VariantSelection? activeAutomation;
     private bool recordSelection,managedScope;
     private bool liveVerified;
+    private string? cleanupSharing;
     private LiveUpdate? liveUpdate;
     private sealed class LiveUpdate
     {
@@ -194,7 +195,7 @@ public sealed class Plugin : IDalamudPlugin
             if(ImGui.Checkbox(label,ref value)){set(value);ClearPreview();pi.SavePluginConfig(config);}
         }
     }
-    private void ClearPreview(){recordSelection=false;hotbarPreview=null;wrathPreview=null;routePreview=null;routeOriginal=null;layoutSummary.Clear();}
+    private void ClearPreview(){cleanupSharing=null;recordSelection=false;hotbarPreview=null;wrathPreview=null;routePreview=null;routeOriginal=null;layoutSummary.Clear();}
     private void Draw()
     {
         if(!visible)return;
@@ -229,6 +230,11 @@ public sealed class Plugin : IDalamudPlugin
             if(ImGui.Button("Preview base setup: hotbars + Wrath"))request=8;
             ImGui.EndDisabled();
             if(ImGui.Button("Preview hotbar layouts"))request=1;
+            if(ImGui.CollapsingHeader("Clean up old job hotbars"))
+            {
+                ImGui.TextWrapped("Apply the selected layouts and clear every other slot on all job-specific regular and cross bars. Uses the current/all scope, variants and compaction above. Bridge shared pairs and game-shared bars are preserved. Requires Hotbar Bridge loaded; backups allow undo. Wrath settings are unchanged.");
+                if(ImGui.Button("Preview layouts and clear unused slots"))request=9;
+            }
             ImGui.Separator();
             ImGui.TextWrapped($"Wrath: {(WrathLoaded?"enabled - variants update live":"disabled or not installed")}. Presets reviewed against {pack.WrathVersion}.");
             if(ImGui.Button("Open Wrath in plugin installer"))pi.OpenPluginInstallerTo(Dalamud.Interface.PluginInstallerOpenKind.InstalledPlugins,"Wrath");
@@ -310,6 +316,7 @@ public sealed class Plugin : IDalamudPlugin
             switch(action)
             {
                 case 1: PreviewHotbars(job);break;
+                case 9: PreviewHotbars(job,true);break;
                 case 8:
                 case 7:
                 case 6:
@@ -350,9 +357,17 @@ public sealed class Plugin : IDalamudPlugin
     {
         if(!Path.GetFullPath(path).StartsWith(Path.GetFullPath(directory)+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Select a backup from the displayed plugin backup directory.");
     }
-    private unsafe void PreviewHotbars(uint current)
+    private unsafe string SharingFingerprint(uint current)
+    {
+        var m=NativeHotbars.Ready(current);var result="";
+        for(var bar=0;bar<18;bar++)result+=m->IsHotbarShared((uint)bar)?"1":"0";
+        return result;
+    }
+    private unsafe void PreviewHotbars(uint current,bool cleanup=false)
     {
         if(config.RegularBar1 is <1 or >10 || config.RegularBar2 is <1 or >10 || config.RegularBar1==config.RegularBar2 || config.CrossSet is <1 or >8)throw new InvalidOperationException("Choose distinct regular bars 1–10 and cross set 1–8.");
+        if(cleanup && !BridgeLoaded)throw new InvalidOperationException("Load Hotbar Bridge before cleanup so its shared slot map can be protected.");
+        if(cleanup)cleanupSharing=SharingFingerprint(current);
         List<SlotMap>? bridge=null;
         if(BridgeLoaded)
         {
@@ -367,6 +382,7 @@ public sealed class Plugin : IDalamudPlugin
                 routeOriginal[job]=old.GetValueOrDefault(job)??new();
         }
         var edits=new Dictionary<(uint,Position),SlotEdit>();
+        var cleanupCount=0;
         actions ??= new ActionCatalog(data.GetExcelSheet<Sheets.Action>(ClientLanguage.English),data.GetExcelSheet<Sheets.CraftAction>(ClientLanguage.English));
         foreach(var preset in Selected(current))
         {
@@ -379,6 +395,7 @@ public sealed class Plugin : IDalamudPlugin
             var jobs=all?new[]{preset.JobId}.Concat(preset.BaseClasses):new[]{current};
             foreach(var job in jobs)
             {
+                var layoutPositions=new HashSet<Position>();
                 if(routePreview!=null)routePreview[job]=new();
                 var defaults=Defaults.Maps().Where(m=>m.Applies(preset.JobId)&&!m.SharedAcrossJobs).ToList();
                 foreach(var source in KeyboardLayout.Positions)
@@ -399,6 +416,9 @@ public sealed class Plugin : IDalamudPlugin
                     if(config.ApplyCross)Add(destination);
                     void Add(Position position)
                     {
+                        if(cleanup && bridge!.Any(m=>m.SharedAcrossJobs && (m.Regular==position || m.Cross==position)))
+                            throw new InvalidOperationException($"{position}: selected layout overlaps a protected Bridge shared slot. Adjust the layout or mapping first.");
+                        layoutPositions.Add(position);
                         if(!position.Valid)throw new InvalidOperationException("Invalid destination.");
                         if(NativeHotbars.Ready(current)->IsHotbarShared((uint)position.Bar))throw new InvalidOperationException($"{position}: destination is natively shared. Choose job-specific bars first.");
                         var old=NativeHotbars.Read(job,position);
@@ -406,15 +426,25 @@ public sealed class Plugin : IDalamudPlugin
                     }
                 }
                 if(bridge!=null)LayoutRoutes.Effective(bridge.Where(m=>m.Applies(job)),routePreview![job]);
+                if(cleanup)
+                {
+                    var sharing=cleanupSharing!;
+                    foreach(var edit in HotbarCleanup.Plan(job,layoutPositions,bridge!,bar=>sharing[bar]=='1',p=>NativeHotbars.Read(job,p)))
+                    {
+                        edits.Add((job,edit.Position),edit);cleanupCount++;
+                    }
+                }
             }
         }
         Position Remap(Position p)=>new((p.Bar==0?config.RegularBar1:config.RegularBar2)-1,p.Slot);
+        if(cleanup)previewScope+=$"; cleanup clears {cleanupCount} extra filled slots across all job-specific bars; shared slots preserved";
         hotbarPreview=edits.Values.ToList();message=$"Hotbar preview ready: {hotbarPreview.Count} changes. Actions not yet learned remain locked by the game.";
     }
     private bool Apply(uint job)
     {
         if(job!=previewJob || Character!=previewIdentity)throw new InvalidOperationException("Character/job changed. Preview again.");
         if(wrathPreview==null && hotbarPreview==null)throw new InvalidOperationException("Preview first.");
+        if(cleanupSharing!=null && cleanupSharing!=SharingFingerprint(job))throw new InvalidOperationException("Hotbar sharing changed after cleanup preview. Preview again.");
         if(wrathPreview!=null)CheckWrath();
         if(wrathPreview!=null && WrathLoaded && !liveVerified){StartLiveUpdate(job);return false;}
         var bridge=hotbarPreview!=null && BridgeLoaded;

@@ -39,6 +39,36 @@ Test("shared targeting apply enables retargeting and preserves unrelated prefere
     Equal(result["Unrelated"]!.GetValue<string>(),"keep");
     Equal(WrathMerge.Merge(existing,[],null)["RetargetHealingActionsToStack"]!.GetValue<bool>(),false);
 });
+Test("cleanup removes Shift8 and old pages but preserves layouts and shared assignments",()=>{
+    var layout=new[]{new Position(0,0),new Position(1,0),new Position(10,15)};
+    var maps=Defaults.Maps();
+    maps.Add(new SlotMap{RegularBar=3,RegularSlot=7,CrossSet=4,CrossSlot=8,SharedAcrossJobs=true,Enabled=false});
+    var filled=new Dictionary<Position,SlotValue>{
+        [new(0,0)]=new(1,100),[new(1,0)]=new(1,101),[new(10,15)]=new(1,102),
+        [new(1,7)]=new(1,200),[new(3,2)]=new(7,12),[new(12,0)]=new(1,201),
+        [new(0,8)]=new(1,300),[new(10,4)]=new(1,301),[new(9,0)]=new(1,302),
+        [new(2,6)]=new(1,303),[new(13,7)]=new(1,304),[new(8,10)]=new(1,305)};
+    var edits=HotbarCleanup.Plan(37,layout,maps,bar=>bar==8,p=>filled.GetValueOrDefault(p));
+    Equal(edits.Count,3);
+    Equal(edits.All(e=>e.Job==37 && e.After==default),true);
+    Equal(edits.Any(e=>e.Position==new Position(1,7)),true);
+    Equal(edits.Any(e=>e.Position==new Position(3,2) && e.Before==new SlotValue(7,12)),true);
+});
+Test("cleanup preserves final compacted destinations for every variant",()=>{
+    foreach(var baseline in pack.Jobs)foreach(var variant in Enumerable.Range(0,8))
+    {
+        var preset=Variants.Resolve(baseline,new(){AutoBurst=(variant&1)!=0,AutoMitigation=(variant&2)!=0,AutoMechanics=(variant&4)!=0});
+        var final=KeyboardLayout.Compile(preset,true).Values.ToHashSet();
+        var edits=HotbarCleanup.Plan(preset.JobId,final,Defaults.Maps(),_=>false,_=>new SlotValue(1,100));
+        Equal(edits.Any(e=>final.Contains(e.Position)),false);
+        Equal(edits.Any(e=>e.Position==new Position(1,7)),true);
+    }
+});
+Test("cleanup ignores empty slots and rejects invalid destinations",()=>{
+    Equal(HotbarCleanup.Plan(24,[],[],_=>false,_=>new SlotValue(0,99)).Count,0);
+    Throws(()=>HotbarCleanup.Plan(0,[],[],_=>false,_=>default));
+    Throws(()=>HotbarCleanup.Plan(24,[new Position(20,0)],[],_=>false,_=>default));
+});
 Test("all preset targets are unique",()=>{foreach(var j in pack.Jobs){Equal(j.Slots.Select(s=>(s.RegularBar,s.RegularSlot)).Distinct().Count(),j.Slots.Length);Equal(j.Slots.Select(s=>s.CrossSlot).Distinct().Count(),j.Slots.Length);}});
 Test("no shared utility is overwritten by job presets",()=>{foreach(var j in pack.Jobs)foreach(var s in j.Slots){Equal(s.RegularBar==1&&s.RegularSlot>=9,false);Equal(s.CrossSlot is >=5 and <=8,false);}});
 Test("base action roots preserve level-sync use",()=>{Equal(pack.Jobs.Single(j=>j.Job=="GNB").Slots.Single(s=>s.LogicalSlot==6).Action,"Heart of Stone");Equal(pack.Jobs.Single(j=>j.Job=="WHM").Slots.Single(s=>s.LogicalSlot==1).Action,"Stone");});

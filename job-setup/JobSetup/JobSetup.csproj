@@ -1,6 +1,6 @@
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <PropertyGroup>
-    <Version>0.2.13</Version>
+    <Version>0.2.14</Version>
     <Author>kaldigo</Author>
     <Name>Job Setup</Name>
     <Punchline>Apply curated job hotbars and Wrath settings.</Punchline>
