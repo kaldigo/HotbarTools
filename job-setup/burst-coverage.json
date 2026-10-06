@@ -1,0 +1,348 @@
+{
+  "PLD": {
+    "AutoBurst": {
+      "PLD_ST_AdvancedMode_FoF": 11003,
+      "PLD_AoE_AdvancedMode_FoF": 11016
+    },
+    "BaselineFollowups": {
+      "PLD_ST_AdvancedMode_Requiescat": 11010,
+      "PLD_ST_AdvancedMode_Confiteor": 11013,
+      "PLD_ST_AdvancedMode_BladeOfHonor": 11033,
+      "PLD_ST_AdvancedMode_GoringBlade": 11008,
+      "PLD_AoE_AdvancedMode_Requiescat": 11019,
+      "PLD_AoE_AdvancedMode_Confiteor": 11021,
+      "PLD_AoE_AdvancedMode_BladeOfHonor": 11034,
+      "PLD_AoE_AdvancedMode_GoringBlade": 11106
+    },
+    "AutoMechanics": {}
+  },
+  "WAR": {
+    "AutoBurst": {
+      "WAR_ST_InnerRelease": 18003,
+      "WAR_AoE_InnerRelease": 18019
+    },
+    "BaselineFollowups": {
+      "WAR_ST_Infuriate": 18007,
+      "WAR_ST_PrimalWrath": 18010,
+      "WAR_ST_PrimalRend": 18013,
+      "WAR_ST_PrimalRuination": 18011,
+      "WAR_AoE_Infuriate": 18018,
+      "WAR_AoE_PrimalWrath": 18020,
+      "WAR_AoE_PrimalRend": 18021,
+      "WAR_AoE_PrimalRuination": 18022
+    },
+    "AutoMechanics": {}
+  },
+  "DRK": {
+    "AutoBurst": {
+      "DRK_ST_CD_Delirium": 5015,
+      "DRK_ST_CD_Shadow": 5016,
+      "DRK_AoE_CD_Delirium": 5054,
+      "DRK_AoE_CD_Shadow": 5055
+    },
+    "BaselineFollowups": {
+      "DRK_ST_CD_Disesteem": 5017,
+      "DRK_ST_CD_Bringer": 5018,
+      "DRK_ST_CD_Salt": 5020,
+      "DRK_AoE_CD_Disesteem": 5056,
+      "DRK_AoE_CD_Bringer": 5057,
+      "DRK_AoE_CD_Salt": 5058
+    },
+    "AutoMechanics": {}
+  },
+  "GNB": {
+    "AutoBurst": {
+      "GNB_ST_NoMercy": 7008,
+      "GNB_ST_Bloodfest": 7011,
+      "GNB_AoE_NoMercy": 7201,
+      "GNB_AoE_Bloodfest": 7204
+    },
+    "BaselineFollowups": {
+      "GNB_ST_DoubleDown": 7017,
+      "GNB_ST_Reign": 7014,
+      "GNB_AoE_DoubleDown": 7206,
+      "GNB_AoE_Reign": 7207
+    },
+    "AutoMechanics": {}
+  },
+  "WHM": {
+    "AutoBurst": {},
+    "BaselineFollowups": {
+      "WHM_ST_MainCombo_PresenceOfMind": 19008,
+      "WHM_ST_MainCombo_Assize": 19009,
+      "WHM_ST_MainCombo_GlareIV": 19015,
+      "WHM_ST_MainCombo_Misery": 19017,
+      "WHM_AoE_DPS_PresenceOfMind": 19195,
+      "WHM_AoE_DPS_Assize": 19192,
+      "WHM_AoE_DPS_GlareIV": 19196,
+      "WHM_AoE_DPS_Misery": 19194
+    },
+    "AutoMechanics": {}
+  },
+  "SCH": {
+    "AutoBurst": {},
+    "BaselineFollowups": {
+      "SCH_ST_ADV_DPS_ChainStrat": 16003,
+      "SCH_ST_ADV_DPS_BanefulImpact": 16052,
+      "SCH_AoE_ADV_DPS_ChainStrat": 16054,
+      "SCH_AoE_ADV_DPS_BanefulImpact": 16053
+    },
+    "AutoMechanics": {}
+  },
+  "AST": {
+    "AutoBurst": {},
+    "BaselineFollowups": {
+      "AST_DPS_Divination": 1016,
+      "AST_AOE_Divination": 1043,
+      "AST_DPS_Oracle": 1015,
+      "AST_AOE_Oracle": 1047
+    },
+    "AutoMechanics": {}
+  },
+  "SGE": {
+    "AutoBurst": {},
+    "BaselineFollowups": {
+      "SGE_ST_Adv_DPS_Psyche": 14008,
+      "SGE_ST_Adv_DPS_Phlegma": 14005,
+      "SGE_AoE_Adv_DPS_Psyche": 14051,
+      "SGE_AoE_Adv_DPS_Phlegma": 14010
+    },
+    "AutoMechanics": {}
+  },
+  "DRG": {
+    "AutoBurst": {
+      "DRG_ST_BattleLitany": 6103,
+      "DRG_ST_LanceCharge": 6104,
+      "DRG_AoE_BattleLitany": 6203,
+      "DRG_AoE_LanceCharge": 6204
+    },
+    "BaselineFollowups": {
+      "DRG_ST_LifeSurge": 6106,
+      "DRG_ST_DragonfireDive": 6107,
+      "DRG_ST_RiseOfTheDragon": 6109,
+      "DRG_ST_Starcross": 6112,
+      "DRG_ST_HighJump": 6113,
+      "DRG_ST_Nastrond": 6117,
+      "DRG_AoE_LifeSurge": 6206,
+      "DRG_AoE_DragonfireDive": 6207,
+      "DRG_AoE_RiseOfTheDragon": 6209,
+      "DRG_AoE_Starcross": 6212,
+      "DRG_AoE_HighJump": 6213,
+      "DRG_AoE_Nastrond": 6217
+    },
+    "AutoMechanics": {
+      "DRG_ST_Geirskogul": 6116,
+      "DRG_AoE_Geirskogul": 6216
+    }
+  },
+  "MNK": {
+    "AutoBurst": {
+      "MNK_STUseBrotherhood": 9009,
+      "MNK_STUseROF": 9011,
+      "MNK_AoEUseBrotherhood": 9030,
+      "MNK_AoEUseROF": 9032
+    },
+    "BaselineFollowups": {
+      "MNK_STUseROW": 9010,
+      "MNK_STUseWindsReply": 9015,
+      "MNK_STUseFiresReply": 9016,
+      "MNK_STUseMasterfulBlitz": 9039,
+      "MNK_AoEUseROW": 9031,
+      "MNK_AoEUseWindsReply": 9035,
+      "MNK_AoEUseFiresReply": 9036,
+      "MNK_AoEUseMasterfulBlitz": 9040
+    },
+    "AutoMechanics": {
+      "MNK_STUsePerfectBalance": 9013,
+      "MNK_AoEUsePerfectBalance": 9034
+    }
+  },
+  "NIN": {
+    "AutoBurst": {
+      "NIN_ST_AdvancedMode_TrickAttack": 10006,
+      "NIN_ST_AdvancedMode_Mug": 10007,
+      "NIN_AoE_AdvancedMode_TrickAttack": 10022,
+      "NIN_AoE_AdvancedMode_Mug": 10023
+    },
+    "BaselineFollowups": {
+      "NIN_ST_AdvancedMode_Bunshin": 10008,
+      "NIN_ST_AdvancedMode_Ninjitsus": 10005,
+      "NIN_AoE_AdvancedMode_Bunshin": 10024,
+      "NIN_AoE_AdvancedMode_Ninjitsus": 10021,
+      "NIN_ST_AdvancedMode_Ninjitsus_Suiton": 10052,
+      "NIN_AoE_AdvancedMode_Ninjitsus_Huton": 10048
+    },
+    "AutoMechanics": {
+      "NIN_ST_AdvancedMode_Kassatsu": 10010,
+      "NIN_ST_AdvancedMode_TenChiJin": 10011,
+      "NIN_ST_AdvancedMode_Meisui": 10013,
+      "NIN_AoE_AdvancedMode_Kassatsu": 10026,
+      "NIN_AoE_AdvancedMode_TenChiJin": 10027,
+      "NIN_AoE_AdvancedMode_Meisui": 10029
+    }
+  },
+  "SAM": {
+    "AutoBurst": {
+      "SAM_ST_Adv_Ikishoten": 15012,
+      "SAM_AoE_Adv_Ikishoten": 15108
+    },
+    "BaselineFollowups": {
+      "SAM_ST_Adv_CDs": 15011,
+      "SAM_ST_Adv_OgiNamikiri": 15015,
+      "SAM_ST_Adv_Zanshin": 15017,
+      "SAM_AoE_Adv_CDs": 15115,
+      "SAM_AoE_Adv_OgiNamikiri": 15109,
+      "SAM_AoE_Adv_Zanshin": 15110
+    },
+    "AutoMechanics": {
+      "SAM_ST_Adv_Meikyo": 15018,
+      "SAM_AoE_Adv_Meikyo": 15114
+    }
+  },
+  "RPR": {
+    "AutoBurst": {
+      "RPR_ST_ArcaneCircle": 12006,
+      "RPR_AoE_ArcaneCircle": 12105
+    },
+    "BaselineFollowups": {
+      "RPR_ST_Gluttony": 12009,
+      "RPR_ST_PlentifulHarvest": 12007,
+      "RPR_ST_Communio": 12014,
+      "RPR_ST_Perfectio": 12015,
+      "RPR_AoE_Gluttony": 12108,
+      "RPR_AoE_PlentifulHarvest": 12106,
+      "RPR_AoE_Communio": 12113,
+      "RPR_AoE_Perfectio": 12114
+    },
+    "AutoMechanics": {
+      "RPR_ST_Enshroud": 12010,
+      "RPR_AoE_Enshroud": 12109
+    }
+  },
+  "VPR": {
+    "AutoBurst": {
+      "VPR_ST_SerpentsIre": 30005,
+      "VPR_AoE_SerpentsIre": 30104
+    },
+    "BaselineFollowups": {
+      "VPR_ST_LegacyWeaves": 30014,
+      "VPR_AoE_ReawakenCombo": 30112
+    },
+    "AutoMechanics": {
+      "VPR_ST_Reawaken": 30011,
+      "VPR_AoE_Reawaken": 30110
+    }
+  },
+  "BRD": {
+    "AutoBurst": {
+      "BRD_Adv_Buffs": 3017,
+      "BRD_AoE_Adv_Buffs": 3032
+    },
+    "BaselineFollowups": {
+      "BRD_Adv_BuffsResonant": 3041,
+      "BRD_Adv_BuffsEncore": 3042,
+      "BRD_AoE_BuffsResonant": 3061,
+      "BRD_AoE_BuffsEncore": 3062
+    },
+    "AutoMechanics": {}
+  },
+  "MCH": {
+    "AutoBurst": {
+      "MCH_ST_Adv_WildFire": 8108,
+      "MCH_ST_Adv_Stabilizer": 8110,
+      "MCH_AoE_Adv_Stabilizer": 8307
+    },
+    "BaselineFollowups": {
+      "MCH_ST_Adv_Hypercharge": 8105,
+      "MCH_ST_Adv_Stabilizer_FullMetalField": 8111,
+      "MCH_AoE_Adv_Hypercharge": 8303,
+      "MCH_AoE_Adv_Stabilizer_FullMetalField": 8308
+    },
+    "AutoMechanics": {}
+  },
+  "DNC": {
+    "AutoBurst": {
+      "DNC_ST_Adv_TS": 4018,
+      "DNC_AoE_Adv_TS": 4045
+    },
+    "BaselineFollowups": {
+      "DNC_ST_Adv_Devilment": 4019,
+      "DNC_ST_Adv_Flourish": 4020,
+      "DNC_ST_Adv_SaberDance": 4024,
+      "DNC_ST_Adv_DawnDance": 4025,
+      "DNC_AoE_Adv_Devilment": 4046,
+      "DNC_AoE_Adv_Flourish": 4047,
+      "DNC_AoE_Adv_SaberDance": 4051,
+      "DNC_AoE_Adv_DawnDance": 4052
+    },
+    "AutoMechanics": {}
+  },
+  "BLM": {
+    "AutoBurst": {
+      "BLM_ST_LeyLines": 2103,
+      "BLM_AoE_LeyLines": 2202
+    },
+    "BaselineFollowups": {
+      "BLM_ST_Manafont": 2108,
+      "BLM_ST_Amplifier": 2102,
+      "BLM_ST_Triplecast": 2115,
+      "BLM_AoE_Manafont": 2207,
+      "BLM_AoE_Amplifier": 2201,
+      "BLM_AoE_Triplecast": 2208
+    },
+    "AutoMechanics": {}
+  },
+  "SMN": {
+    "AutoBurst": {
+      "SMN_ST_Advanced_Combo_SearingLight": 17017,
+      "SMN_AoE_Advanced_Combo_SearingLight": 17053
+    },
+    "BaselineFollowups": {
+      "SMN_ST_Advanced_Combo_DemiSummons": 17020,
+      "SMN_ST_Advanced_Combo_DemiSummons_Attacks": 17002,
+      "SMN_ST_Advanced_Combo_SearingFlash": 17019,
+      "SMN_AoE_Advanced_Combo_DemiSummons": 17061,
+      "SMN_AoE_Advanced_Combo_DemiSummons_Attacks": 17055,
+      "SMN_AoE_Advanced_Combo_SearingFlash": 17058
+    },
+    "AutoMechanics": {}
+  },
+  "RDM": {
+    "AutoBurst": {
+      "RDM_ST_Embolden": 13010,
+      "RDM_ST_Manafication": 13011,
+      "RDM_AoE_Embolden": 13207,
+      "RDM_AoE_Manafication": 13208
+    },
+    "BaselineFollowups": {
+      "RDM_ST_MeleeCombo": 13006,
+      "RDM_ST_Prefulgence": 13013,
+      "RDM_ST_ViceOfThorns": 13012,
+      "RDM_AoE_MeleeCombo": 13204,
+      "RDM_AoE_Prefulgence": 13210,
+      "RDM_AoE_ViceOfThorns": 13209
+    },
+    "AutoMechanics": {}
+  },
+  "PCT": {
+    "AutoBurst": {
+      "PCT_ST_AdvancedMode_ScenicMuse": 20021,
+      "PCT_AoE_AdvancedMode_ScenicMuse": 20054
+    },
+    "BaselineFollowups": {
+      "PCT_ST_AdvancedMode_LandscapeMotif": 20017,
+      "PCT_ST_AdvancedMode_LivingMuse": 20022,
+      "PCT_ST_AdvancedMode_SteelMuse": 20023,
+      "PCT_ST_AdvancedMode_HammerStampCombo": 20027,
+      "PCT_ST_AdvancedMode_StarPrism": 20012,
+      "PCT_ST_AdvancedMode_RainbowDrip": 20013,
+      "PCT_AoE_AdvancedMode_LandscapeMotif": 20050,
+      "PCT_AoE_AdvancedMode_LivingMuse": 20055,
+      "PCT_AoE_AdvancedMode_SteelMuse": 20056,
+      "PCT_AoE_AdvancedMode_HammerStampCombo": 20060,
+      "PCT_AoE_AdvancedMode_StarPrism": 20045,
+      "PCT_AoE_AdvancedMode_RainbowDrip": 20046
+    },
+    "AutoMechanics": {}
+  }
+}

@@ -138,6 +138,35 @@ Test("Machinist auto burst enables both Barrel routes and ST Wildfire live",()=>
     var manual=VariantSwitch.Merge(automatic,[mch],new());
     Equal(JsonNode.DeepEquals(manual,baseline),true);
 });
+Test("reviewed burst starters followups and mechanics are covered on all combat jobs",()=>{
+    var coverage=JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"burst-coverage.json")))!.AsObject();
+    Equal(coverage.Count,21);
+    foreach(var preset in pack.Jobs.Where(j=>Defaults.IsCombat(j.JobId)))
+    {
+        var requirements=coverage[preset.Job]!.AsObject();
+        foreach(var bits in Enumerable.Range(0,8))
+        {
+            var burst=(bits&1)!=0;var mechanics=(bits&4)!=0;
+            var resolved=Variants.Resolve(preset,new(){AutoBurst=burst,AutoMitigation=(bits&2)!=0,AutoMechanics=mechanics});
+            var enabled=resolved.Settings["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+            foreach(var section in new[]{"BaselineFollowups","AutoBurst","AutoMechanics"})
+            foreach(var (name,id) in requirements[section]!.AsObject())
+            {
+                var expected=section=="BaselineFollowups" || (section=="AutoBurst"?burst:mechanics);
+                if(enabled.Contains(id!.GetValue<int>())!=expected)
+                    throw new Exception($"{preset.Job} variant {bits}: {name} expected enabled={expected}");
+            }
+        }
+    }
+    foreach(var job in new[]{"BRD","DNC"})
+    {
+        var settings=pack.Jobs.Single(p=>p.Job==job).Settings;
+        if(job=="BRD")foreach(var key in new[]{"BRD_Adv_Buffs_Options","BRD_AoE_Adv_Buffs_Options"})
+            Equal(settings["CustomBoolArrayValuesV6"]![key]!.AsArray().All(n=>n!.GetValue<bool>()),true);
+        else foreach(var key in new[]{"DNC_ST_ADV_TS_IncludeTS","DNC_AoE_Adv_TS_IncludeTS"})
+            Equal(settings["CustomIntValuesV6"]![key]!.GetValue<int>(),1);
+    }
+});
 Test("all preset targets are unique",()=>{foreach(var j in pack.Jobs){Equal(j.Slots.Select(s=>(s.RegularBar,s.RegularSlot)).Distinct().Count(),j.Slots.Length);Equal(j.Slots.Select(s=>s.CrossSlot).Distinct().Count(),j.Slots.Length);}});
 Test("no shared utility is overwritten by job presets",()=>{foreach(var j in pack.Jobs)foreach(var s in j.Slots){Equal(s.RegularBar==1&&s.RegularSlot>=9,false);Equal(s.CrossSlot is >=5 and <=8,false);}});
 Test("base action roots preserve level-sync use",()=>{Equal(pack.Jobs.Single(j=>j.Job=="GNB").Slots.Single(s=>s.LogicalSlot==6).Action,"Heart of Stone");Equal(pack.Jobs.Single(j=>j.Job=="WHM").Slots.Single(s=>s.LogicalSlot==1).Action,"Stone");});
