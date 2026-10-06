@@ -9,3 +9,6 @@ hotbar-sync/captures/
 hotbar-sync/reference/
 **/exports/
 *.user
+
+# Independent Wrath fork; managed in its own repository.
+/Accord/
