@@ -66,7 +66,7 @@ All variants are now preset-only after preparation. BRD, DNC and BLM require one
 
 ## MCH
 
-**Auto burst:** Enables Wildfire on ST. Continue pressing ST/AoE; scripted openers stay off. Heat Blast stays as the manual AoE burst route; Wildfire automation is ST-only. Flamethrower remains manual. Manual slots remain available.
+**Auto burst:** Enables Barrel Stabilizer on ST/AoE and Wildfire on ST; Full Metal Field, Hypercharge and follow-up attacks are already automated. ST Barrel/Wildfire follow the saved boss-only settings; AoE Barrel follows its saved target-HP threshold. Keep pressing the damage button. Heat Blast remains for manual Wildfire during AoE and deliberate overrides; Flamethrower remains manual. Scripted opener stays off. Manual slots remain available.
 
 **Auto mitigation:** No additional change: conditional Tactician is already enabled through ST. Dismantle stays manual on the shared defense button. In the pinned Wrath version its advanced ST automation requires an existing Dismantled duration above the configured threshold, so it cannot reliably initiate protection. Keep manual defense for planned timing and AoE. Manual slots remain available.
 

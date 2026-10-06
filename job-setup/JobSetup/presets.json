@@ -5115,13 +5115,17 @@
         }
       },
       "AutoBurst": {
-        "Description": "Enables Wildfire on ST. Continue pressing ST/AoE; scripted openers stay off. Heat Blast stays as the manual AoE burst route; Wildfire automation is ST-only. Flamethrower remains manual.",
+        "Description": "Enables Barrel Stabilizer on ST/AoE and Wildfire on ST; Full Metal Field, Hypercharge and follow-up attacks are already automated. ST Barrel/Wildfire follow the saved boss-only settings; AoE Barrel follows its saved target-HP threshold. Keep pressing the damage button. Heat Blast remains for manual Wildfire during AoE and deliberate overrides; Flamethrower remains manual. Scripted opener stays off.",
         "Enable": [
           8100,
-          8108
+          8108,
+          8110,
+          8300,
+          8307
         ],
         "Disable": [
-          8001
+          8001,
+          8200
         ],
         "EmptySlots": []
       },

@@ -705,6 +705,38 @@
     ],
     "Conflicts": []
   },
+  "8110": {
+    "Id": 8110,
+    "Name": "MCH_ST_Adv_Stabilizer",
+    "Parents": [
+      8100
+    ],
+    "Conflicts": []
+  },
+  "8200": {
+    "Id": 8200,
+    "Name": "MCH_AoE_SimpleMode",
+    "Parents": [],
+    "Conflicts": [
+      8300
+    ]
+  },
+  "8300": {
+    "Id": 8300,
+    "Name": "MCH_AoE_AdvancedMode",
+    "Parents": [],
+    "Conflicts": [
+      8200
+    ]
+  },
+  "8307": {
+    "Id": 8307,
+    "Name": "MCH_AoE_Adv_Stabilizer",
+    "Parents": [
+      8300
+    ],
+    "Conflicts": []
+  },
   "9003": {
     "Id": 9003,
     "Name": "MNK_AoE_SimpleMode",

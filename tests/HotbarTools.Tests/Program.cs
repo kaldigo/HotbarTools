@@ -125,6 +125,19 @@ Test("cleanup ignores empty slots and rejects invalid destinations",()=>{
     Throws(()=>HotbarCleanup.Plan(0,[],[],_=>false,_=>default));
     Throws(()=>HotbarCleanup.Plan(24,[new Position(20,0)],[],_=>false,_=>default));
 });
+Test("Machinist auto burst enables both Barrel routes and ST Wildfire live",()=>{
+    var mch=pack.Jobs.Single(j=>j.Job=="MCH");
+    var baseline=WrathMerge.Merge(new JsonObject{["Version"]=6,["EnabledActionsV6"]=new JsonArray()},[mch],null);
+    var automatic=VariantSwitch.Merge(baseline,[mch],new(){AutoBurst=true});
+    var enabled=automatic["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+    foreach(var id in new[]{8108,8110,8307,8111,8308,8105,8303})Equal(enabled.Contains(id),true);
+    Equal(enabled.Contains(8101),false);Equal(enabled.Contains(8305),false);
+    Equal(Variants.Resolve(mch,new(){AutoBurst=true}).Slots.Single(s=>s.LogicalSlot==3).Action!="Empty",true);
+    var plan=LivePresetPlan.Create(baseline,automatic)!;Equal(plan!=null,true);
+    foreach(var id in new[]{8108,8110,8307})Equal(plan![id],true);
+    var manual=VariantSwitch.Merge(automatic,[mch],new());
+    Equal(JsonNode.DeepEquals(manual,baseline),true);
+});
 Test("all preset targets are unique",()=>{foreach(var j in pack.Jobs){Equal(j.Slots.Select(s=>(s.RegularBar,s.RegularSlot)).Distinct().Count(),j.Slots.Length);Equal(j.Slots.Select(s=>s.CrossSlot).Distinct().Count(),j.Slots.Length);}});
 Test("no shared utility is overwritten by job presets",()=>{foreach(var j in pack.Jobs)foreach(var s in j.Slots){Equal(s.RegularBar==1&&s.RegularSlot>=9,false);Equal(s.CrossSlot is >=5 and <=8,false);}});
 Test("base action roots preserve level-sync use",()=>{Equal(pack.Jobs.Single(j=>j.Job=="GNB").Slots.Single(s=>s.LogicalSlot==6).Action,"Heart of Stone");Equal(pack.Jobs.Single(j=>j.Job=="WHM").Slots.Single(s=>s.LogicalSlot==1).Action,"Stone");});
